@@ -1,7 +1,20 @@
 import { GoogleGenAI } from '@google/genai';
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+export function getApiKey(): string {
+  return localStorage.getItem('nur_gemini_key') || import.meta.env.VITE_GEMINI_API_KEY || '';
+}
+
+export function setApiKey(key: string): void {
+  localStorage.setItem('nur_gemini_key', key.trim());
+}
+
+function getAiClient(): GoogleGenAI {
+  const key = getApiKey();
+  if (!key) {
+    throw new Error('Mütalaa yapabilmek için lütfen geçerli bir Gemini API anahtarı giriniz.');
+  }
+  return new GoogleGenAI({ apiKey: key });
+}
 
 // En yüksek muhakeme ve tahlil için Pro model
 const PRO_MODEL = 'gemini-1.5-pro';
@@ -35,9 +48,7 @@ export interface CrossExegesisResult {
  * 1. Görselden (Fotoğraftan) Metin Çıkarma (OCR)
  */
 export async function extractTextFromImage(base64Image: string, mimeType: string): Promise<string> {
-  if (!ai) {
-    throw new Error('API anahtarı bulunamadı.');
-  }
+  const ai = getAiClient();
 
   const prompt = `Bu fiziki bir kitaptan veya sayfadan çekilmiş fotoğraftır.
 Lütfen yalnızca görselde yer alan Risale-i Nur metnini birebir ve imlasına sadık kalarak yazıya aktar.
@@ -74,9 +85,7 @@ export async function analyzeSirriTemsil(
   passageTitle: string,
   passageText: string
 ): Promise<SirriTemsilResult> {
-  if (!ai) {
-    throw new Error('API anahtarı bulunamadı.');
-  }
+  const ai = getAiClient();
 
   const systemInstruction = `
 Sen Risale-i Nur Külliyatı'nın mantık, belâgat ve tefekkür metodolojisine tam vâkıf bir tahkik asistanısın.
@@ -138,9 +147,7 @@ export async function consultCouncil(
   passageText: string,
   userQuestion?: string
 ): Promise<CouncilResult> {
-  if (!ai) {
-    throw new Error('API anahtarı bulunamadı.');
-  }
+  const ai = getAiClient();
 
   const systemInstruction = `
 Sen Risale-i Nur müzakere heyetisin. Verilen pasajı dört farklı ilmi ihtisas zaviyesinden müzakere edeceksin.
@@ -221,9 +228,7 @@ export async function explainCrossReferences(
   matchedTitle: string,
   matchedText: string
 ): Promise<CrossExegesisResult> {
-  if (!ai) {
-    throw new Error('API anahtarı bulunamadı.');
-  }
+  const ai = getAiClient();
 
   const prompt = `
 AŞAĞIDA RİSALE-İ NUR KÜLLİYATI'NDAN İKİ GERÇEK PASAJ YER ALMAKTADIR.
