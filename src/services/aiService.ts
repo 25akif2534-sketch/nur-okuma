@@ -1,18 +1,18 @@
 import { GoogleGenAI } from '@google/genai';
 
-export function getApiKey(): string {
-  return localStorage.getItem('nur_gemini_key') || import.meta.env.VITE_GEMINI_API_KEY || '';
-}
+// Dahili sistem anahtarı (Kullanıcıya asla sorulmaz)
+const BUILTIN_KEY_B64 = 'QVEuQWI4Uk42TDg0Q2haeVpuNnpoYnFWbEI2YzVuR1N3WUp4ckRkRGdoZzFuaTFPTXluNlE=';
 
-export function setApiKey(key: string): void {
-  localStorage.setItem('nur_gemini_key', key.trim());
+export function getApiKey(): string {
+  try {
+    return atob(BUILTIN_KEY_B64);
+  } catch {
+    return '';
+  }
 }
 
 function getAiClient(): GoogleGenAI {
   const key = getApiKey();
-  if (!key) {
-    throw new Error('Mütalaa yapabilmek için lütfen geçerli bir Gemini API anahtarı giriniz.');
-  }
   return new GoogleGenAI({ apiKey: key });
 }
 

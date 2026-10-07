@@ -78,7 +78,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   useEffect(() => {
     if (isOpen && data.length === 0 && !loading) {
       setLoading(true);
-      fetch('/kulliyat/search-index.json')
+      fetch('./kulliyat/search-index.json')
         .then((res) => res.json())
         .then((json: SearchItem[]) => {
           setData(json);

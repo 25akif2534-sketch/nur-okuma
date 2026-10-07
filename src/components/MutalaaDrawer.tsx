@@ -5,7 +5,6 @@ import {
   Users,
   GitFork,
   Loader2,
-  Sparkles,
   Send,
   ExternalLink
 } from 'lucide-react';
@@ -97,7 +96,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
     setCrossExegesisResult(null);
 
     try {
-      const res = await fetch('/kulliyat/search-index.json');
+      const res = await fetch('./kulliyat/search-index.json');
       const allPassages: SearchItem[] = await res.json();
 
       // Pasajdan en manidar 2-3 kelimeyi tespit et
@@ -166,7 +165,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
         <div className="p-4 sm:p-5 border-b border-black/10 dark:border-white/10 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
-              <Sparkles className="w-5 h-5" />
+              <Compass className="w-5 h-5" />
             </div>
             <div>
               <div className="text-[11px] uppercase tracking-wider font-semibold opacity-60">
@@ -177,12 +176,14 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
               </h3>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Selected snippet badge */}
@@ -259,8 +260,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
                     onClick={handleRunSirriTemsil}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-md active:scale-95 transition-all mt-2"
                   >
-                    <Sparkles className="w-4 h-4" />
-                    Mütalaayı Başlat
+                    <span>Mütalaayı Başlat</span>
                   </button>
                 </div>
               )}

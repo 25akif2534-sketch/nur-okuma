@@ -31,7 +31,7 @@ export function App() {
 
   // Load books index on start
   useEffect(() => {
-    fetch('/kulliyat/books-index.json')
+    fetch('./kulliyat/books-index.json')
       .then((res) => res.json())
       .then((data: BookMeta[]) => {
         setBooks(data);
@@ -61,7 +61,7 @@ export function App() {
     if (!selectedBook) return;
     setLoadingChapter(true);
     try {
-      const res = await fetch(`/kulliyat/${selectedBook.id}/${chapterId}.json`);
+      const res = await fetch(`./kulliyat/${selectedBook.id}/${chapterId}.json`);
       const data: ChapterContent = await res.json();
       setCurrentChapter(data);
       if (targetPassageId) {
@@ -87,7 +87,7 @@ export function App() {
     setSelectedBook(targetBook);
     setLoadingChapter(true);
     try {
-      const res = await fetch(`/kulliyat/${bookId}/${chapterId}.json`);
+      const res = await fetch(`./kulliyat/${bookId}/${chapterId}.json`);
       const data: ChapterContent = await res.json();
       setCurrentChapter(data);
       setTimeout(() => {

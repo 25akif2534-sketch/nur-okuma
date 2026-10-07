@@ -11,7 +11,6 @@ import {
   Gauge,
   Bookmark,
   Search,
-  Sparkles,
   Compass,
   Users
 } from 'lucide-react';
@@ -265,9 +264,6 @@ export const Reader: React.FC<ReaderProps> = ({
           <h2 className="text-2xl sm:text-3xl font-serif font-bold mt-2">
             {chapter.title}
           </h2>
-          <div className="mt-2 text-xs font-mono opacity-60">
-            {passages.length} Tahkik Pasajı
-          </div>
         </div>
 
         {/* Sectioned Passages */}
@@ -299,10 +295,9 @@ export const Reader: React.FC<ReaderProps> = ({
                   <button
                     onClick={() => onOpenMutalaa(psg)}
                     className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-600/10 hover:bg-amber-600 text-amber-800 dark:text-amber-200 hover:text-white text-xs font-medium transition-all shrink-0 ml-2"
-                    title="Bu Pasajı Gemini Pro ile Mütalaa Et"
+                    title="Bu Pasajı Mütalaa Et"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-600 hover:text-white" />
-                    <span className="hidden sm:inline">Mütalaa Et</span>
+                    <span>Mütalaa Et</span>
                   </button>
                 </div>
 
