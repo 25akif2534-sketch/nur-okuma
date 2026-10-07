@@ -44,6 +44,13 @@ export interface CrossExegesisResult {
   izah: string;
 }
 
+export interface ConceptCrossAnalysis {
+  kavramlar: string[];
+  ilgiliBahisler: string;
+  digerYerdeNasilIzahEdilir: string;
+  aramaKelimeleri: string[];
+}
+
 /**
  * 1. Görselden (Fotoğraftan) Metin Çıkarma (OCR)
  */
@@ -264,3 +271,55 @@ Format (JSON):
     throw new Error(error?.message || 'Çapraz izah oluşturulamadı.');
   }
 }
+
+/**
+ * 5. Kavramsal Çapraz İzah (Külliyat'ta Başka Nerede Nasıl İzah Edilir?)
+ */
+export async function analyzeConceptCrossExegesis(
+  passageTitle: string,
+  passageText: string
+): Promise<ConceptCrossAnalysis> {
+  const ai = getAiClient();
+
+  const prompt = `
+AŞAĞIDA RİSALE-İ NUR KÜLLİYATI'NDAN BİR PASAJ YER ALMAKTADIR.
+BAŞLIK: [${passageTitle}]
+METİN:
+"""
+${passageText}
+"""
+
+GÖREV:
+Sen Risale-i Nur Külliyatı'na tam vakıf derin bir araştırmacısın.
+1. Bu pasajdaki 2 ila 4 karakteristik anahtar kavramı tespit et (Örn: Tevhid Mührü, Kâinat Sarayı, Esmâ-i İlâhiye, Sırr-ı Temsil, Ehadiyet vb.).
+2. Bu pasajda işlenen temel hakikat ve tefekkür, Risale-i Nur Külliyatı'nın başka neresinde (hangi kitaplar ve hangi bahisler; örn: 33. Söz - Pencereler, 20. Mektup, 30. Lem'a vb.) işlenmektedir?
+3. "Burası Risale-i Nur'da başka yerde şu şekilde izah edilir:" başlığı altında:
+Bu pasajdaki fikrin, Külliyat'ın o diğer merkezlerindeki tamamlayıcı ve açıcı bahislerle nasıl irtibatlandığını, orada meselenin hangi farklı ve derin zaviyelerden izah edildiğini veciz ve doyurucu şekilde açıkla. Asla genel geçer yuvarlak laf etme; doğrudan Külliyat bahislerinin ismiyle derinleş.
+4. Külliyat arama dizininde eşleşme bulmak için en ayırt edici 3 anahtar kelimeyi ver.
+
+Cevabını KESİNLİKLE aşağıdaki JSON formatında döndür:
+{
+  "kavramlar": ["kavram 1", "kavram 2", "kavram 3"],
+  "ilgiliBahisler": "Örn: 33. Söz (Pencereler Risalesi), 20. Mektup (Tevhid Mertebeleri), 23. Söz",
+  "digerYerdeNasilIzahEdilir": "...",
+  "aramaKelimeleri": ["kelime1", "kelime2", "kelime3"]
+}
+`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: PRO_MODEL,
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+      },
+    });
+
+    const jsonText = response.text?.trim() || '{}';
+    return JSON.parse(jsonText) as ConceptCrossAnalysis;
+  } catch (error: any) {
+    console.error('Kavramsal çapraz analiz hatası:', error);
+    throw new Error(error?.message || 'Çapraz analiz alınamadı.');
+  }
+}
+

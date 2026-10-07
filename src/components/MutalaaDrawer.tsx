@@ -12,12 +12,12 @@ import type { Passage, ThemeMode } from '../types';
 import {
   analyzeSirriTemsil,
   consultCouncil,
-  explainCrossReferences
+  analyzeConceptCrossExegesis
 } from '../services/aiService';
 import type {
   SirriTemsilResult,
   CouncilResult,
-  CrossExegesisResult
+  ConceptCrossAnalysis
 } from '../services/aiService';
 import type { SearchItem } from './SearchModal';
 
@@ -51,8 +51,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
 
   // Çapraz İzah Durumu
   const [crossMatches, setCrossMatches] = useState<SearchItem[]>([]);
-  const [selectedMatch, setSelectedMatch] = useState<SearchItem | null>(null);
-  const [crossExegesisResult, setCrossExegesisResult] = useState<CrossExegesisResult | null>(null);
+  const [conceptAnalysis, setConceptAnalysis] = useState<ConceptCrossAnalysis | null>(null);
   const [crossSearching, setCrossSearching] = useState(false);
 
   if (!isOpen || !passage) return null;
@@ -87,84 +86,50 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
     }
   };
 
-  // 3. Çapraz Atıf Bul ve İzah Et
+  // 3. Çapraz Atıf ve Kavramsal İzah Motoru
   const handleFindCrossReferences = async () => {
     setCrossSearching(true);
     setError(null);
     setCrossMatches([]);
-    setSelectedMatch(null);
-    setCrossExegesisResult(null);
+    setConceptAnalysis(null);
 
     try {
+      // 1. Adım: Yapay Zekâ ile kavram tespiti ve Külliyat rabıtası analizi
+      const analysis = await analyzeConceptCrossExegesis(passage.title, currentPassageText);
+      setConceptAnalysis(analysis);
+
+      // 2. Adım: Tespit edilen kavramlar ve arama terimleriyle Külliyat dizininde eşleşen pasajları ara
       const res = await fetch('./kulliyat/search-index.json');
       const allPassages: SearchItem[] = await res.json();
 
-      // Pasajdan en manidar 2-3 kelimeyi tespit et
-      const stopWords = ['ve', 'bir', 'bu', 'ile', 'de', 'da', 'icin', 'o', 'ki', 'ise', 'her', 'gibi', 'hem', 'en', 'dahi'];
-      const words = currentPassageText
-        .toLowerCase()
-        .replace(/[^a-zA-ZğüşıöçĞÜŞİÖÇâîûÂÎÛ\s]/g, ' ')
-        .split(/\s+/)
-        .filter((w) => w.length > 3 && !stopWords.includes(w));
+      const searchTerms = [
+        ...(analysis.aramaKelimeleri || []),
+        ...(analysis.kavramlar || [])
+      ]
+        .map((t) => t.toLowerCase().trim())
+        .filter((t) => t.length > 2);
 
-      // Sık geçen kelimeler
-      const freq: { [key: string]: number } = {};
-      words.forEach((w) => (freq[w] = (freq[w] || 0) + 1));
-      const topKeywords = Object.entries(freq)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3)
-        .map((p) => p[0]);
-
-      // Farklı kitaplardan dengeli ve çeşitli ikiz bahisler seç
-      const seenBooks = new Set<string>();
       const diverseMatches: SearchItem[] = [];
 
       for (const p of allPassages) {
-        // Okunan pasajın aynısını atla
         if (p.passageId === passage.id && p.title === passage.title) continue;
-        
         const norm = p.text.toLowerCase();
-        const score = topKeywords.filter((kw) => norm.includes(kw)).length;
 
-        // En az 2 anahtar kelime eşleşsin veya tek kelime varsa eşleşsin
-        if (score > 0) {
-          // Her kitaptan en fazla 1-2 örnek alarak tüm Külliyat'a dağıt
+        const matchCount = searchTerms.filter((term) => norm.includes(term)).length;
+        if (matchCount > 0) {
           const bookCount = diverseMatches.filter((m) => m.bookId === p.bookId).length;
-          if (bookCount === 0 || (diverseMatches.length < 5 && bookCount < 2)) {
+          if (bookCount === 0) {
             diverseMatches.push(p);
-            seenBooks.add(p.bookId);
             if (diverseMatches.length >= 6) break;
           }
         }
       }
 
       setCrossMatches(diverseMatches);
-      if (diverseMatches.length > 0) {
-        handleExplainPair(diverseMatches[0]);
-      }
     } catch (e: any) {
-      setError(e.message || 'Çapraz atıflar aranamadı.');
+      setError(e.message || 'Çapraz analiz yapılamadı.');
     } finally {
       setCrossSearching(false);
-    }
-  };
-
-  const handleExplainPair = async (match: SearchItem) => {
-    setSelectedMatch(match);
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await explainCrossReferences(
-        passage.title,
-        currentPassageText.substring(0, 600),
-        match.title,
-        match.text.substring(0, 600)
-      );
-      setCrossExegesisResult(res);
-    } catch (e: any) {
-      setError(e.message || 'İzah oluşturulamadı.');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -411,73 +376,85 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
               {crossSearching && (
                 <div className="py-16 text-center flex flex-col items-center justify-center gap-2">
                   <Loader2 className="w-6 h-6 animate-spin text-amber-600" />
-                  <p className="text-xs font-serif">Külliyat'ta ikiz ve mütemmim bahisler taranıyor...</p>
+                  <p className="text-xs font-serif font-medium">Metindeki kavramlar ve Külliyat rabıtası tahlil ediliyor...</p>
+                  <span className="text-[11px] opacity-60">Kardeş ve mütemmim bahisler taranıyor</span>
                 </div>
               )}
 
-              {!crossSearching && crossMatches.length > 0 && (
-                <div className="space-y-3">
-                  <div className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
-                    Külliyat'taki İkiz Bahisler:
-                  </div>
-
-                  <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-                    {crossMatches.map((m) => (
-                      <button
-                        key={`${m.bookId}-${m.chapterId}-${m.passageId}`}
-                        onClick={() => handleExplainPair(m)}
-                        className={`p-2.5 rounded-xl border text-left shrink-0 max-w-[200px] transition-all ${
-                          selectedMatch?.passageId === m.passageId
-                            ? 'border-amber-600 bg-amber-500/10 text-amber-900 dark:text-amber-200'
-                            : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 opacity-70'
-                        }`}
-                      >
-                        <div className="text-[10px] font-bold opacity-70 truncate">{m.bookTitle}</div>
-                        <div className="text-xs font-serif font-bold truncate">{m.title}</div>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* İkiz Bahsin İzahı */}
-                  {selectedMatch && (
-                    <div className="mt-4 p-4 rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] space-y-3">
-                      <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2">
-                        <span className="font-serif font-bold text-xs text-amber-700 dark:text-amber-400">
-                          🔗 {selectedMatch.bookTitle} • {selectedMatch.title}
+              {!crossSearching && conceptAnalysis && (
+                <div className="space-y-4 animate-in fade-in duration-200">
+                  {/* 1. Tespit Edilen Kavramlar */}
+                  <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-2">
+                    <span className="text-[11px] font-bold text-amber-900 dark:text-amber-200 uppercase tracking-wider block">
+                      📌 Tespit Edilen Temel Kavramlar:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {conceptAnalysis.kavramlar.map((k, i) => (
+                        <span
+                          key={i}
+                          className="px-2.5 py-1 rounded-lg bg-amber-600 text-white text-xs font-serif font-medium shadow-2xs"
+                        >
+                          {k}
                         </span>
-                        {onNavigateToPassage && (
-                          <button
-                            onClick={() => {
-                              onNavigateToPassage(selectedMatch.bookId, selectedMatch.chapterId, selectedMatch.passageId);
-                              onClose();
-                            }}
-                            className="text-[11px] text-amber-600 hover:underline flex items-center gap-1 font-medium"
-                          >
-                            Bahse Git <ExternalLink className="w-3 h-3" />
-                          </button>
-                        )}
-                      </div>
+                      ))}
+                    </div>
+                  </div>
 
-                      {loading ? (
-                        <div className="py-6 text-center text-xs flex items-center justify-center gap-2">
-                          <Loader2 className="w-4 h-4 animate-spin text-amber-600" />
-                          İki bahsin irtibatı tahlil ediliyor...
-                        </div>
-                      ) : crossExegesisResult ? (
-                        <div className="space-y-2 text-xs sm:text-sm font-serif leading-relaxed">
-                          <div className="flex flex-wrap gap-1 mb-2">
-                            {crossExegesisResult.anahtarKavramlar.map((k, i) => (
-                              <span
-                                key={i}
-                                className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-800 dark:text-amber-300 text-[10px] font-mono"
+                  {/* 2. Külliyat'taki Kardeş Bahisler */}
+                  <div className="p-3.5 rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] space-y-1">
+                    <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider block">
+                      📖 Külliyat'taki İrtibatlı Bahisler:
+                    </span>
+                    <p className="text-xs sm:text-sm font-serif font-semibold text-amber-800 dark:text-amber-300">
+                      {conceptAnalysis.ilgiliBahisler}
+                    </p>
+                  </div>
+
+                  {/* 3. "Burası Başka Yerde Şu Şekilde İzah Edilir" Kutusu */}
+                  <div className="p-4 sm:p-5 rounded-2xl border border-amber-500/30 bg-amber-500/[0.03] space-y-2.5">
+                    <span className="text-xs sm:text-sm font-serif font-bold text-amber-700 dark:text-amber-400 block border-b border-amber-500/20 pb-1.5">
+                      💡 Burası Risale-i Nur'da Başka Yerde Şu Şekilde İzah Edilir:
+                    </span>
+                    <p className="text-xs sm:text-sm font-serif leading-relaxed text-justify opacity-90">
+                      {conceptAnalysis.digerYerdeNasilIzahEdilir}
+                    </p>
+                  </div>
+
+                  {/* 4. Külliyat'taki İlgili Pasajlar ve Doğrudan Geçiş */}
+                  {crossMatches.length > 0 && (
+                    <div className="space-y-3 pt-2">
+                      <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider block">
+                        🔍 Bu Kavramların Geçtiği Külliyat Pasajları:
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {crossMatches.map((m) => (
+                          <div
+                            key={`${m.bookId}-${m.chapterId}-${m.passageId}`}
+                            className="p-3 rounded-xl border border-black/10 dark:border-white/10 hover:border-amber-500/50 bg-black/[0.01] dark:bg-white/[0.01] transition-all flex flex-col justify-between gap-2"
+                          >
+                            <div>
+                              <div className="text-[10px] font-bold text-amber-700 dark:text-amber-400 truncate">
+                                {m.bookTitle}
+                              </div>
+                              <div className="text-xs font-serif font-medium line-clamp-2 mt-0.5">
+                                {m.title}
+                              </div>
+                            </div>
+                            {onNavigateToPassage && (
+                              <button
+                                onClick={() => {
+                                  onNavigateToPassage(m.bookId, m.chapterId, m.passageId);
+                                  onClose();
+                                }}
+                                className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-600 hover:text-amber-700 hover:underline pt-1 self-start"
                               >
-                                #{k}
-                              </span>
-                            ))}
+                                <span>Bahse Git</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </button>
+                            )}
                           </div>
-                          <p>{crossExegesisResult.izah}</p>
-                        </div>
-                      ) : null}
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
