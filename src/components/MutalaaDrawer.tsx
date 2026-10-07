@@ -115,16 +115,32 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
         .slice(0, 3)
         .map((p) => p[0]);
 
-      // Başka kitaplardaki eşleşen pasajları bul
-      const matches = allPassages.filter((p) => {
-        if (p.passageId === passage.id && p.title === passage.title) return false;
-        const norm = p.text.toLowerCase();
-        return topKeywords.some((kw) => norm.includes(kw));
-      }).slice(0, 5);
+      // Farklı kitaplardan dengeli ve çeşitli ikiz bahisler seç
+      const seenBooks = new Set<string>();
+      const diverseMatches: SearchItem[] = [];
 
-      setCrossMatches(matches);
-      if (matches.length > 0) {
-        handleExplainPair(matches[0]);
+      for (const p of allPassages) {
+        // Okunan pasajın aynısını atla
+        if (p.passageId === passage.id && p.title === passage.title) continue;
+        
+        const norm = p.text.toLowerCase();
+        const score = topKeywords.filter((kw) => norm.includes(kw)).length;
+
+        // En az 2 anahtar kelime eşleşsin veya tek kelime varsa eşleşsin
+        if (score > 0) {
+          // Her kitaptan en fazla 1-2 örnek alarak tüm Külliyat'a dağıt
+          const bookCount = diverseMatches.filter((m) => m.bookId === p.bookId).length;
+          if (bookCount === 0 || (diverseMatches.length < 5 && bookCount < 2)) {
+            diverseMatches.push(p);
+            seenBooks.add(p.bookId);
+            if (diverseMatches.length >= 6) break;
+          }
+        }
+      }
+
+      setCrossMatches(diverseMatches);
+      if (diverseMatches.length > 0) {
+        handleExplainPair(diverseMatches[0]);
       }
     } catch (e: any) {
       setError(e.message || 'Çapraz atıflar aranamadı.');
