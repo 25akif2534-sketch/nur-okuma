@@ -16,8 +16,8 @@ function getAiClient(): GoogleGenAI {
   return new GoogleGenAI({ apiKey: key });
 }
 
-// En yüksek muhakeme ve tahlil için Pro model
-const PRO_MODEL = 'gemini-1.5-pro';
+// Güncel ve kararlı Gemini 2.5 Flash modeli
+const PRO_MODEL = 'gemini-2.5-flash';
 
 export interface SirriTemsilResult {
   durbun: string;
