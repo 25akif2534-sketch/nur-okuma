@@ -15,23 +15,124 @@ export interface SearchItem {
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectResult: (bookId: string, chapterId: string, passageId: string) => void;
+  onSelectResult: (bookId: string, chapterId: string, passageId: string, highlightQuery?: string) => void;
 }
 
-// Türkçe karakter duyarlılığını kaldıran ve küçük harfe çeviren yardımcı
-function normalizeSearchText(str: string): string {
-  return str
+// Arama dizinini bellekte tutarak tekrar yüklemeyi önle
+let cachedSearchIndex: SearchItem[] | null = null;
+let indexFetchPromise: Promise<SearchItem[]> | null = null;
+
+export function preloadSearchIndex(): Promise<SearchItem[]> {
+  if (cachedSearchIndex) return Promise.resolve(cachedSearchIndex);
+  if (!indexFetchPromise) {
+    indexFetchPromise = fetch('./kulliyat/search-index.json')
+      .then((res) => res.json())
+      .then((json: SearchItem[]) => {
+        cachedSearchIndex = json;
+        return json;
+      })
+      .catch((err) => {
+        indexFetchPromise = null;
+        throw err;
+      });
+  }
+  return indexFetchPromise;
+}
+
+/**
+ * Kullanıcının tiresiz, kesmesiz, şapkasız veya ı/i, ş/s farkıyla yazdığı
+ * ifadeleri ("medarı şüphe", "ehli iman", "hakaik", "mucize") orijinal
+ * Risale imlasıyla ("medâr-ı şüphe", "ehl-i iman", "hakāik", "mu'cize") eşleştiren esnek Regex üretici
+ */
+export function buildFlexibleRegex(query: string): RegExp | null {
+  const cleaned = query
+    .replace(/İ/g, 'i')
+    .replace(/I/g, 'i')
     .toLowerCase()
-    .replace(/â/g, 'a')
-    .replace(/î/g, 'i')
-    .replace(/û/g, 'u')
-    .replace(/ı/g, 'i')
-    .replace(/ğ/g, 'g')
-    .replace(/ü/g, 'u')
-    .replace(/ş/g, 's')
-    .replace(/ö/g, 'o')
-    .replace(/ç/g, 'c')
+    .replace(/[-'’‘ʼ.,;:!?"()[\]]+/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
+
+  if (!cleaned || cleaned.length < 2) return null;
+
+  const charMap: Record<string, string> = {
+    a: '[aâāáàAÂĀ]',
+    â: '[aâāáàAÂĀ]',
+    ā: '[aâāáàAÂĀ]',
+    i: '[iıîīİIÎĪ]',
+    ı: '[iıîīİIÎĪ]',
+    î: '[iıîīİIÎĪ]',
+    ī: '[iıîīİIÎĪ]',
+    u: '[uüûūUÜÛŪ]',
+    ü: '[uüûūUÜÛŪ]',
+    û: '[uüûūUÜÛŪ]',
+    ū: '[uüûūUÜÛŪ]',
+    o: '[oöôOÖÔ]',
+    ö: '[oöôOÖÔ]',
+    ô: '[oöôOÖÔ]',
+    s: '[sşSŞ]',
+    ş: '[sşSŞ]',
+    c: '[cçCÇ]',
+    ç: '[cçCÇ]',
+    g: '[gğGĞ]',
+    ğ: '[gğGĞ]',
+    k: '[kāķK]',
+  };
+
+  let pattern = '';
+  for (let i = 0; i < cleaned.length; i++) {
+    const ch = cleaned[i];
+    if (ch === ' ') {
+      pattern += "[\\s\\-'’‘ʼ]+";
+    } else {
+      const mapped = charMap[ch] || ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      pattern += mapped;
+      if (i < cleaned.length - 1 && cleaned[i + 1] !== ' ') {
+        pattern += "[\\s\\-'’‘ʼ\\u0307]?";
+      }
+    }
+  }
+
+  try {
+    return new RegExp(`(${pattern})`, 'gi');
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Verilen metin içindeki arama eşleşmelerini renkli <mark> etiketiyle vurgular
+ */
+export function renderHighlightedText(
+  text: string,
+  query: string,
+  withScrollTarget = false
+): React.ReactNode {
+  if (!query || query.trim().length < 2) return text;
+  const rx = buildFlexibleRegex(query);
+  if (!rx) return text;
+
+  const parts = text.split(rx);
+  if (parts.length === 1) return text;
+
+  let firstMarked = false;
+  return parts.map((part, idx) => {
+    // split with capturing group puts matches at odd indices (1, 3, 5...)
+    if (idx % 2 === 1) {
+      const isTarget = withScrollTarget && !firstMarked;
+      if (isTarget) firstMarked = true;
+      return (
+        <mark
+          key={idx}
+          data-search-highlight={isTarget ? 'true' : undefined}
+          className="bg-amber-300/90 dark:bg-amber-500/40 text-stone-950 dark:text-amber-100 px-1 py-0.5 rounded font-semibold shadow-2xs"
+        >
+          {part}
+        </mark>
+      );
+    }
+    return part;
+  });
 }
 
 export const SearchModal: React.FC<SearchModalProps> = ({
@@ -40,7 +141,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   onSelectResult,
 }) => {
   const [query, setQuery] = useState('');
-  const [data, setData] = useState<SearchItem[]>([]);
+  const [data, setData] = useState<SearchItem[]>(cachedSearchIndex || []);
   const [loading, setLoading] = useState(false);
   const [selectedBookFilter, setSelectedBookFilter] = useState<string>('all');
   const [ocrLoading, setOcrLoading] = useState(false);
@@ -58,7 +159,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           const base64Data = (reader.result as string).split(',')[1];
           const extractedText = await extractTextFromImage(base64Data, file.type || 'image/jpeg');
           if (extractedText) {
-            // İlk anlamlı 3-4 kelimeyi arama kutusuna yaz
             const firstWords = extractedText.replace(/\r?\n/g, ' ').substring(0, 60).trim();
             setQuery(firstWords);
           }
@@ -69,18 +169,21 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         }
       };
       reader.readAsDataURL(file);
-    } catch (err) {
+    } catch {
       setOcrLoading(false);
     }
   };
 
-  // Load search index when modal opens for the first time
+  // Load search index when modal opens
   useEffect(() => {
     if (isOpen && data.length === 0 && !loading) {
+      if (cachedSearchIndex) {
+        setData(cachedSearchIndex);
+        return;
+      }
       setLoading(true);
-      fetch('./kulliyat/search-index.json')
-        .then((res) => res.json())
-        .then((json: SearchItem[]) => {
+      preloadSearchIndex()
+        .then((json) => {
           setData(json);
           setLoading(false);
         })
@@ -112,10 +215,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     return Array.from(map.entries()).map(([id, title]) => ({ id, title }));
   }, [data]);
 
-  // Real-time pure substring search across 3,075 passages
+  // Real-time flexible search across 3,075 passages
   const results = useMemo(() => {
-    const q = normalizeSearchText(query);
-    if (!q || q.length < 2) return [];
+    const rx = buildFlexibleRegex(query);
+    if (!rx) return [];
 
     const filtered = selectedBookFilter === 'all'
       ? data
@@ -124,21 +227,27 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     const matches: { item: SearchItem; snippet: string }[] = [];
 
     for (const item of filtered) {
-      const normText = normalizeSearchText(item.text);
-      const normTitle = normalizeSearchText(item.title);
-      const idx = normText.indexOf(q);
+      rx.lastIndex = 0;
+      const textMatch = rx.exec(item.text);
+      rx.lastIndex = 0;
+      const titleMatch = !textMatch ? rx.exec(item.title) : null;
 
-      if (idx !== -1 || normTitle.includes(q)) {
+      if (textMatch || titleMatch) {
         let snippet = '';
-        if (idx !== -1) {
-          const start = Math.max(0, idx - 60);
-          const end = Math.min(item.text.length, idx + q.length + 80);
-          snippet = (start > 0 ? '...' : '') + item.text.substring(start, end).replace(/\r?\n/g, ' ') + (end < item.text.length ? '...' : '');
+        if (textMatch) {
+          const idx = textMatch.index;
+          const matchLen = textMatch[0].length;
+          const start = Math.max(0, idx - 65);
+          const end = Math.min(item.text.length, idx + matchLen + 85);
+          snippet =
+            (start > 0 ? '...' : '') +
+            item.text.substring(start, end).replace(/\r?\n/g, ' ') +
+            (end < item.text.length ? '...' : '');
         } else {
-          snippet = item.text.substring(0, 140).replace(/\r?\n/g, ' ') + '...';
+          snippet = item.text.substring(0, 150).replace(/\r?\n/g, ' ') + '...';
         }
         matches.push({ item, snippet });
-        if (matches.length >= 60) break; // İlk 60 sonucu hızlıca getir
+        if (matches.length >= 60) break;
       }
     }
 
@@ -183,9 +292,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="p-1 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-400"
+              className="px-2 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-[11px] font-medium text-stone-600 dark:text-stone-300 shrink-0"
             >
-              <X className="w-4 h-4" />
+              Temizle
             </button>
           )}
           <button
@@ -237,7 +346,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               <BookOpen className="w-8 h-8 mx-auto mb-2 opacity-40" />
               <p className="text-sm font-serif">Aramak istediğiniz en az 2 harfli bir kelime yazın.</p>
               <p className="text-xs mt-1 opacity-70">
-                15 kitap, 3.075 orijinal pasaj içinde harfi harfine taranır.
+                Tire, şapka veya kesme işareti kullanmadan da (örn: "medarı şüphe", "ehli iman") arayabilirsiniz.
               </p>
             </div>
           )}
@@ -256,7 +365,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               <div
                 key={`${item.bookId}-${item.chapterId}-${item.passageId}`}
                 onClick={() => {
-                  onSelectResult(item.bookId, item.chapterId, item.passageId);
+                  onSelectResult(item.bookId, item.chapterId, item.passageId, query.trim());
                   onClose();
                 }}
                 className="p-3.5 sm:p-4 rounded-2xl border border-stone-200 dark:border-stone-800 hover:border-amber-500 dark:hover:border-amber-600 hover:bg-amber-50/40 dark:hover:bg-amber-950/20 cursor-pointer transition-all group"
@@ -272,11 +381,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                 </div>
 
                 <div className="font-serif font-bold text-sm text-stone-900 dark:text-stone-100 mb-1">
-                  {item.title}
+                  {renderHighlightedText(item.title, query)}
                 </div>
 
                 <p className="text-xs text-stone-600 dark:text-stone-300 font-serif leading-relaxed line-clamp-2">
-                  {snippet}
+                  {renderHighlightedText(snippet, query)}
                 </p>
               </div>
             ))}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { ChapterContent, ThemeMode, BookMeta, Passage } from '../types';
+import { renderHighlightedText } from './SearchModal';
 import {
   ArrowLeft,
   Sun,
@@ -20,6 +21,8 @@ interface ReaderProps {
   chapter: ChapterContent;
   theme: ThemeMode;
   fontSize: number;
+  highlightQuery?: string;
+  targetPassageId?: string;
   onBack: () => void;
   onThemeChange: (theme: ThemeMode) => void;
   onFontSizeChange: (delta: number) => void;
@@ -37,6 +40,8 @@ export const Reader: React.FC<ReaderProps> = ({
   chapter,
   theme,
   fontSize,
+  highlightQuery,
+  targetPassageId,
   onBack,
   onThemeChange,
   onFontSizeChange,
@@ -134,6 +139,22 @@ export const Reader: React.FC<ReaderProps> = ({
     window.addEventListener('mousedown', handleClickOutside);
     return () => window.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Arama sonucundan gelindiyse doğrudan renkli kelimenin olduğu cümleye kaydır
+  useEffect(() => {
+    if (!targetPassageId && !highlightQuery) return;
+    const timer = setTimeout(() => {
+      const passageEl = targetPassageId ? document.getElementById(targetPassageId) : document;
+      const markEl = passageEl?.querySelector('[data-search-highlight="true"]') as HTMLElement | null;
+      if (markEl) {
+        markEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (targetPassageId) {
+        const el = document.getElementById(targetPassageId);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 180);
+    return () => clearTimeout(timer);
+  }, [chapter.id, targetPassageId, highlightQuery]);
 
   return (
     <div className={`min-h-screen flex flex-col transition-colors duration-200 ${getThemeClass()}`}>
@@ -282,23 +303,14 @@ export const Reader: React.FC<ReaderProps> = ({
                 onTouchEnd={() => handleMouseUp(psg)}
                 className="scroll-mt-24 space-y-4"
               >
-                {/* Orijinal Numaralı Pasaj Başlığı & Mütalaa Butonu */}
+                {/* Orijinal Numaralı Pasaj Başlığı */}
                 <div
-                  className={`flex items-center justify-between px-4 py-2.5 rounded-xl border font-serif text-sm font-semibold tracking-wide shadow-2xs ${getPassageHeaderClass()}`}
+                  className={`flex items-center px-4 py-2.5 rounded-xl border font-serif text-sm font-semibold tracking-wide shadow-2xs ${getPassageHeaderClass()}`}
                 >
                   <div className="flex items-center gap-2.5 truncate">
                     <Bookmark className="w-4 h-4 text-amber-600 shrink-0" />
                     <span className="truncate">{psg.title}</span>
                   </div>
-
-                  {/* Pasaj Mütalaa Butonu */}
-                  <button
-                    onClick={() => onOpenMutalaa(psg)}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-600/10 hover:bg-amber-600 text-amber-800 dark:text-amber-200 hover:text-white text-xs font-medium transition-all shrink-0 ml-2"
-                    title="Bu Pasajı Mütalaa Et"
-                  >
-                    <span>Mütalaa Et</span>
-                  </button>
                 </div>
 
                 {/* Pasaj Metni */}
@@ -308,7 +320,13 @@ export const Reader: React.FC<ReaderProps> = ({
                 >
                   {paragraphs.map((para, i) => (
                     <p key={i} className="indent-6 sm:indent-8 tracking-normal">
-                      {para}
+                      {highlightQuery
+                        ? renderHighlightedText(
+                            para,
+                            highlightQuery,
+                            !targetPassageId || psg.id === targetPassageId
+                          )
+                        : para}
                     </p>
                   ))}
                 </article>

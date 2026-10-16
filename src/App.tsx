@@ -3,7 +3,7 @@ import type { BookMeta, ChapterContent, ThemeMode, Passage } from './types';
 import { BookList } from './components/BookList';
 import { Reader } from './components/Reader';
 import { SpeedReaderModal } from './components/SpeedReaderModal';
-import { SearchModal } from './components/SearchModal';
+import { SearchModal, preloadSearchIndex } from './components/SearchModal';
 import { MutalaaDrawer } from './components/MutalaaDrawer';
 import { Loader2 } from 'lucide-react';
 
@@ -17,6 +17,8 @@ export function App() {
   const [fontSize, setFontSize] = useState<number>(19);
   const [speedReaderOpen, setSpeedReaderOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [highlightQuery, setHighlightQuery] = useState<string>('');
+  const [targetPassageId, setTargetPassageId] = useState<string | undefined>(undefined);
 
   // Mütalaa Çekmecesi Durumu
   const [mutalaaState, setMutalaaState] = useState<{
@@ -29,18 +31,20 @@ export function App() {
     passage: null,
   });
 
-  // Load books index on start
+  // Load books index on start & preload search index in background
   useEffect(() => {
     fetch('./kulliyat/books-index.json')
       .then((res) => res.json())
       .then((data: BookMeta[]) => {
         setBooks(data);
         if (data.length > 0) {
-          // Default selection to Sozler if available
           const sozler = data.find((b) => b.id.includes('sozler')) || data[0];
           setSelectedBook(sozler);
         }
         setLoading(false);
+        setTimeout(() => {
+          preloadSearchIndex().catch(() => {});
+        }, 600);
       })
       .catch((err) => {
         console.error('Kulliyat yüklenemedi:', err);
@@ -50,23 +54,24 @@ export function App() {
 
   const handleSelectBook = (book: BookMeta) => {
     if (selectedBook?.id === book.id) {
-      // Toggle accordion if clicked again
       setSelectedBook(null);
     } else {
       setSelectedBook(book);
     }
   };
 
-  const handleSelectChapter = async (chapterId: string, targetPassageId?: string) => {
+  const handleSelectChapter = async (chapterId: string, passageId?: string) => {
     if (!selectedBook) return;
     setLoadingChapter(true);
+    setHighlightQuery('');
+    setTargetPassageId(passageId);
     try {
       const res = await fetch(`./kulliyat/${selectedBook.id}/${chapterId}.json`);
       const data: ChapterContent = await res.json();
       setCurrentChapter(data);
-      if (targetPassageId) {
+      if (passageId) {
         setTimeout(() => {
-          const el = document.getElementById(targetPassageId);
+          const el = document.getElementById(passageId);
           if (el) {
             el.scrollIntoView({ behavior: 'smooth' });
           }
@@ -81,21 +86,31 @@ export function App() {
     }
   };
 
-  const handleSelectSearchResult = async (bookId: string, chapterId: string, passageId: string) => {
+  const handleSelectSearchResult = async (
+    bookId: string,
+    chapterId: string,
+    passageId: string,
+    searchQuery?: string
+  ) => {
     const targetBook = books.find((b) => b.id === bookId);
     if (!targetBook) return;
     setSelectedBook(targetBook);
+    setHighlightQuery(searchQuery || '');
+    setTargetPassageId(passageId);
     setLoadingChapter(true);
     try {
       const res = await fetch(`./kulliyat/${bookId}/${chapterId}.json`);
       const data: ChapterContent = await res.json();
       setCurrentChapter(data);
       setTimeout(() => {
-        const el = document.getElementById(passageId);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
+        const passageEl = document.getElementById(passageId);
+        const markEl = passageEl?.querySelector('[data-search-highlight="true"]') as HTMLElement | null;
+        if (markEl) {
+          markEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (passageEl) {
+          passageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      }, 200);
+      }, 220);
     } catch (e) {
       console.error('Arama sonucu açılamadı:', e);
     } finally {
@@ -145,7 +160,13 @@ export function App() {
           chapter={currentChapter}
           theme={theme}
           fontSize={fontSize}
-          onBack={() => setCurrentChapter(null)}
+          highlightQuery={highlightQuery}
+          targetPassageId={targetPassageId}
+          onBack={() => {
+            setCurrentChapter(null);
+            setHighlightQuery('');
+            setTargetPassageId(undefined);
+          }}
           onThemeChange={setTheme}
           onFontSizeChange={(delta) => setFontSize((prev) => Math.max(14, Math.min(32, prev + delta)))}
           onNextChapter={handleNextChapter}
