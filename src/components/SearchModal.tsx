@@ -324,7 +324,7 @@ export function renderHighlightedText(
         <mark
           key={idx}
           data-search-highlight={isTarget ? 'true' : undefined}
-          className="bg-amber-300/90 dark:bg-amber-500/40 text-stone-950 dark:text-amber-100 px-1 py-0.5 rounded font-semibold shadow-2xs"
+          className="bg-amber-300 text-stone-950 px-1.5 py-0.5 rounded font-bold shadow-2xs"
         >
           {part}
         </mark>

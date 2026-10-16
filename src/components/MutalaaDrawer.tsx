@@ -167,13 +167,13 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
         className={`w-full max-w-xl h-full shadow-2xl border-l flex flex-col overflow-hidden ${drawerBg}`}
       >
         {/* Üst Başlık */}
-        <div className="p-4 sm:p-5 border-b border-black/10 dark:border-white/10 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0">
+        <div className="p-4 sm:p-5 border-b border-black/10 dark:border-white/10 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+            <div className="p-2 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 shrink-0">
               <GitFork className="w-5 h-5" />
             </div>
-            <div className="min-w-0">
-              <div className="text-[11px] uppercase tracking-wider font-semibold opacity-60">
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] uppercase tracking-wider font-semibold opacity-60 truncate">
                 Çapraz İzah • Külliyat İçi Atıflar
               </div>
               <h3 className="font-serif font-bold text-sm sm:text-base truncate">
@@ -188,16 +188,16 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
                   lastSourceKeyRef.current = '';
                   onSwitchPassage(currentChapterFirstPassage);
                 }}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-semibold transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-200 text-[11px] font-semibold transition-colors"
                 title="Şu an açık olan yeni bahsin kavramlarını analiz et"
               >
                 <RotateCcw className="w-3 h-3" />
-                <span>Bu Bahsi Analiz Et</span>
+                <span className="hidden sm:inline">Bu Bahsi Analiz Et</span>
               </button>
             )}
             <button
               onClick={onClose}
-              className="p-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-100 transition-colors shrink-0"
               title="Kapat"
             >
               <X className="w-5 h-5" />
@@ -207,8 +207,8 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
 
         {/* Seçilen Cümle / İbare Kutusu */}
         {selectedTextSnippet && (
-          <div className="px-5 py-2.5 bg-amber-500/10 border-b border-amber-500/20 text-xs font-serif italic text-amber-900 dark:text-amber-200 line-clamp-3">
-            <span className="font-sans font-bold not-italic mr-1.5 text-[11px] uppercase tracking-wider">
+          <div className="px-5 py-2.5 bg-amber-100 dark:bg-amber-950/60 border-b border-amber-300 dark:border-amber-800 text-xs font-serif italic text-stone-950 dark:text-amber-100 line-clamp-3">
+            <span className="font-sans font-bold not-italic mr-1.5 text-[11px] uppercase tracking-wider text-amber-900 dark:text-amber-300">
               Seçilen İbare:
             </span>
             "{selectedTextSnippet}"
@@ -216,11 +216,11 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
         )}
 
         {/* Kavram Seçici ve Özel Kavram Arama */}
-        <div className="p-4 border-b border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] space-y-3">
+        <div className="p-4 border-b border-black/10 dark:border-white/10 bg-stone-50 dark:bg-stone-950/40 space-y-3">
           {/* Metinden Çıkarılan Kavram Rozetleri */}
           {concepts.length > 0 && (
             <div className="space-y-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider opacity-60 block">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 block">
                 Metindeki Kavramlar & Terkipler (Tıklayıp Karşılaştırın):
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -230,10 +230,10 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
                     <button
                       key={concept}
                       onClick={() => handleSelectConcept(concept)}
-                      className={`px-3 py-1 rounded-lg text-xs font-serif font-medium transition-all ${
+                      className={`px-3 py-1 rounded-lg text-xs font-serif font-semibold transition-all border ${
                         isSelected
-                          ? 'bg-amber-600 text-white shadow-xs scale-[1.02]'
-                          : 'bg-black/5 dark:bg-white/10 hover:bg-amber-500/20 text-stone-700 dark:text-stone-200'
+                          ? 'bg-amber-600 text-white border-amber-700 shadow-xs scale-[1.02]'
+                          : 'bg-stone-200/90 text-stone-900 border-stone-300 hover:bg-amber-100 dark:bg-stone-800 dark:text-stone-100 dark:border-stone-700'
                       }`}
                     >
                       {concept}
@@ -247,18 +247,18 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
           {/* İsteğe Bağlı Kelime/Terkip Arama Kutusu */}
           <form onSubmit={handleCustomSearchSubmit} className="flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-3.5 h-3.5 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={customQuery}
                 onChange={(e) => setCustomQuery(e.target.value)}
                 placeholder="Başka bir kavram veya terkip yazın (örn: daire-i vücut)..."
-                className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-black/10 dark:border-white/10 bg-transparent text-xs outline-none focus:border-amber-500"
+                className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-xs outline-none focus:border-amber-600"
               />
             </div>
             <button
               type="submit"
-              className="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shrink-0 transition-colors"
+              className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shrink-0 transition-colors"
             >
               Ara
             </button>
@@ -286,11 +286,8 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider opacity-60 pb-1">
-                <span>
-                  "{activeConcept}" Kavramının Geçtiği Diğer Bahisler ({matches.length} yer)
-                </span>
-                <span>Fihrist & Mükerrerler Elendi</span>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 pb-1">
+                "{activeConcept}" Kavramının Geçtiği Diğer Bahisler ({matches.length} yer)
               </div>
 
               <div className="space-y-3">

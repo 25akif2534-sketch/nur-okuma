@@ -24,7 +24,6 @@ interface ReaderProps {
   targetPassageId?: string;
   hasActiveMutalaaSession?: boolean;
   activeMutalaaConcept?: string;
-  originChapterTitle?: string;
   onBack: () => void;
   onThemeChange: (theme: ThemeMode) => void;
   onFontSizeChange: (delta: number) => void;
@@ -34,7 +33,6 @@ interface ReaderProps {
   onOpenSearch: () => void;
   onOpenMutalaa: (passage: Passage, snippet?: string) => void;
   onReopenMutalaa?: () => void;
-  onReturnToOriginChapter?: () => void;
   hasNext: boolean;
   hasPrev: boolean;
 }
@@ -48,7 +46,6 @@ export const Reader: React.FC<ReaderProps> = ({
   targetPassageId,
   hasActiveMutalaaSession,
   activeMutalaaConcept,
-  originChapterTitle,
   onBack,
   onThemeChange,
   onFontSizeChange,
@@ -58,7 +55,6 @@ export const Reader: React.FC<ReaderProps> = ({
   onOpenSearch,
   onOpenMutalaa,
   onReopenMutalaa,
-  onReturnToOriginChapter,
   hasNext,
   hasPrev,
 }) => {
@@ -115,34 +111,35 @@ export const Reader: React.FC<ReaderProps> = ({
         }
       ];
 
-  // Mouse ile veya dokunarak metin seçildiğinde tetiklenir
-  const handleMouseUp = (psg: Passage) => {
-    const sel = window.getSelection();
-    if (!sel || sel.isCollapsed) {
-      setSelectionMenu((prev) => ({ ...prev, visible: false }));
-      return;
-    }
-
-    const text = sel.toString().trim();
-    if (text.length >= 2) {
-      const range = sel.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-      setSelectionMenu({
-        visible: true,
-        x: Math.min(window.innerWidth - 160, Math.max(10, rect.left + rect.width / 2 - 70)),
-        y: Math.max(10, rect.top - 48 + window.scrollY),
-        selectedText: text,
-        passage: psg,
-      });
-    }
+  // Mouse veya dokunmatik ekranda metin seçildiğinde tetiklenir
+  const updateSelectionFromPassage = (psg: Passage) => {
+    setTimeout(() => {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed) {
+        return;
+      }
+      const text = sel.toString().trim();
+      if (text.length >= 2) {
+        setSelectionMenu({
+          visible: true,
+          x: 0,
+          y: 0,
+          selectedText: text,
+          passage: psg,
+        });
+      }
+    }, 60);
   };
 
-  // Ekranda herhangi bir yere tıklandığında pop-up'ı kapat
+  // Ekranda seçim kaldırıldığında veya dışarı tıklandığında pop-up'ı kapat
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target.closest('#selection-popup')) {
-        setSelectionMenu((prev) => ({ ...prev, visible: false }));
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed) {
+          setSelectionMenu((prev) => ({ ...prev, visible: false }));
+        }
       }
     };
     window.addEventListener('mousedown', handleClickOutside);
@@ -166,13 +163,12 @@ export const Reader: React.FC<ReaderProps> = ({
   }, [chapter.id, targetPassageId, highlightQuery]);
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-200 ${getThemeClass()}`}>
-      {/* Metin Seçim Pop-up Menüsü — Yalnızca Çapraz İzah */}
+    <div className={`min-h-screen w-full overflow-x-hidden flex flex-col transition-colors duration-200 ${getThemeClass()}`}>
+      {/* Metin Seçim Çubuğu — Telefonun "Kopyala" menüsüyle çakışmaması için ekranın alt ortasında sabit açılır */}
       {selectionMenu.visible && selectionMenu.passage && (
         <div
           id="selection-popup"
-          style={{ top: `${selectionMenu.y}px`, left: `${selectionMenu.x}px` }}
-          className="absolute z-50 flex items-center gap-1 p-1 bg-stone-900 text-white rounded-2xl shadow-2xl border border-stone-700 text-xs animate-in fade-in zoom-in-95 duration-150"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-1.5 bg-stone-900 text-white rounded-2xl shadow-2xl border border-amber-500/50 text-xs sm:text-sm animate-in fade-in zoom-in-95 duration-150 max-w-[92vw]"
         >
           <button
             onClick={() => {
@@ -181,31 +177,35 @@ export const Reader: React.FC<ReaderProps> = ({
                 setSelectionMenu((prev) => ({ ...prev, visible: false }));
               }
             }}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl hover:bg-amber-600 transition-colors font-semibold text-amber-200 hover:text-white"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 transition-colors font-semibold text-white truncate"
           >
-            <GitFork className="w-3.5 h-3.5" />
-            Çapraz İzah
+            <GitFork className="w-4 h-4 shrink-0" />
+            <span className="truncate">
+              Çapraz İzah: "{selectionMenu.selectedText.slice(0, 28)}
+              {selectionMenu.selectedText.length > 28 ? '...' : ''}"
+            </span>
           </button>
         </div>
       )}
 
       {/* Top sticky navigation bar */}
-      <header className="sticky top-0 z-30 backdrop-blur-md bg-opacity-90 border-b border-black/10 dark:border-white/10 px-4 py-3">
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
+      <header className="sticky top-0 z-30 w-full backdrop-blur-md bg-opacity-95 border-b border-black/10 dark:border-white/10 px-3 sm:px-4 py-2.5">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-1.5 sm:gap-3">
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-xs sm:text-sm font-medium transition-colors shrink-0"
+            title="Kitap Listesine Dön"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Kitaplar</span>
           </button>
 
-          <div className="text-center truncate flex-1 px-2">
-            <div className="text-xs opacity-75 font-serif">{book.title}</div>
-            <div className="text-sm font-serif font-bold truncate">{chapter.title}</div>
+          <div className="text-center truncate flex-1 min-w-0 px-1">
+            <div className="text-[11px] opacity-75 font-serif truncate">{book.title}</div>
+            <div className="text-xs sm:text-sm font-serif font-bold truncate">{chapter.title}</div>
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             {/* Külliyat İçi Arama Butonu */}
             <button
               onClick={onOpenSearch}
@@ -224,36 +224,36 @@ export const Reader: React.FC<ReaderProps> = ({
                   onOpenMutalaa(passages[0]);
                 }
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-600/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-semibold transition-transform active:scale-95"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-amber-600/40 bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 text-xs font-semibold transition-transform active:scale-95"
               title="Çapraz İzah Penceresini Aç"
             >
               <GitFork className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Çapraz İzah</span>
+              <span className="hidden md:inline">Çapraz İzah</span>
             </button>
 
             {/* Hızlı Okuma Butonu */}
             <button
               onClick={onOpenSpeedReader}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs transition-transform active:scale-95"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs transition-transform active:scale-95"
               title="Bu Bahsi Hızlı Okuma Motoruyla Oku"
             >
               <Gauge className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Hızlı Okuma</span>
+              <span className="hidden md:inline">Hızlı Okuma</span>
             </button>
 
             {/* Font size buttons */}
             <div className="flex items-center rounded-lg border border-black/10 dark:border-white/10 overflow-hidden text-xs">
               <button
                 onClick={() => onFontSizeChange(-1)}
-                className="px-2.5 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 font-bold flex items-center gap-0.5"
+                className="px-2 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 font-bold flex items-center"
                 title="Yazı Küçült"
               >
                 <Type className="w-3 h-3" />-
               </button>
-              <span className="px-2 font-mono">{fontSize}</span>
+              <span className="px-1.5 font-mono text-[11px]">{fontSize}</span>
               <button
                 onClick={() => onFontSizeChange(1)}
-                className="px-2.5 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 font-bold flex items-center gap-0.5"
+                className="px-2 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 font-bold flex items-center"
                 title="Yazı Büyüt"
               >
                 <Type className="w-3 h-3" />+
@@ -264,21 +264,21 @@ export const Reader: React.FC<ReaderProps> = ({
             <div className="flex items-center rounded-lg border border-black/10 dark:border-white/10 p-0.5">
               <button
                 onClick={() => onThemeChange('light')}
-                className={`p-1.5 rounded ${theme === 'light' ? 'bg-black/10 dark:bg-white/10' : ''}`}
+                className={`p-1 rounded ${theme === 'light' ? 'bg-black/10 dark:bg-white/10' : ''}`}
                 title="Açık Tema"
               >
                 <Sun className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => onThemeChange('sepia')}
-                className={`p-1.5 rounded text-amber-900 ${theme === 'sepia' ? 'bg-amber-200/50' : ''}`}
+                className={`p-1 rounded text-amber-900 ${theme === 'sepia' ? 'bg-amber-200/50' : ''}`}
                 title="Kitap (Sepya) Tema"
               >
                 <BookMarked className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => onThemeChange('dark')}
-                className={`p-1.5 rounded ${theme === 'dark' ? 'bg-black/10 dark:bg-white/10' : ''}`}
+                className={`p-1 rounded ${theme === 'dark' ? 'bg-black/10 dark:bg-white/10' : ''}`}
                 title="Koyu Tema"
               >
                 <Moon className="w-3.5 h-3.5" />
@@ -287,46 +287,22 @@ export const Reader: React.FC<ReaderProps> = ({
           </div>
         </div>
 
-        {/* Çapraz İzah Geri Dönüş Çubuğu (Sonuca tıklandığında aynı listeye ve diğer kitaplara dönmek için) */}
+        {/* Tek Geri Dönüş Butonu: Çapraz İzah Listesine ve Diğer Kitaplara Dön */}
         {hasActiveMutalaaSession && onReopenMutalaa && (
-          <div className="max-w-4xl mx-auto mt-2.5 pt-2.5 border-t border-amber-500/25 flex flex-wrap items-center justify-between gap-2">
+          <div className="max-w-4xl mx-auto mt-2 pt-2 border-t border-amber-500/25">
             <button
               onClick={onReopenMutalaa}
-              className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition-transform active:scale-95"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition-transform active:scale-98"
             >
-              <GitFork className="w-3.5 h-3.5" />
-              <span>
+              <ArrowLeft className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">
                 Çapraz İzah Listesine Dön
                 {activeMutalaaConcept ? ` ("${activeMutalaaConcept}" • Diğer Kitaplara Bak)` : ''}
               </span>
             </button>
-
-            {originChapterTitle && onReturnToOriginChapter && (
-              <button
-                onClick={onReturnToOriginChapter}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-600/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-200 text-xs font-medium transition-colors"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>İlk Okuduğum Yere Dön: {originChapterTitle}</span>
-              </button>
-            )}
           </div>
         )}
       </header>
-
-      {/* Sağ Altta Sabit Hızlı Dönüş Butonu */}
-      {hasActiveMutalaaSession && onReopenMutalaa && (
-        <button
-          onClick={onReopenMutalaa}
-          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-xl border border-amber-400/30 transition-transform active:scale-95"
-          title="Az önceki Çapraz İzah listesini ve diğer kitapları tekrar aç"
-        >
-          <GitFork className="w-4 h-4" />
-          <span>
-            Diğer Kitaplara Bak{activeMutalaaConcept ? ` (${activeMutalaaConcept})` : ''}
-          </span>
-        </button>
-      )}
 
       {/* Main Reading Canvas */}
       <main className="flex-1 max-w-3xl mx-auto w-full px-5 py-10 sm:py-16">
@@ -351,8 +327,8 @@ export const Reader: React.FC<ReaderProps> = ({
               <section
                 key={psg.id}
                 id={psg.id}
-                onMouseUp={() => handleMouseUp(psg)}
-                onTouchEnd={() => handleMouseUp(psg)}
+                onMouseUp={() => updateSelectionFromPassage(psg)}
+                onTouchEnd={() => updateSelectionFromPassage(psg)}
                 className="scroll-mt-24 space-y-4"
               >
                 {/* Orijinal Numaralı Pasaj Başlığı */}
