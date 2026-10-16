@@ -12,8 +12,7 @@ import {
   Gauge,
   Bookmark,
   Search,
-  Compass,
-  Users
+  GitFork
 } from 'lucide-react';
 
 interface ReaderProps {
@@ -30,7 +29,7 @@ interface ReaderProps {
   onPrevChapter: () => void;
   onOpenSpeedReader: () => void;
   onOpenSearch: () => void;
-  onOpenMutalaa: (passage: Passage, snippet?: string, tab?: 'sirri-temsil' | 'meclis') => void;
+  onOpenMutalaa: (passage: Passage, snippet?: string) => void;
   hasNext: boolean;
   hasPrev: boolean;
 }
@@ -115,12 +114,12 @@ export const Reader: React.FC<ReaderProps> = ({
     }
 
     const text = sel.toString().trim();
-    if (text.length > 5) {
+    if (text.length >= 2) {
       const range = sel.getRangeAt(0);
       const rect = range.getBoundingClientRect();
       setSelectionMenu({
         visible: true,
-        x: Math.min(window.innerWidth - 220, Math.max(10, rect.left + rect.width / 2 - 100)),
+        x: Math.min(window.innerWidth - 160, Math.max(10, rect.left + rect.width / 2 - 70)),
         y: Math.max(10, rect.top - 48 + window.scrollY),
         selectedText: text,
         passage: psg,
@@ -158,7 +157,7 @@ export const Reader: React.FC<ReaderProps> = ({
 
   return (
     <div className={`min-h-screen flex flex-col transition-colors duration-200 ${getThemeClass()}`}>
-      {/* Metin Seçim Pop-up Menüsü */}
+      {/* Metin Seçim Pop-up Menüsü — Yalnızca Çapraz İzah */}
       {selectionMenu.visible && selectionMenu.passage && (
         <div
           id="selection-popup"
@@ -168,27 +167,14 @@ export const Reader: React.FC<ReaderProps> = ({
           <button
             onClick={() => {
               if (selectionMenu.passage) {
-                onOpenMutalaa(selectionMenu.passage, selectionMenu.selectedText, 'sirri-temsil');
+                onOpenMutalaa(selectionMenu.passage, selectionMenu.selectedText);
                 setSelectionMenu((prev) => ({ ...prev, visible: false }));
               }
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-amber-600 transition-colors font-medium text-amber-200 hover:text-white"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl hover:bg-amber-600 transition-colors font-semibold text-amber-200 hover:text-white"
           >
-            <Compass className="w-3.5 h-3.5" />
-            Sırr-ı Temsil
-          </button>
-          <div className="w-px h-4 bg-stone-700" />
-          <button
-            onClick={() => {
-              if (selectionMenu.passage) {
-                onOpenMutalaa(selectionMenu.passage, selectionMenu.selectedText, 'meclis');
-                setSelectionMenu((prev) => ({ ...prev, visible: false }));
-              }
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-amber-600 transition-colors font-medium text-amber-200 hover:text-white"
-          >
-            <Users className="w-3.5 h-3.5" />
-            Meclise Sor
+            <GitFork className="w-3.5 h-3.5" />
+            Çapraz İzah
           </button>
         </div>
       )}
@@ -217,6 +203,20 @@ export const Reader: React.FC<ReaderProps> = ({
               title="Külliyat'ta Ara"
             >
               <Search className="w-4 h-4" />
+            </button>
+
+            {/* Çapraz İzah Butonu */}
+            <button
+              onClick={() => {
+                if (passages.length > 0) {
+                  onOpenMutalaa(passages[0]);
+                }
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-600/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-semibold transition-transform active:scale-95"
+              title="Bu Bahisteki Kavramların Külliyat'taki Çapraz İzahı"
+            >
+              <GitFork className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Çapraz İzah</span>
             </button>
 
             {/* Hızlı Okuma Butonu */}

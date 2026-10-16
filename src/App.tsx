@@ -20,12 +20,11 @@ export function App() {
   const [highlightQuery, setHighlightQuery] = useState<string>('');
   const [targetPassageId, setTargetPassageId] = useState<string | undefined>(undefined);
 
-  // Mütalaa Çekmecesi Durumu
+  // Çapraz İzah Çekmecesi Durumu
   const [mutalaaState, setMutalaaState] = useState<{
     isOpen: boolean;
     passage: Passage | null;
     snippet?: string;
-    tab?: 'sirri-temsil' | 'meclis';
   }>({
     isOpen: false,
     passage: null,
@@ -173,12 +172,11 @@ export function App() {
           onPrevChapter={handlePrevChapter}
           onOpenSpeedReader={() => setSpeedReaderOpen(true)}
           onOpenSearch={() => setSearchOpen(true)}
-          onOpenMutalaa={(passage, snippet, tab) =>
+          onOpenMutalaa={(passage, snippet) =>
             setMutalaaState({
               isOpen: true,
               passage,
               snippet,
-              tab: tab || 'sirri-temsil',
             })
           }
           hasNext={currentChapterIndex < selectedBook.chapters.length - 1}
@@ -206,7 +204,6 @@ export function App() {
           passage={mutalaaState.passage}
           selectedTextSnippet={mutalaaState.snippet}
           theme={theme}
-          initialTab={mutalaaState.tab}
           onNavigateToPassage={handleSelectSearchResult}
         />
       </div>

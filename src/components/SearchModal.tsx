@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Search, X, BookOpen, ChevronRight, Loader2, Bookmark, Camera } from 'lucide-react';
-import { extractTextFromImage } from '../services/aiService';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Search, X, BookOpen, ChevronRight, Loader2, Bookmark } from 'lucide-react';
 
 export interface SearchItem {
   bookId: string;
@@ -12,13 +11,37 @@ export interface SearchItem {
   text: string;
 }
 
+export interface MatchedPassage {
+  item: SearchItem;
+  snippet: string;
+  matchedPhrase: string;
+}
+
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelectResult: (bookId: string, chapterId: string, passageId: string, highlightQuery?: string) => void;
 }
 
-// Arama dizinini bellekte tutarak tekrar yüklemeyi önle
+// Ana kitap öncelik sırası (Asâ-yı Musa ve Tarihçe-i Hayat gibi derleme eserler sonda taranır ki ilk olarak asıl kaynak olan Sözler/Şualar/Lem'alar/Mektubat gelsin)
+const BOOK_PRIORITY: Record<string, number> = {
+  sozler: 1,
+  mektubat: 2,
+  'lem-alar': 3,
+  sualar: 4,
+  'mesnevi-i-nuriye': 5,
+  'i-saratu-l-i-caz': 6,
+  muhakemat: 7,
+  'barla-lahikasi': 8,
+  'kastamonu-lahikasi': 9,
+  'emirdag-lahikasi-1': 10,
+  'emirdag-lahikasi-2': 11,
+  'sikke-i-tasdik-i-gaybi': 12,
+  'asa-yi-musa': 13,
+  'tarihce-i-hayat': 14,
+};
+
+// Arama dizinini bellekte tutarak tekrar yüklemeyi önle; Fihrist ve Küçük Kitaplar gibi mükerrerleri ele
 let cachedSearchIndex: SearchItem[] | null = null;
 let indexFetchPromise: Promise<SearchItem[]> | null = null;
 
@@ -28,8 +51,22 @@ export function preloadSearchIndex(): Promise<SearchItem[]> {
     indexFetchPromise = fetch('./kulliyat/search-index.json')
       .then((res) => res.json())
       .then((json: SearchItem[]) => {
-        cachedSearchIndex = json;
-        return json;
+        // 1. Küçük Kitaplar ve Fihrist bölümlerini ele
+        const cleaned = json.filter((item) => {
+          if (item.bookId === 'kucuk-kitaplar') return false;
+          if (/fihrist/i.test(item.chapterTitle) || /fihrist/i.test(item.title)) return false;
+          return true;
+        });
+
+        // 2. Ana kitaplara öncelik verecek şekilde sırala
+        cleaned.sort((a, b) => {
+          const pa = BOOK_PRIORITY[a.bookId] || 99;
+          const pb = BOOK_PRIORITY[b.bookId] || 99;
+          return pa - pb;
+        });
+
+        cachedSearchIndex = cleaned;
+        return cleaned;
       })
       .catch((err) => {
         indexFetchPromise = null;
@@ -40,16 +77,16 @@ export function preloadSearchIndex(): Promise<SearchItem[]> {
 }
 
 /**
- * Kullanıcının tiresiz, kesmesiz, şapkasız veya ı/i, ş/s farkıyla yazdığı
- * ifadeleri ("medarı şüphe", "ehli iman", "hakaik", "mucize") orijinal
- * Risale imlasıyla ("medâr-ı şüphe", "ehl-i iman", "hakāik", "mu'cize") eşleştiren esnek Regex üretici
+ * Kullanıcının tiresiz, kesmesiz, şapkasız, ı/i, ş/s veya t/d, p/b ünsüz yumuşaması farkıyla yazdığı
+ * ifadeleri ("daire- i vücut", "medarı şüphe", "ehli iman", "istinat") orijinal
+ * Risale imlasıyla ("daire-i vücud", "medâr-ı şüphe", "ehl-i iman", "istinad") eşleştiren esnek Regex üretici
  */
 export function buildFlexibleRegex(query: string): RegExp | null {
   const cleaned = query
     .replace(/İ/g, 'i')
     .replace(/I/g, 'i')
     .toLowerCase()
-    .replace(/[-'’‘ʼ.,;:!?"()[\]]+/g, '')
+    .replace(/[-'’‘ʼ.,;:!?"()[\]]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
@@ -76,7 +113,11 @@ export function buildFlexibleRegex(query: string): RegExp | null {
     ç: '[cçCÇ]',
     g: '[gğGĞ]',
     ğ: '[gğGĞ]',
-    k: '[kāķK]',
+    k: '[kāķqK]',
+    t: '[tdṭḍTD]',
+    d: '[tdṭḍTD]',
+    p: '[pbPB]',
+    b: '[pbPB]',
   };
 
   let pattern = '';
@@ -101,6 +142,165 @@ export function buildFlexibleRegex(query: string): RegExp | null {
 }
 
 /**
+ * Eşleşen kelimenin içinde geçtiği cümleyi başından sonuna kısaca çıkarır
+ */
+export function extractSentenceSnippet(text: string, matchIdx: number, matchLen: number): string {
+  // Cümle başını bul (., !, ?, \n)
+  let sentStart = matchIdx;
+  while (sentStart > 0 && matchIdx - sentStart < 110) {
+    const ch = text[sentStart - 1];
+    if (ch === '.' || ch === '!' || ch === '?' || ch === '\n' || ch === '\r') break;
+    sentStart--;
+  }
+
+  // Cümle sonunu bul
+  let sentEnd = matchIdx + matchLen;
+  while (sentEnd < text.length && sentEnd - (matchIdx + matchLen) < 120) {
+    const ch = text[sentEnd];
+    if (ch === '.' || ch === '!' || ch === '?' || ch === '\n' || ch === '\r') {
+      if (ch === '.' || ch === '!' || ch === '?') sentEnd++;
+      break;
+    }
+    sentEnd++;
+  }
+
+  const raw = text.substring(sentStart, sentEnd).replace(/\s+/g, ' ').trim();
+  const prefix = sentStart > 0 && !/[.!?(\n\r]/.test(text[sentStart - 1]) ? '... ' : '';
+  const suffix = sentEnd < text.length && !/[.!?]$/.test(raw) ? ' ...' : '';
+  return prefix + raw + suffix;
+}
+
+/**
+ * Külliyat içinde tekrarsız (mükerrer cümleleri eleyerek) arama yapan saf kodlamalı motor
+ */
+export function searchKulliyatPassages(
+  data: SearchItem[],
+  query: string,
+  options?: {
+    bookFilter?: string;
+    excludePassageId?: string;
+    excludeTitle?: string;
+    maxResults?: number;
+  }
+): { item: SearchItem; snippet: string; matchedPhrase: string }[] {
+  const rx = buildFlexibleRegex(query);
+  if (!rx) return [];
+
+  const bookFilter = options?.bookFilter || 'all';
+  const maxResults = options?.maxResults || 60;
+
+  const filtered = bookFilter === 'all'
+    ? data
+    : data.filter((d) => d.bookId === bookFilter);
+
+  const matches: { item: SearchItem; snippet: string; matchedPhrase: string }[] = [];
+  const seenSentenceSignatures = new Set<string>();
+
+  for (const item of filtered) {
+    if (options?.excludePassageId && item.passageId === options.excludePassageId && item.title === options?.excludeTitle) {
+      continue;
+    }
+
+    rx.lastIndex = 0;
+    const textMatch = rx.exec(item.text);
+    rx.lastIndex = 0;
+    const titleMatch = !textMatch ? rx.exec(item.title) : null;
+
+    if (textMatch || titleMatch) {
+      let snippet = '';
+      let matchedPhrase = '';
+
+      if (textMatch) {
+        const idx = textMatch.index;
+        const matchLen = textMatch[0].length;
+        matchedPhrase = textMatch[0];
+        snippet = extractSentenceSnippet(item.text, idx, matchLen);
+
+        // Mükerrer cümle kontrolü (Örn: Sözler/Şualar'daki cümlenin Asâ-yı Musa'da birebir tekrarı varsa ele)
+        const sigStart = Math.max(0, idx - 25);
+        const sigEnd = Math.min(item.text.length, idx + matchLen + 25);
+        const signature = item.text
+          .substring(sigStart, sigEnd)
+          .toLowerCase()
+          .replace(/[^a-zğüşıöçâîû]/g, '');
+
+        if (signature.length > 15 && seenSentenceSignatures.has(signature)) {
+          continue;
+        }
+        if (signature.length > 15) {
+          seenSentenceSignatures.add(signature);
+        }
+      } else if (titleMatch) {
+        matchedPhrase = titleMatch[0];
+        snippet = item.text.substring(0, 150).replace(/\r?\n/g, ' ') + '...';
+      }
+
+      matches.push({ item, snippet, matchedPhrase });
+      if (matches.length >= maxResults) break;
+    }
+  }
+
+  return matches;
+}
+
+/**
+ * Seçilen metin parçasından yapay zekâ kullanmadan (%100 saf kodlamayla)
+ * Osmanlıca tamlamaları (örn: "daire-i vücud", "medar-ı şüphe") ve anahtar kavramları çıkarır
+ */
+export function extractConceptsFromText(selectedText: string): string[] {
+  const cleaned = selectedText.replace(/\s+/g, ' ').trim();
+  if (!cleaned) return [];
+
+  const concepts: string[] = [];
+  const addUnique = (term: string) => {
+    const t = term.replace(/^[,.;:!?'"“”‘’()-]+|[,.;:!?'"“”‘’()-]+$/g, '').trim();
+    if (t.length < 3) return;
+    const norm = t.toLowerCase();
+    if (!concepts.some((c) => c.toLowerCase() === norm)) {
+      concepts.push(t);
+    }
+  };
+
+  const wordCount = cleaned.split(/\s+/).length;
+
+  // 1. Eğer kullanıcı doğrudan 1-4 kelimelik bir kavram/ibare seçtiyse en başa onu koy
+  if (wordCount >= 1 && wordCount <= 4 && cleaned.length <= 50) {
+    addUnique(cleaned);
+  }
+
+  // 2. Metin içindeki Osmanlıca/Farsça terkipleri (örn: daire-i vücud, medar-ı şüphe, Kur'an-ı Hakîm, ehl-i iman) bul
+  const terkipRegex = /[a-zA-ZğüşıöçĞÜŞİÖÇâîûāīūÂÎÛĀĪŪ'’]+(?:\s*-\s*(?:i|ı|u|ü|yı|yi|yu|yü)|ü'l-|u'l-|i'l-|ü’l-|u’l-|i’l-)\s*[a-zA-ZğüşıöçĞÜŞİÖÇâîûāīūÂÎÛĀĪŪ'’]+/gi;
+  let m: RegExpExecArray | null;
+  while ((m = terkipRegex.exec(cleaned)) !== null) {
+    addUnique(m[0]);
+  }
+
+  // 3. Yaygın bağlaç/edat/fiilleri eleyerek anlamlı kavram kelimelerini çıkar
+  const stopWords = new Set([
+    've', 'bir', 'bu', 'ile', 'de', 'da', 'için', 'icin', 'ise', 'her', 'gibi', 'hem', 'dahi',
+    'olan', 'olarak', 'olur', 'olup', 'oldu', 'olduğu', 'oldugu', 'olanlar', 'olmak', 'olmaz',
+    'göre', 'gore', 'kadar', 'sonra', 'önce', 'once', 'ancak', 'fakat', 'lakin', 'çünkü', 'cunku',
+    'eğer', 'eger', 'nasıl', 'nasil', 'öyle', 'oyle', 'böyle', 'boyle', 'şöyle', 'soyle',
+    'bütün', 'butun', 'चोक', 'çok', 'cok', 'daha', 'bile', 'yine', 'veya', 'yahut', 'yani',
+    'içinde', 'icinde', 'üzere', 'uzere', 'karşı', 'karsi', 'doğru', 'dogru', 'başka', 'baska',
+    'kendi', '선', 'sen', 'ben', 'biz', 'siz', 'onlar', 'bunlar', 'şunlar', 'kimse', 'hiçbir',
+    'vardır', 'vardir', 'yoktur', 'değil', 'degil', 'eder', 'ediyor', 'etmek', 'ettiği', 'edilir'
+  ]);
+
+  const words = cleaned
+    .split(/\s+/)
+    .map((w) => w.replace(/^[,.;:!?'"“”‘’()-]+|[,.;:!?'"“”‘’()-]+$/g, ''))
+    .filter((w) => w.length >= 4 && !stopWords.has(w.toLowerCase()));
+
+  for (const w of words) {
+    if (concepts.length >= 7) break;
+    addUnique(w);
+  }
+
+  return concepts.slice(0, 6);
+}
+
+/**
  * Verilen metin içindeki arama eşleşmelerini renkli <mark> etiketiyle vurgular
  */
 export function renderHighlightedText(
@@ -117,7 +317,6 @@ export function renderHighlightedText(
 
   let firstMarked = false;
   return parts.map((part, idx) => {
-    // split with capturing group puts matches at odd indices (1, 3, 5...)
     if (idx % 2 === 1) {
       const isTarget = withScrollTarget && !firstMarked;
       if (isTarget) firstMarked = true;
@@ -144,35 +343,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   const [data, setData] = useState<SearchItem[]>(cachedSearchIndex || []);
   const [loading, setLoading] = useState(false);
   const [selectedBookFilter, setSelectedBookFilter] = useState<string>('all');
-  const [ocrLoading, setOcrLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setOcrLoading(true);
-    try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        try {
-          const base64Data = (reader.result as string).split(',')[1];
-          const extractedText = await extractTextFromImage(base64Data, file.type || 'image/jpeg');
-          if (extractedText) {
-            const firstWords = extractedText.replace(/\r?\n/g, ' ').substring(0, 60).trim();
-            setQuery(firstWords);
-          }
-        } catch (err: any) {
-          alert('Fotoğraftaki metin okunamadı: ' + err.message);
-        } finally {
-          setOcrLoading(false);
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch {
-      setOcrLoading(false);
-    }
-  };
 
   // Load search index when modal opens
   useEffect(() => {
@@ -215,43 +385,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     return Array.from(map.entries()).map(([id, title]) => ({ id, title }));
   }, [data]);
 
-  // Real-time flexible search across 3,075 passages
+  // Real-time flexible & deduplicated search
   const results = useMemo(() => {
-    const rx = buildFlexibleRegex(query);
-    if (!rx) return [];
-
-    const filtered = selectedBookFilter === 'all'
-      ? data
-      : data.filter((d) => d.bookId === selectedBookFilter);
-
-    const matches: { item: SearchItem; snippet: string }[] = [];
-
-    for (const item of filtered) {
-      rx.lastIndex = 0;
-      const textMatch = rx.exec(item.text);
-      rx.lastIndex = 0;
-      const titleMatch = !textMatch ? rx.exec(item.title) : null;
-
-      if (textMatch || titleMatch) {
-        let snippet = '';
-        if (textMatch) {
-          const idx = textMatch.index;
-          const matchLen = textMatch[0].length;
-          const start = Math.max(0, idx - 65);
-          const end = Math.min(item.text.length, idx + matchLen + 85);
-          snippet =
-            (start > 0 ? '...' : '') +
-            item.text.substring(start, end).replace(/\r?\n/g, ' ') +
-            (end < item.text.length ? '...' : '');
-        } else {
-          snippet = item.text.substring(0, 150).replace(/\r?\n/g, ' ') + '...';
-        }
-        matches.push({ item, snippet });
-        if (matches.length >= 60) break;
-      }
-    }
-
-    return matches;
+    return searchKulliyatPassages(data, query, {
+      bookFilter: selectedBookFilter,
+      maxResults: 60,
+    });
   }, [query, data, selectedBookFilter]);
 
   if (!isOpen) return null;
@@ -267,27 +406,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={ocrLoading ? "Fotoğraftaki metin okunuyor..." : "Külliyat'ta kelime, kavram veya başlık ara... (Örn: Haşir, Ene, Sırr-ı temsil)"}
-            disabled={ocrLoading}
+            placeholder="Külliyat'ta kelime, kavram veya başlık ara... (Örn: daire-i vücut, medarı şüphe, haşir)"
             className="w-full bg-transparent text-stone-900 dark:text-stone-100 placeholder-stone-400 text-base sm:text-lg outline-none font-serif"
           />
-
-          {/* Kamera / Fotoğraf Yükleme Butonu */}
-          <input
-            type="file"
-            ref={fileInputRef}
-            accept="image/*"
-            className="hidden"
-            onChange={handleImageUpload}
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={ocrLoading}
-            className="p-2 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 hover:text-amber-600 transition-colors"
-            title="Kitaptan Fotoğraf Çek / Yükle (Metni Tanı ve Külliyat'ta Bul)"
-          >
-            {ocrLoading ? <Loader2 className="w-5 h-5 animate-spin text-amber-600" /> : <Camera className="w-5 h-5" />}
-          </button>
 
           {query && (
             <button
