@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Play,
   Pause,
@@ -40,7 +40,6 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
   content,
   theme,
 }) => {
-  const [words, setWords] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [wpm, setWpm] = useState(350);
@@ -52,20 +51,13 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
   const lastTickTimeRef = useRef(0);
   const rafIdRef = useRef<number | null>(null);
 
-  // Parse words on content change
-  useEffect(() => {
-    if (!content) {
-      setWords([]);
-      return;
-    }
-    const tokens = content
+  const words = useMemo(() => {
+    if (!content) return [];
+    return content
       .replace(/\r\n/g, '\n')
       .split(/\s+/)
       .map((w) => w.trim())
       .filter((w) => w.length > 0);
-    setWords(tokens);
-    setCurrentIndex(0);
-    setIsPlaying(false);
   }, [content]);
 
   // Word delay calculation with punctuation intelligence
@@ -89,9 +81,17 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
     [wpm, chunkSize, pauseOnPunctuation]
   );
 
-  // High precision RSVP Animation Loop
-  const rsvpTick = useCallback(
-    (now: number) => {
+  // Play / Pause cycle with clean requestAnimationFrame loop
+  useEffect(() => {
+    if (!isPlaying || words.length === 0) {
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+      return;
+    }
+
+    lastTickTimeRef.current = performance.now();
+    accumulatedTimeRef.current = 0;
+
+    const tick = (now: number) => {
       if (!lastTickTimeRef.current) {
         lastTickTimeRef.current = now;
       }
@@ -115,24 +115,15 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
         });
       }
 
-      rafIdRef.current = requestAnimationFrame(rsvpTick);
-    },
-    [words, currentIndex, chunkSize, getWordDelay]
-  );
+      rafIdRef.current = requestAnimationFrame(tick);
+    };
 
-  // Play / Pause cycle
-  useEffect(() => {
-    if (isPlaying && words.length > 0) {
-      lastTickTimeRef.current = performance.now();
-      accumulatedTimeRef.current = 0;
-      rafIdRef.current = requestAnimationFrame(rsvpTick);
-    } else {
-      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-    }
+    rafIdRef.current = requestAnimationFrame(tick);
+
     return () => {
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
-  }, [isPlaying, rsvpTick, words.length]);
+  }, [isPlaying, words, currentIndex, chunkSize, getWordDelay]);
 
   // Keyboard navigation
   useEffect(() => {

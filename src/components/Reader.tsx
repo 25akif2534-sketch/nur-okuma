@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { ChapterContent, ThemeMode, BookMeta, Passage } from '../types';
-import { renderHighlightedText } from './SearchModal';
+import { renderHighlightedText, CROSS_BOOK_REDIRECTS } from '../utils/searchUtils';
 import {
   ArrowLeft,
   Sun,
@@ -12,7 +12,8 @@ import {
   Gauge,
   Bookmark,
   Search,
-  GitFork
+  GitFork,
+  ExternalLink
 } from 'lucide-react';
 
 interface ReaderProps {
@@ -33,6 +34,7 @@ interface ReaderProps {
   onOpenSearch: () => void;
   onOpenMutalaa: (passage: Passage, snippet?: string) => void;
   onReopenMutalaa?: () => void;
+  onNavigateToBookChapter?: (bookId: string, chapterId: string) => void;
   hasNext: boolean;
   hasPrev: boolean;
 }
@@ -55,6 +57,7 @@ export const Reader: React.FC<ReaderProps> = ({
   onOpenSearch,
   onOpenMutalaa,
   onReopenMutalaa,
+  onNavigateToBookChapter,
   hasNext,
   hasPrev,
 }) => {
@@ -362,6 +365,34 @@ export const Reader: React.FC<ReaderProps> = ({
             );
           })}
         </div>
+
+        {/* Başka Mecmuada Neşredilen Bahisler İçin Doğrudan Geçiş Kutusu */}
+        {CROSS_BOOK_REDIRECTS[`${book.id}/${chapter.id}`] && onNavigateToBookChapter && (
+          <div className="mt-8 p-5 rounded-2xl border border-amber-500/40 bg-amber-500/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                Doğrudan Bağlantı
+              </div>
+              <p className="text-sm font-serif">
+                Bu risalenin tam metni{' '}
+                <strong>{CROSS_BOOK_REDIRECTS[`${book.id}/${chapter.id}`].label}</strong>{' '}
+                bölümünde yer almaktadır.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                const target = CROSS_BOOK_REDIRECTS[`${book.id}/${chapter.id}`];
+                if (target) {
+                  onNavigateToBookChapter(target.bookId, target.chapterId);
+                }
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-sm shrink-0 transition-transform active:scale-95"
+            >
+              <span>Bahsin Olduğu Yere Git</span>
+              <ExternalLink className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
         {/* Bottom Chapter Navigation */}
         <div className="mt-16 pt-8 border-t border-black/10 dark:border-white/10 flex items-center justify-between gap-4">

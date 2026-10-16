@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   X,
   GitFork,
@@ -12,12 +12,12 @@ import {
 import type { Passage, ThemeMode } from '../types';
 import {
   preloadSearchIndex,
+  getCachedSearchIndex,
   extractConceptsFromText,
   searchKulliyatPassages,
   renderHighlightedText,
-  type SearchItem,
-  type MatchedPassage
-} from './SearchModal';
+  type SearchItem
+} from '../utils/searchUtils';
 
 interface MutalaaDrawerProps {
   isOpen: boolean;
@@ -53,48 +53,52 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
   onActiveConceptChange,
   onNavigateToPassage,
 }) => {
-  const [indexData, setIndexData] = useState<SearchItem[]>([]);
+  const [indexData, setIndexData] = useState<SearchItem[]>(() => getCachedSearchIndex() || []);
   const [loadingIndex, setLoadingIndex] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [concepts, setConcepts] = useState<string[]>([]);
   const [activeConcept, setActiveConcept] = useState<string>('');
   const [customQuery, setCustomQuery] = useState<string>('');
-  const [matches, setMatches] = useState<MatchedPassage[]>([]);
   const [visitedKeys, setVisitedKeys] = useState<Set<string>>(new Set());
 
-  // Aynı pasaj ve seçili metin için çekmece kapatılıp açıldığında ekranı sıfırlamamak için anahtar takibi
   const lastSourceKeyRef = useRef<string>('');
+  const onActiveConceptChangeRef = useRef(onActiveConceptChange);
+  useEffect(() => {
+    onActiveConceptChangeRef.current = onActiveConceptChange;
+  }, [onActiveConceptChange]);
+
+  const passageId = passage?.id || '';
+  const passageTitle = passage?.title || '';
+  const passageText = passage?.text || '';
 
   useEffect(() => {
-    if (!isOpen || !passage) return;
+    if (!isOpen || !passageId) return;
 
-    const sourceKey = `${passage.id}:::${selectedTextSnippet || ''}`;
-    const isSameSource = lastSourceKeyRef.current === sourceKey && concepts.length > 0;
-
-    if (isSameSource && indexData.length > 0) {
-      // Aynı Çapraz İzah oturumu tekrar açıldı; mevcut kavramı ve listeyi koru
+    const sourceKey = `${passageId}:::${selectedTextSnippet || ''}`;
+    if (lastSourceKeyRef.current === sourceKey) {
       return;
     }
 
     lastSourceKeyRef.current = sourceKey;
     let cancelled = false;
-    const sourceText = (selectedTextSnippet || passage.text || '').trim();
+    const sourceText = (selectedTextSnippet || passageText).trim();
     const extracted = extractConceptsFromText(sourceText);
     setConcepts(extracted);
     setCustomQuery('');
     setVisitedKeys(new Set());
-
+    setErrorMsg(null);
     setLoadingIndex(true);
+
     preloadSearchIndex()
       .then((data) => {
         if (cancelled) return;
         setIndexData(data);
 
-        // Külliyat'ta karşılığı olan ilk kavramı otomatik seç
         let chosen = extracted[0] || '';
         for (const candidate of extracted) {
           const res = searchKulliyatPassages(data, candidate, {
-            excludePassageId: passage.id,
-            excludeTitle: passage.title,
+            excludePassageId: passageId,
+            excludeTitle: passageTitle,
             maxResults: 5,
           });
           if (res.length > 0) {
@@ -103,7 +107,14 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
           }
         }
         setActiveConcept(chosen);
-        if (onActiveConceptChange) onActiveConceptChange(chosen);
+        if (onActiveConceptChangeRef.current) {
+          onActiveConceptChangeRef.current(chosen);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setErrorMsg('Külliyat dizini yüklenemedi. İnternet bağlantınızı kontrol ediniz.');
+        }
       })
       .finally(() => {
         if (!cancelled) setLoadingIndex(false);
@@ -112,27 +123,19 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
     return () => {
       cancelled = true;
     };
-  }, [isOpen, passage?.id, selectedTextSnippet]);
+  }, [isOpen, passageId, passageTitle, passageText, selectedTextSnippet]);
 
-  // Seçili kavram değiştiğinde Külliyat'taki diğer geçtiği cümleleri bul
-  useEffect(() => {
-    if (!passage || indexData.length === 0) {
-      return;
-    }
+  // Seçili kavramın Külliyat'taki diğer geçtiği cümleleri
+  const matches = useMemo(() => {
+    if (!passageId || indexData.length === 0) return [];
     const queryToRun = activeConcept.trim();
-    if (queryToRun.length < 2) {
-      setMatches([]);
-      return;
-    }
-
-    const found = searchKulliyatPassages(indexData, queryToRun, {
-      excludePassageId: passage.id,
-      excludeTitle: passage.title,
+    if (queryToRun.length < 2) return [];
+    return searchKulliyatPassages(indexData, queryToRun, {
+      excludePassageId: passageId,
+      excludeTitle: passageTitle,
       maxResults: 40,
     });
-    setMatches(found);
-    if (onActiveConceptChange) onActiveConceptChange(queryToRun);
-  }, [passage?.id, passage?.title, indexData, activeConcept]);
+  }, [passageId, passageTitle, indexData, activeConcept]);
 
   if (!isOpen || !passage) return null;
 
@@ -154,7 +157,9 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
   };
 
   const isViewingDifferentChapter =
-    currentChapterFirstPassage && currentChapterFirstPassage.id !== passage.id && currentChapterFirstPassage.title !== passage.title;
+    currentChapterFirstPassage &&
+    currentChapterFirstPassage.id !== passage.id &&
+    currentChapterFirstPassage.title !== passage.title;
 
   const drawerBg =
     theme === 'dark' || theme === 'night'
@@ -217,7 +222,6 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
 
         {/* Kavram Seçici ve Özel Kavram Arama */}
         <div className="p-4 border-b border-black/10 dark:border-white/10 bg-stone-50 dark:bg-stone-950/40 space-y-3">
-          {/* Metinden Çıkarılan Kavram Rozetleri */}
           {concepts.length > 0 && (
             <div className="space-y-1.5">
               <span className="text-[11px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 block">
@@ -273,6 +277,24 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
               <p className="text-xs font-serif font-medium">
                 Külliyat dizini taranıyor...
               </p>
+            </div>
+          ) : errorMsg ? (
+            <div className="py-12 text-center space-y-3">
+              <p className="text-xs sm:text-sm font-serif text-red-600">{errorMsg}</p>
+              <button
+                onClick={() => {
+                  lastSourceKeyRef.current = '';
+                  setErrorMsg(null);
+                  setLoadingIndex(true);
+                  preloadSearchIndex()
+                    .then((data) => setIndexData(data))
+                    .catch(() => setErrorMsg('Külliyat dizini yine yüklenemedi.'))
+                    .finally(() => setLoadingIndex(false));
+                }}
+                className="px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-semibold"
+              >
+                Tekrar Dene
+              </button>
             </div>
           ) : matches.length === 0 ? (
             <div className="py-12 text-center space-y-2 opacity-75">
@@ -353,7 +375,6 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
                         </div>
                       </div>
 
-                      {/* Geçtiği Cümlenin Kısa Özeti ve Renkli Vurgusu */}
                       <p className="text-xs sm:text-sm font-serif leading-relaxed opacity-90 border-l-2 border-amber-500/40 pl-3 py-0.5">
                         {renderHighlightedText(m.snippet, activeConcept)}
                       </p>
