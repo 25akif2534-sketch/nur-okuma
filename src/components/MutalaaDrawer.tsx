@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   X,
   GitFork,
   Loader2,
   Search,
   ExternalLink,
-  BookOpen
+  BookOpen,
+  RotateCcw,
+  CheckCircle2
 } from 'lucide-react';
 import type { Passage, ThemeMode } from '../types';
 import {
@@ -23,6 +25,12 @@ interface MutalaaDrawerProps {
   passage: Passage | null;
   selectedTextSnippet?: string;
   theme: ThemeMode;
+  currentBookId?: string;
+  currentChapterId?: string;
+  currentPassageId?: string;
+  currentChapterFirstPassage?: Passage | null;
+  onSwitchPassage?: (passage: Passage) => void;
+  onActiveConceptChange?: (concept: string) => void;
   onNavigateToPassage?: (
     bookId: string,
     chapterId: string,
@@ -37,6 +45,12 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
   passage,
   selectedTextSnippet,
   theme,
+  currentBookId,
+  currentChapterId,
+  currentPassageId,
+  currentChapterFirstPassage,
+  onSwitchPassage,
+  onActiveConceptChange,
   onNavigateToPassage,
 }) => {
   const [indexData, setIndexData] = useState<SearchItem[]>([]);
@@ -45,16 +59,29 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
   const [activeConcept, setActiveConcept] = useState<string>('');
   const [customQuery, setCustomQuery] = useState<string>('');
   const [matches, setMatches] = useState<MatchedPassage[]>([]);
+  const [visitedKeys, setVisitedKeys] = useState<Set<string>>(new Set());
 
-  // Çekmece açıldığında arama indeksini hazırla ve seçili metinden kavramları çıkar
+  // Aynı pasaj ve seçili metin için çekmece kapatılıp açıldığında ekranı sıfırlamamak için anahtar takibi
+  const lastSourceKeyRef = useRef<string>('');
+
   useEffect(() => {
     if (!isOpen || !passage) return;
 
+    const sourceKey = `${passage.id}:::${selectedTextSnippet || ''}`;
+    const isSameSource = lastSourceKeyRef.current === sourceKey && concepts.length > 0;
+
+    if (isSameSource && indexData.length > 0) {
+      // Aynı Çapraz İzah oturumu tekrar açıldı; mevcut kavramı ve listeyi koru
+      return;
+    }
+
+    lastSourceKeyRef.current = sourceKey;
     let cancelled = false;
     const sourceText = (selectedTextSnippet || passage.text || '').trim();
     const extracted = extractConceptsFromText(sourceText);
     setConcepts(extracted);
     setCustomQuery('');
+    setVisitedKeys(new Set());
 
     setLoadingIndex(true);
     preloadSearchIndex()
@@ -76,6 +103,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
           }
         }
         setActiveConcept(chosen);
+        if (onActiveConceptChange) onActiveConceptChange(chosen);
       })
       .finally(() => {
         if (!cancelled) setLoadingIndex(false);
@@ -88,8 +116,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
 
   // Seçili kavram değiştiğinde Külliyat'taki diğer geçtiği cümleleri bul
   useEffect(() => {
-    if (!isOpen || !passage || indexData.length === 0) {
-      setMatches([]);
+    if (!passage || indexData.length === 0) {
       return;
     }
     const queryToRun = activeConcept.trim();
@@ -104,9 +131,15 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
       maxResults: 40,
     });
     setMatches(found);
-  }, [isOpen, passage?.id, passage?.title, indexData, activeConcept]);
+    if (onActiveConceptChange) onActiveConceptChange(queryToRun);
+  }, [passage?.id, passage?.title, indexData, activeConcept]);
 
   if (!isOpen || !passage) return null;
+
+  const handleSelectConcept = (concept: string) => {
+    setActiveConcept(concept);
+    if (onActiveConceptChange) onActiveConceptChange(concept);
+  };
 
   const handleCustomSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,8 +149,12 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
         setConcepts((prev) => [trimmed, ...prev]);
       }
       setActiveConcept(trimmed);
+      if (onActiveConceptChange) onActiveConceptChange(trimmed);
     }
   };
+
+  const isViewingDifferentChapter =
+    currentChapterFirstPassage && currentChapterFirstPassage.id !== passage.id && currentChapterFirstPassage.title !== passage.title;
 
   const drawerBg =
     theme === 'dark' || theme === 'night'
@@ -131,26 +168,41 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
       >
         {/* Üst Başlık */}
         <div className="p-4 sm:p-5 border-b border-black/10 dark:border-white/10 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0">
               <GitFork className="w-5 h-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="text-[11px] uppercase tracking-wider font-semibold opacity-60">
                 Çapraz İzah • Külliyat İçi Atıflar
               </div>
-              <h3 className="font-serif font-bold text-sm sm:text-base truncate max-w-sm">
+              <h3 className="font-serif font-bold text-sm sm:text-base truncate">
                 {passage.title}
               </h3>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-            title="Kapat"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {isViewingDifferentChapter && onSwitchPassage && currentChapterFirstPassage && (
+              <button
+                onClick={() => {
+                  lastSourceKeyRef.current = '';
+                  onSwitchPassage(currentChapterFirstPassage);
+                }}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-semibold transition-colors"
+                title="Şu an açık olan yeni bahsin kavramlarını analiz et"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Bu Bahsi Analiz Et</span>
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              title="Kapat"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Seçilen Cümle / İbare Kutusu */}
@@ -177,7 +229,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
                   return (
                     <button
                       key={concept}
-                      onClick={() => setActiveConcept(concept)}
+                      onClick={() => handleSelectConcept(concept)}
                       className={`px-3 py-1 rounded-lg text-xs font-serif font-medium transition-all ${
                         isSelected
                           ? 'bg-amber-600 text-white shadow-xs scale-[1.02]'
@@ -242,43 +294,75 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
               </div>
 
               <div className="space-y-3">
-                {matches.map((m, idx) => (
-                  <div
-                    key={`${m.item.bookId}-${m.item.chapterId}-${m.item.passageId}-${idx}`}
-                    onClick={() => {
-                      if (onNavigateToPassage) {
-                        onNavigateToPassage(
-                          m.item.bookId,
-                          m.item.chapterId,
-                          m.item.passageId,
-                          activeConcept
-                        );
-                        onClose();
-                      }
-                    }}
-                    className="group cursor-pointer p-3.5 rounded-2xl border border-black/10 dark:border-white/10 hover:border-amber-500/60 bg-black/[0.015] dark:bg-white/[0.02] hover:bg-amber-500/[0.04] transition-all space-y-2"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 shrink-0">
-                          {m.item.bookTitle}
-                        </span>
-                        <span className="text-xs font-serif font-bold truncate opacity-85">
-                          {m.item.title}
-                        </span>
-                      </div>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 group-hover:translate-x-0.5 transition-transform shrink-0">
-                        Cümleye Git
-                        <ExternalLink className="w-3 h-3" />
-                      </span>
-                    </div>
+                {matches.map((m, idx) => {
+                  const itemKey = `${m.item.bookId}-${m.item.chapterId}-${m.item.passageId}`;
+                  const isCurrentlyViewing =
+                    currentBookId === m.item.bookId &&
+                    currentChapterId === m.item.chapterId &&
+                    currentPassageId === m.item.passageId;
+                  const isVisited = visitedKeys.has(itemKey);
 
-                    {/* Geçtiği Cümlenin Kısa Özeti ve Renkli Vurgusu */}
-                    <p className="text-xs sm:text-sm font-serif leading-relaxed opacity-90 border-l-2 border-amber-500/40 pl-3 py-0.5">
-                      {renderHighlightedText(m.snippet, activeConcept)}
-                    </p>
-                  </div>
-                ))}
+                  return (
+                    <div
+                      key={`${itemKey}-${idx}`}
+                      onClick={() => {
+                        if (onNavigateToPassage) {
+                          setVisitedKeys((prev) => {
+                            const next = new Set(prev);
+                            next.add(itemKey);
+                            return next;
+                          });
+                          onNavigateToPassage(
+                            m.item.bookId,
+                            m.item.chapterId,
+                            m.item.passageId,
+                            activeConcept
+                          );
+                          onClose();
+                        }
+                      }}
+                      className={`group cursor-pointer p-3.5 rounded-2xl border transition-all space-y-2 ${
+                        isCurrentlyViewing
+                          ? 'border-amber-600 bg-amber-500/10 shadow-sm'
+                          : 'border-black/10 dark:border-white/10 hover:border-amber-500/60 bg-black/[0.015] dark:bg-white/[0.02] hover:bg-amber-500/[0.04]'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300 shrink-0">
+                            {m.item.bookTitle}
+                          </span>
+                          <span className="text-xs font-serif font-bold truncate opacity-85">
+                            {m.item.title}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {isCurrentlyViewing ? (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 dark:text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full">
+                              <CheckCircle2 className="w-3 h-3" />
+                              Şu An Açık
+                            </span>
+                          ) : isVisited ? (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
+                              <CheckCircle2 className="w-3 h-3" />
+                              Bakıldı
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 group-hover:translate-x-0.5 transition-transform">
+                              Cümleye Git
+                              <ExternalLink className="w-3 h-3" />
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Geçtiği Cümlenin Kısa Özeti ve Renkli Vurgusu */}
+                      <p className="text-xs sm:text-sm font-serif leading-relaxed opacity-90 border-l-2 border-amber-500/40 pl-3 py-0.5">
+                        {renderHighlightedText(m.snippet, activeConcept)}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}

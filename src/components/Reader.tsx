@@ -22,6 +22,9 @@ interface ReaderProps {
   fontSize: number;
   highlightQuery?: string;
   targetPassageId?: string;
+  hasActiveMutalaaSession?: boolean;
+  activeMutalaaConcept?: string;
+  originChapterTitle?: string;
   onBack: () => void;
   onThemeChange: (theme: ThemeMode) => void;
   onFontSizeChange: (delta: number) => void;
@@ -30,6 +33,8 @@ interface ReaderProps {
   onOpenSpeedReader: () => void;
   onOpenSearch: () => void;
   onOpenMutalaa: (passage: Passage, snippet?: string) => void;
+  onReopenMutalaa?: () => void;
+  onReturnToOriginChapter?: () => void;
   hasNext: boolean;
   hasPrev: boolean;
 }
@@ -41,6 +46,9 @@ export const Reader: React.FC<ReaderProps> = ({
   fontSize,
   highlightQuery,
   targetPassageId,
+  hasActiveMutalaaSession,
+  activeMutalaaConcept,
+  originChapterTitle,
   onBack,
   onThemeChange,
   onFontSizeChange,
@@ -49,6 +57,8 @@ export const Reader: React.FC<ReaderProps> = ({
   onOpenSpeedReader,
   onOpenSearch,
   onOpenMutalaa,
+  onReopenMutalaa,
+  onReturnToOriginChapter,
   hasNext,
   hasPrev,
 }) => {
@@ -208,12 +218,14 @@ export const Reader: React.FC<ReaderProps> = ({
             {/* Çapraz İzah Butonu */}
             <button
               onClick={() => {
-                if (passages.length > 0) {
+                if (hasActiveMutalaaSession && onReopenMutalaa) {
+                  onReopenMutalaa();
+                } else if (passages.length > 0) {
                   onOpenMutalaa(passages[0]);
                 }
               }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-600/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-semibold transition-transform active:scale-95"
-              title="Bu Bahisteki Kavramların Külliyat'taki Çapraz İzahı"
+              title="Çapraz İzah Penceresini Aç"
             >
               <GitFork className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Çapraz İzah</span>
@@ -274,7 +286,47 @@ export const Reader: React.FC<ReaderProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Çapraz İzah Geri Dönüş Çubuğu (Sonuca tıklandığında aynı listeye ve diğer kitaplara dönmek için) */}
+        {hasActiveMutalaaSession && onReopenMutalaa && (
+          <div className="max-w-4xl mx-auto mt-2.5 pt-2.5 border-t border-amber-500/25 flex flex-wrap items-center justify-between gap-2">
+            <button
+              onClick={onReopenMutalaa}
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition-transform active:scale-95"
+            >
+              <GitFork className="w-3.5 h-3.5" />
+              <span>
+                Çapraz İzah Listesine Dön
+                {activeMutalaaConcept ? ` ("${activeMutalaaConcept}" • Diğer Kitaplara Bak)` : ''}
+              </span>
+            </button>
+
+            {originChapterTitle && onReturnToOriginChapter && (
+              <button
+                onClick={onReturnToOriginChapter}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-600/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-200 text-xs font-medium transition-colors"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>İlk Okuduğum Yere Dön: {originChapterTitle}</span>
+              </button>
+            )}
+          </div>
+        )}
       </header>
+
+      {/* Sağ Altta Sabit Hızlı Dönüş Butonu */}
+      {hasActiveMutalaaSession && onReopenMutalaa && (
+        <button
+          onClick={onReopenMutalaa}
+          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold shadow-xl border border-amber-400/30 transition-transform active:scale-95"
+          title="Az önceki Çapraz İzah listesini ve diğer kitapları tekrar aç"
+        >
+          <GitFork className="w-4 h-4" />
+          <span>
+            Diğer Kitaplara Bak{activeMutalaaConcept ? ` (${activeMutalaaConcept})` : ''}
+          </span>
+        </button>
+      )}
 
       {/* Main Reading Canvas */}
       <main className="flex-1 max-w-3xl mx-auto w-full px-5 py-10 sm:py-16">
