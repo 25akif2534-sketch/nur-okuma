@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import type { ChapterContent, ThemeMode, BookMeta, Passage } from '../types';
 import { renderHighlightedText, CROSS_BOOK_REDIRECTS } from '../utils/searchUtils';
 import {
@@ -15,7 +15,9 @@ import {
   GitFork,
   ExternalLink,
   Minus,
-  Plus
+  Plus,
+  Share2,
+  Clock
 } from 'lucide-react';
 
 interface ReaderProps {
@@ -37,6 +39,7 @@ interface ReaderProps {
   onOpenMutalaa: (passage: Passage, snippet?: string) => void;
   onReopenMutalaa?: () => void;
   onNavigateToBookChapter?: (bookId: string, chapterId: string) => void;
+  onProgressChange?: (percent: number) => void;
   hasNext: boolean;
   hasPrev: boolean;
 }
@@ -46,6 +49,166 @@ const LATIN_LETTER_REGEX = /[a-zA-ZğüşıöçĞÜŞİÖÇâîûāīūÂÎÛĀ�
 
 function isArabicOnlyLine(line: string): boolean {
   return ARABIC_CHAR_REGEX.test(line) && !LATIN_LETTER_REGEX.test(line);
+}
+
+const TezhipDivider: React.FC<{ compact?: boolean }> = ({ compact = false }) => (
+  <div
+    className={`flex items-center justify-center gap-3 select-none opacity-65 text-amber-700 dark:text-amber-400 ${
+      compact ? 'my-3' : 'my-7 py-1'
+    }`}
+    aria-hidden="true"
+  >
+    <span className="h-px w-12 sm:w-20 bg-gradient-to-r from-transparent via-amber-700/50 dark:via-amber-400/50 to-amber-700/80 dark:to-amber-400/80" />
+    <svg
+      viewBox="0 0 64 24"
+      className={compact ? 'w-11 h-4 fill-current' : 'w-14 h-5 fill-current'}
+    >
+      <path d="M32 2 L37 9 L45 7 L40 12 L45 17 L37 15 L32 22 L27 15 L19 17 L24 12 L19 7 L27 9 Z" opacity="0.85" />
+      <circle cx="10" cy="12" r="2" opacity="0.65" />
+      <circle cx="54" cy="12" r="2" opacity="0.65" />
+      <circle cx="32" cy="12" r="2.2" className="fill-[#fbf0d9] dark:fill-[#1c1917]" />
+    </svg>
+    <span className="h-px w-12 sm:w-20 bg-gradient-to-l from-transparent via-amber-700/50 dark:via-amber-400/50 to-amber-700/80 dark:to-amber-400/80" />
+  </div>
+);
+
+async function generateAndShareQuoteCard(
+  quoteText: string,
+  bookTitle: string,
+  chapterTitle: string
+): Promise<string> {
+  const cleanQuote = quoteText.replace(/\s+/g, ' ').trim();
+  const clippedQuote =
+    cleanQuote.length > 520 ? cleanQuote.slice(0, 517).trim() + '...' : cleanQuote;
+
+  const canvas = document.createElement('canvas');
+  const width = 1080;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return 'Hata';
+
+  const fontSize = clippedQuote.length > 320 ? 34 : clippedQuote.length > 180 ? 40 : 46;
+  const lineHeight = Math.round(fontSize * 1.62);
+  ctx.font = `500 ${fontSize}px "Literata", Georgia, serif`;
+
+  const maxTextWidth = width - 220;
+  const words = clippedQuote.split(' ');
+  const lines: string[] = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    if (ctx.measureText(testLine).width > maxTextWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+
+  const textBlockHeight = lines.length * lineHeight;
+  const height = Math.max(1080, textBlockHeight + 460);
+  canvas.width = width;
+  canvas.height = height;
+
+  // Sepya Zemin
+  const grad = ctx.createLinearGradient(0, 0, width, height);
+  grad.addColorStop(0, '#fdf6e4');
+  grad.addColorStop(1, '#f4e3c1');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, width, height);
+
+  // Dış ve İç Tezhip Çerçevesi
+  ctx.strokeStyle = '#92400e';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(48, 48, width - 96, height - 96);
+
+  ctx.strokeStyle = 'rgba(146, 64, 14, 0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(64, 64, width - 128, height - 128);
+
+  // Köşe Süsleri
+  const corners = [
+    [64, 64],
+    [width - 64, 64],
+    [64, height - 64],
+    [width - 64, height - 64],
+  ];
+  ctx.fillStyle = '#b45309';
+  for (const [cx, cy] of corners) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Üst Başlık
+  ctx.fillStyle = '#92400e';
+  ctx.font = '700 24px "Literata", Georgia, serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('RİSALE-İ NUR KÜLLİYATI', width / 2, 140);
+
+  // Üst Motif Çizgisi
+  ctx.strokeStyle = 'rgba(146, 64, 14, 0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(width / 2 - 140, 168);
+  ctx.lineTo(width / 2 + 140, 168);
+  ctx.stroke();
+
+  // Alıntı Metni
+  ctx.fillStyle = '#2c1e10';
+  ctx.font = `500 ${fontSize}px "Literata", Georgia, serif`;
+  const startY = Math.round((height - textBlockHeight) / 2) + Math.round(fontSize * 0.35);
+
+  lines.forEach((line, idx) => {
+    ctx.fillText(line, width / 2, startY + idx * lineHeight);
+  });
+
+  // Alt Kaynak Bilgisi
+  const footerY = height - 135;
+  ctx.strokeStyle = 'rgba(146, 64, 14, 0.4)';
+  ctx.beginPath();
+  ctx.moveTo(width / 2 - 100, footerY - 42);
+  ctx.lineTo(width / 2 + 100, footerY - 42);
+  ctx.stroke();
+
+  ctx.fillStyle = '#78350f';
+  ctx.font = '700 28px "Literata", Georgia, serif';
+  ctx.fillText(`${bookTitle} • ${chapterTitle}`, width / 2, footerY);
+
+  const blob: Blob | null = await new Promise((resolve) =>
+    canvas.toBlob((b) => resolve(b), 'image/png')
+  );
+  if (!blob) return 'Hata';
+
+  const file = new File([blob], 'risale-i-nur-alinti.png', { type: 'image/png' });
+
+  if (
+    typeof navigator !== 'undefined' &&
+    navigator.canShare &&
+    navigator.canShare({ files: [file] })
+  ) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: `${bookTitle} • ${chapterTitle}`,
+        text: `"${clippedQuote}" — ${bookTitle}, ${chapterTitle}`,
+      });
+      return 'Alıntı kartı paylaşıldı';
+    } catch {
+      // Kullanıcı paylaşımı kapattıysa indirmeye geç
+    }
+  }
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'risale-i-nur-alinti.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+  return 'Alıntı kartı görsel olarak indirildi';
 }
 
 export const Reader: React.FC<ReaderProps> = ({
@@ -67,10 +230,32 @@ export const Reader: React.FC<ReaderProps> = ({
   onOpenMutalaa,
   onReopenMutalaa,
   onNavigateToBookChapter,
+  onProgressChange,
   hasNext,
   hasPrev,
 }) => {
   const [appearanceMenuOpen, setAppearanceMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState<number>(() => {
+    try {
+      const savedPct = Number(
+        localStorage.getItem(`nur_scroll_${book.id}_${chapter.id}`)
+      );
+      if (!Number.isNaN(savedPct) && savedPct > 2 && savedPct < 98) {
+        return savedPct;
+      }
+    } catch {
+      // ignore
+    }
+    return 0;
+  });
+  const [headerHidden, setHeaderHidden] = useState(false);
+  const [quoteToast, setQuoteToast] = useState<string | null>(null);
+  const lastScrollYRef = useRef(0);
+  const onProgressChangeRef = useRef(onProgressChange);
+
+  useEffect(() => {
+    onProgressChangeRef.current = onProgressChange;
+  }, [onProgressChange]);
 
   // Metin seçildiğinde açılan pop-up menü durumu
   const [selectionMenu, setSelectionMenu] = useState<{
@@ -94,7 +279,8 @@ export const Reader: React.FC<ReaderProps> = ({
       case 'dark':
         return 'bg-[#1c1917] text-[#e7e5e4] selection:bg-[#44403c]';
       case 'night':
-        return 'bg-[#09090b] text-[#a1a1aa] selection:bg-[#27272a]';
+        // Gece Sepyası: Koyu kahve zemin üzerine göz yormayan sıcak krem yazı
+        return 'bg-[#16120e] text-[#dfd2c0] selection:bg-[#382d22]';
       case 'light':
       default:
         return 'bg-[#fafaf9] text-[#292524] selection:bg-[#e7e5e4]';
@@ -108,7 +294,7 @@ export const Reader: React.FC<ReaderProps> = ({
       case 'dark':
         return 'bg-[#1c1917]/95 border-white/10';
       case 'night':
-        return 'bg-[#09090b]/95 border-white/10';
+        return 'bg-[#16120e]/95 border-amber-900/25';
       case 'light':
       default:
         return 'bg-[#fafaf9]/95 border-black/10';
@@ -122,23 +308,103 @@ export const Reader: React.FC<ReaderProps> = ({
       case 'dark':
         return 'bg-[#262320] text-[#e7e5e4] border-zinc-700';
       case 'night':
-        return 'bg-[#121215] text-zinc-200 border-zinc-800';
+        return 'bg-[#211b15] text-[#e6dac8] border-amber-900/30';
       case 'light':
       default:
         return 'bg-white text-stone-900 border-stone-200';
     }
   };
 
-  const passages: Passage[] = chapter.passages && chapter.passages.length > 0
-    ? chapter.passages
-    : [
-        {
-          id: 'p-1',
-          title: `${book.title} • ${chapter.title}`,
-          shortTitle: chapter.title,
-          text: chapter.rawContent || ''
-        }
-      ];
+  const passages: Passage[] = useMemo(
+    () =>
+      chapter.passages && chapter.passages.length > 0
+        ? chapter.passages
+        : [
+            {
+              id: 'p-1',
+              title: `${book.title} • ${chapter.title}`,
+              shortTitle: chapter.title,
+              text: chapter.rawContent || '',
+            },
+          ],
+    [book.title, chapter.passages, chapter.rawContent, chapter.title]
+  );
+
+  // Bahsin toplam kelime sayısı ve tahmini okuma süresi (180 kelime/dk)
+  const totalMinutes = useMemo(() => {
+    const wordCount = passages.reduce(
+      (acc, p) => acc + p.text.trim().split(/\s+/).length,
+      0
+    );
+    return Math.max(1, Math.round(wordCount / 180));
+  }, [passages]);
+
+  const remainingMinutes = Math.max(
+    1,
+    Math.ceil(totalMinutes * (1 - scrollProgress / 100))
+  );
+
+  // Odak Modu (aşağı kaydırınca üst çubuğu gizle, yukarı kaydırınca göster) + İlerleme Çizgisi + Kaydırma Hafızası
+  useEffect(() => {
+    const scrollKey = `nur_scroll_${book.id}_${chapter.id}`;
+
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const pct =
+        docHeight > 20
+          ? Math.min(100, Math.max(0, Math.round((currentY / docHeight) * 100)))
+          : 100;
+
+      setScrollProgress(pct);
+
+      const delta = currentY - lastScrollYRef.current;
+      if (currentY < 90) {
+        setHeaderHidden(false);
+      } else if (delta > 12 && !appearanceMenuOpen) {
+        setHeaderHidden(true);
+      } else if (delta < -10) {
+        setHeaderHidden(false);
+      }
+      lastScrollYRef.current = currentY;
+
+      try {
+        localStorage.setItem(scrollKey, String(pct));
+      } catch {
+        // ignore storage errors
+      }
+      onProgressChangeRef.current?.(pct);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [book.id, chapter.id, appearanceMenuOpen]);
+
+  // Bahis ilk açıldığında (arama vurgusu yoksa) kaydedilmiş yüzdeden devam et
+  useEffect(() => {
+    if (targetPassageId || highlightQuery) return;
+    try {
+      const savedPct = Number(
+        localStorage.getItem(`nur_scroll_${book.id}_${chapter.id}`)
+      );
+      if (!Number.isNaN(savedPct) && savedPct > 2 && savedPct < 98) {
+        const timer = setTimeout(() => {
+          const docHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+          if (docHeight > 100) {
+            window.scrollTo({
+              top: Math.round((savedPct / 100) * docHeight),
+              behavior: 'smooth',
+            });
+          }
+        }, 120);
+        return () => clearTimeout(timer);
+      }
+    } catch {
+      // ignore
+    }
+  }, [book.id, chapter.id, targetPassageId, highlightQuery]);
 
   // Mouse veya dokunmatik ekranda metin seçildiğinde tetiklenir
   const updateSelectionFromPassage = (psg: Passage) => {
@@ -196,11 +462,26 @@ export const Reader: React.FC<ReaderProps> = ({
 
   return (
     <div className={`min-h-screen w-full overflow-x-hidden flex flex-col transition-colors duration-200 ${getThemeClass()}`}>
-      {/* Metin Seçim Çubuğu — Hem Çapraz İzah hem de Seçilen Yerden Hızlı Okuma başlatır */}
+      {/* Üst İnce Altın İlerleme Çizgisi (Her zaman en üstte sabit) */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-0.5 bg-amber-900/10 dark:bg-amber-400/10 pointer-events-none">
+        <div
+          className="h-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-400 transition-all duration-150"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
+      {/* Alıntı Kartı Bildirimi */}
+      {quoteToast && (
+        <div className="fixed top-14 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-xl bg-stone-900 text-amber-200 border border-amber-500/40 shadow-xl text-xs font-serif">
+          {quoteToast}
+        </div>
+      )}
+
+      {/* Metin Seçim Çubuğu — Çapraz İzah, Buradan Hızlı Oku ve Alıntı Kartı */}
       {selectionMenu.visible && selectionMenu.passage && (
         <div
           id="selection-popup"
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-wrap items-center justify-center gap-1.5 p-1.5 bg-stone-900 text-white rounded-2xl shadow-2xl border border-amber-500/50 text-xs sm:text-sm max-w-[94vw]"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-wrap items-center justify-center gap-1.5 p-1.5 bg-stone-900 text-white rounded-2xl shadow-2xl border border-amber-500/50 text-xs sm:text-sm max-w-[95vw]"
         >
           <button
             onClick={() => {
@@ -209,12 +490,12 @@ export const Reader: React.FC<ReaderProps> = ({
                 setSelectionMenu((prev) => ({ ...prev, visible: false }));
               }
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 transition-colors font-semibold text-white truncate max-w-[60vw] sm:max-w-xs"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 transition-colors font-semibold text-white truncate max-w-[52vw] sm:max-w-xs"
           >
             <GitFork className="w-4 h-4 shrink-0" />
             <span className="truncate">
-              Çapraz İzah: "{selectionMenu.selectedText.slice(0, 24)}
-              {selectionMenu.selectedText.length > 24 ? '...' : ''}"
+              Çapraz İzah: "{selectionMenu.selectedText.slice(0, 20)}
+              {selectionMenu.selectedText.length > 20 ? '...' : ''}"
             </span>
           </button>
 
@@ -223,17 +504,40 @@ export const Reader: React.FC<ReaderProps> = ({
               onOpenSpeedReader(selectionMenu.selectedText);
               setSelectionMenu((prev) => ({ ...prev, visible: false }));
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 border border-amber-500/40 transition-colors font-semibold text-amber-300 shrink-0"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 border border-amber-500/40 transition-colors font-semibold text-amber-300 shrink-0"
             title="Hızlı okumayı seçtiğiniz bu cümleden itibaren başlat"
           >
             <Gauge className="w-4 h-4 shrink-0" />
             <span>Buradan Hızlı Oku</span>
           </button>
+
+          <button
+            onClick={async () => {
+              const textToShare = selectionMenu.selectedText;
+              setSelectionMenu((prev) => ({ ...prev, visible: false }));
+              const msg = await generateAndShareQuoteCard(
+                textToShare,
+                book.title,
+                chapter.title
+              );
+              setQuoteToast(msg);
+              setTimeout(() => setQuoteToast(null), 2800);
+            }}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 border border-stone-700 transition-colors font-semibold text-stone-200 shrink-0"
+            title="Seçilen cümleyi sepya zeminli Alıntı Kartı görseli olarak paylaş veya indir"
+          >
+            <Share2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span>Alıntı Kartı</span>
+          </button>
         </div>
       )}
 
-      {/* Sadeleştirilmiş Üst Çubuk (Buton kalabalığı "Aa" Görünüm Menüsünde toplandı) */}
-      <header className={`sticky top-0 z-30 w-full backdrop-blur-md border-b px-3 sm:px-4 py-2.5 transition-colors ${getHeaderBgClass()}`}>
+      {/* Sadeleştirilmiş Üst Çubuk (Aşağı kaydırınca Odak Modu için yumuşakça gizlenir, yukarı kaydırınca geri gelir) */}
+      <header
+        className={`sticky top-0 z-30 w-full backdrop-blur-md border-b px-3 sm:px-4 py-2 transition-all duration-300 ${getHeaderBgClass()} ${
+          headerHidden ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+        }`}
+      >
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
           <button
             onClick={onBack}
@@ -245,7 +549,13 @@ export const Reader: React.FC<ReaderProps> = ({
           </button>
 
           <div className="text-center truncate flex-1 min-w-0 px-1">
-            <div className="text-[11px] opacity-75 font-serif truncate">{book.title}</div>
+            <div className="flex items-center justify-center gap-1.5 text-[11px] opacity-75 font-serif truncate">
+              <span className="truncate">{book.title}</span>
+              <span>•</span>
+              <span className="inline-flex items-center gap-0.5 font-mono text-[10px] text-amber-800 dark:text-amber-400 shrink-0">
+                %{scrollProgress} · <Clock className="w-2.5 h-2.5 inline" /> ≈{remainingMinutes} dk
+              </span>
+            </div>
             <div className="text-xs sm:text-sm font-serif font-bold truncate">{chapter.title}</div>
           </div>
 
@@ -332,7 +642,7 @@ export const Reader: React.FC<ReaderProps> = ({
                     </div>
                   </div>
 
-                  {/* Tema Seçici (4 Tema: Açık, Sepya, Koyu, Gece) */}
+                  {/* Tema Seçici (4 Tema: Sepya, Açık, Koyu, Gece Sepyası) */}
                   <div className="space-y-2 pt-2 border-t border-black/10 dark:border-white/10">
                     <div className="text-[11px] font-bold uppercase tracking-wider opacity-70">
                       Okuma Teması
@@ -383,7 +693,7 @@ export const Reader: React.FC<ReaderProps> = ({
                         }`}
                       >
                         <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                        <span>Gece</span>
+                        <span>Gece Sepyası</span>
                       </button>
                     </div>
                   </div>
@@ -412,8 +722,9 @@ export const Reader: React.FC<ReaderProps> = ({
 
       {/* Main Reading Canvas */}
       <main className="flex-1 max-w-3xl mx-auto w-full px-5 py-10 sm:py-16">
-        <div className="text-center mb-12 pb-6 border-b border-black/10 dark:border-white/10">
-          <span className="text-xs uppercase tracking-widest opacity-60 font-serif">
+        <div className="text-center mb-12 pb-6 border-b border-amber-900/15 dark:border-amber-400/15">
+          <TezhipDivider compact />
+          <span className="text-xs uppercase tracking-widest opacity-65 font-serif">
             {book.title}
           </span>
           <h2 className="text-2xl sm:text-3xl font-serif font-bold mt-2">
@@ -439,18 +750,11 @@ export const Reader: React.FC<ReaderProps> = ({
               >
                 <article
                   className="space-y-6 leading-relaxed font-serif text-justify select-text"
-                  style={{ fontSize: `${fontSize}px`, lineHeight: 1.8 }}
+                  style={{ fontSize: `${fontSize}px`, lineHeight: 1.85 }}
                 >
                   {paragraphs.map((para, i) => {
                     if (para === '***') {
-                      return (
-                        <div
-                          key={i}
-                          className="text-center opacity-50 tracking-widest py-2 select-none"
-                        >
-                          * * *
-                        </div>
-                      );
+                      return <TezhipDivider key={i} />;
                     }
 
                     const isSubHeading =
@@ -470,10 +774,10 @@ export const Reader: React.FC<ReaderProps> = ({
                       return (
                         <h3
                           key={i}
-                          className="font-bold text-amber-900 dark:text-amber-300 pt-4 pb-1 text-left tracking-normal"
-                          style={{ fontSize: `${Math.round(fontSize * 1.12)}px` }}
+                          className="font-bold text-amber-800 dark:text-amber-300 pt-6 pb-2 text-center indent-0 tracking-wide"
+                          style={{ fontSize: `${Math.round(fontSize * 1.15)}px` }}
                         >
-                          {renderedContent}
+                          ✦ {renderedContent} ✦
                         </h3>
                       );
                     }
@@ -483,10 +787,10 @@ export const Reader: React.FC<ReaderProps> = ({
                         <p
                           key={i}
                           dir="rtl"
-                          className="text-center indent-0 my-4 py-2 px-3 rounded-xl bg-amber-500/5 text-amber-950 dark:text-amber-200 tracking-normal"
+                          className="font-arabic text-center indent-0 my-5 py-3 px-4 rounded-2xl bg-amber-600/5 border border-amber-700/15 dark:border-amber-400/15 text-amber-950 dark:text-amber-200 tracking-normal"
                           style={{
-                            fontSize: `${Math.round(fontSize * 1.2)}px`,
-                            lineHeight: 2.0,
+                            fontSize: `${Math.round(fontSize * 1.32)}px`,
+                            lineHeight: 2.1,
                           }}
                         >
                           {renderedContent}
@@ -534,8 +838,13 @@ export const Reader: React.FC<ReaderProps> = ({
           </div>
         )}
 
+        {/* Bahis Sonu Tezhip Mührü */}
+        <div className="mt-12">
+          <TezhipDivider />
+        </div>
+
         {/* Bottom Chapter Navigation */}
-        <div className="mt-16 pt-8 border-t border-black/10 dark:border-white/10 flex items-center justify-between gap-4">
+        <div className="mt-8 pt-6 border-t border-black/10 dark:border-white/10 flex items-center justify-between gap-4">
           <button
             onClick={onPrevChapter}
             disabled={!hasPrev}

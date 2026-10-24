@@ -1,0 +1,19 @@
+{
+  "name": "Risale-i Nur Külliyatı — Okuma & Çapraz İzah",
+  "short_name": "Risale-i Nur",
+  "description": "Diyanet nüshası esas alınarak hazırlanmış sade, hızlı ve huzurlu Risale-i Nur okuma programı.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf0d9",
+  "theme_color": "#b45309",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

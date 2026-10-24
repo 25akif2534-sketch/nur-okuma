@@ -42,7 +42,82 @@ const BOOK_TITLES = {
 // Yalnızca gerçek müstakil alt başlıkları yakalar; iki nokta (:), nokta (.), soru işareti (?) içeren cümleleri veya "Üçüncüsü" gibi ek almış kelimeleri başlık saymaz.
 const HEADING_REGEX = /^(?:(?:Birinci|İkinci|Üçüncü|Dördüncü|Beşinci|Altıncı|Yedinci|Sekizinci|Dokuzuncu|Onuncu|On Birinci|On İkinci|On Üçüncü|On Dördüncü|On Beşinci|On Altıncı|On Yedinci|On Sekizinci|On Dokuzuncu|Yirminci|Yirmi Birinci|Yirmi İkinci|Yirmi Üçüncü|Yirmi Dördüncü|Yirmi Beşinci|Yirmi Altıncı|Yirmi Yedinci|Yirmi Sekizinci|Yirmi Dokuzuncu|Otuzuncu|Otuz Birinci|Otuz İkinci|Otuz Üçüncü)\s+(?:Söz|Mektup|Lem'a|Lem’a|Şuâ|Şua|Mesele|Nükte|İşaret|Hakikat|Makam|Mebhas|Fasıl|Nokta|Remiz|Suret|Lâtife|Deva|Rica|Zeyl|Mukaddime|Mukaddeme|Hatve|Basamak|Pencere|Kısım|Bab|Bâb|Hüccet-i İmaniye|Nota|Şube|Meziyet|Sebep|Desise|Hâtime|Hatime)|El-Hâsıl|Hâtime|Hatime|Mukaddeme|Mukaddime|Tenbih|İhtar|Zeyl|Tetimme|Münâcat)(?![a-zA-ZğüşıöçĞÜŞİÖÇâîûāīūÂÎÛĀĪŪ’'])/i;
 
+const LAHIKA_CHAPTER_TITLES = {
+  'barla-lahikasi': {
+    'ch-1': 'Takdim',
+    'ch-2': "Yedinci Risale (Yirmi Sekizinci Mektup'tan)",
+    'ch-3': 's.21-39 • Mukaddime (Hulûsi ve Sabri Efendi)',
+    'ch-4': "s.40-58 • Yirmi Yedinci Mektup'un Zeyli",
+    'ch-5': "s.59-80 • Hulûsi Bey'in Uzun Fıkrası",
+    'ch-6': "s.80-102 • Sabri Efendi'nin Fıkrası",
+    'ch-7': "s.103-121 • Murad Efendi'nin Fıkrası",
+    'ch-8': 's.121-146 • Hediye İadesi Hakkında Mektup',
+    'ch-9': "s.146-159 • Hâfız Halid'in Fıkrası",
+    'ch-10': "s.160-180 • Hâfız Mustafa'nın Fıkrası",
+    'ch-11': "s.181-201 • Hâfız Ali'nin Fıkrası (Hikmetü'l-İstiaze)",
+    'ch-12': "s.202-221 • Hulûsi Bey'in Fıkrası",
+    'ch-13': "s.221-240 • Ahmed Hüsrev'in Fıkrası",
+    'ch-14': "s.241-261 • Hâfız Ali'nin Fıkrası (Mirkatü's-Sünne)",
+    'ch-15': "s.262-280 • Üçüncü Mektup'un Baş Kısmı",
+    'ch-16': "s.280-299 • Hüsrev'e Hitaben Mektup",
+    'ch-17': 's.300-321 • Üç Asılsız Vehme Cevap',
+    'ch-18': "s.321-340 • Yirmi Dokuzuncu Mektup'a Dair",
+    'ch-19': "s.340-362 • Re'fet Bey'e Mektup",
+    'ch-20': 's.363-392 • Muhtelif Lâhika Mektupları',
+  },
+  'kastamonu-lahikasi': {
+    'ch-1': 'Takdim',
+    'ch-2': 's.10-30 • Hizmet-i Kur’âniye ve İhlas Mektupları',
+    'ch-3': 's.30-51 • Manevî Bir İhtar ve İki İnce Mesele',
+    'ch-4': 's.52-69 • Nur ve Gül Fabrikalarının Vaziyeti',
+    'ch-5': 's.70-91 • Şuhur-u Selâse ve Hizmet Tebriği',
+    'ch-6': 's.91-109 • Risale-i Nur Dairesinin Sebatı',
+    'ch-7': 's.110-129 • İki Hatıradan İki İhtar',
+    'ch-8': 's.130-149 • İhtiyat ve Hizmet-i Nuriye Mektupları',
+    'ch-9': "s.150-166 • Lemaat'tan (Fâtiha'daki Üç Yol)",
+    'ch-10': 's.167-189 • İ’caz-ı Kur’ân ve Hizmet Mektupları',
+    'ch-11': "s.190-210 • Karadağ'ın Bir Meyvesi",
+    'ch-12': 's.211-230 • İşârât-ı Kur’âniye ve Teselli Mektupları',
+    'ch-13': "s.231-255 • Merhum Mehmed Zühdü ve Risale-i Nur'un Takdiri",
+  },
+  'emirdag-lahikasi-1': {
+    'ch-1': 'Takdim',
+    'ch-2': "s.10-31 • Emirdağ'daki Kardeşlere ve Evhamlara Cevap",
+    'ch-3': 's.31-50 • Yağmur Duası ve Musibetler Hakkında Sual-Cevap',
+    'ch-4': 's.50-69 • Ankara Ehl-i Vukuf Raporuna Dair',
+    'ch-5': 's.70-90 • İki Ehemmiyetli Mesele ve Hizmet İhtarları',
+    'ch-6': 's.90-110 • İki Şıklı Bir Sualin Cevabı',
+    'ch-7': "s.110-130 • Asâ-yı Musa Hizmeti ve Tebrik",
+    'ch-8': "s.131-150 • Re'fet Bey'e ve Nur Talebelerine Mektuplar",
+    'ch-9': 's.150-170 • Kastamonu ve Isparta Kahramanlarına Mektuplar',
+    'ch-10': 's.170-190 • Leyle-i Berat ve Ramazan-ı Şerif Tebriği',
+    'ch-11': "s.190-211 • Risale-i Nur'u Yazmanın العالم ve Uhrevî Faydaları".replace('العالم', 'Dünyevî'),
+    'ch-12': "s.212-230 • Süleyman Rüşdü ve Nur'un Fütuhatı",
+    'ch-13': 's.230-251 • Emirdağ Yağmuru ve Hizmet Mektupları',
+    'ch-14': 's.251-270 • Müsadere Edilen Kitapların İadesi ve Bayram Tebriği',
+    'ch-15': "s.271-288 • Re'fet Bey'e ve Hizmetin İstikametine Dair",
+  },
+  'emirdag-lahikasi-2': {
+    'ch-1': 'Takdim',
+    'ch-2': 's.6-26 • Bayram Tebriği ve Her Bir Talebenin Birer Said Olması',
+    'ch-3': 's.27-50 • Sözler Mecmuası ve Tashih Hizmeti',
+    'ch-4': 's.51-70 • “Risale-i Nur İmha Edilmez!” Dilekçesi',
+    'ch-5': 's.70-90 • Dindar Milletvekillerine ve Âlem-i İslâm’a Hitap',
+    'ch-6': 's.91-109 • Er-Rahmân Sûresi Tefsirinin Hülâsası',
+    'ch-7': "s.110-128 • Eski Said'in Matbu Eserlerinden Bir Fıkra",
+    'ch-8': 's.129-148 • Ehl-i Vukuf Raporuna İtiraz ve Hakikat-i Hal',
+    'ch-9': 's.149-170 • Yeni Hurufla Yazılan Bir Mektuba Cevap',
+    'ch-10': 's.171-189 • Bağdat “Eddifa” Gazetesinin Makalesi',
+    'ch-11': 's.190-210 • Leyle-i Kadir İhtarı ve Hizmet Mektupları',
+    'ch-12': 's.210-229 • Hizmet-i İmaniye Tebriği ve İhtarlar',
+    'ch-13': 's.230-247 • Cumhuriyet Gazetesinin İftiralarına Cevap',
+  },
+};
+
 function cleanChapterTitle(bookId, chId, rawTitle) {
+  if (LAHIKA_CHAPTER_TITLES[bookId] && LAHIKA_CHAPTER_TITLES[bookId][chId]) {
+    return LAHIKA_CHAPTER_TITLES[bookId][chId];
+  }
   let t = rawTitle
     .normalize('NFC')
     .replace(/i\u0307/g, 'i')

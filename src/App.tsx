@@ -206,11 +206,19 @@ export function App() {
       setCurrentChapter(data);
 
       // Son okunan yeri kaydet ve URL hash güncelle
+      let savedPct = 0;
+      try {
+        const rawPct = Number(localStorage.getItem(`nur_scroll_${book.id}_${data.id}`));
+        if (!Number.isNaN(rawPct) && rawPct > 0) savedPct = rawPct;
+      } catch {
+        // ignore
+      }
       const info: LastReadInfo = {
         bookId: book.id,
         bookTitle: book.title,
         chapterId: data.id,
         chapterTitle: data.title,
+        progressPercent: savedPct,
       };
       setLastRead(info);
       try {
@@ -361,6 +369,7 @@ export function App() {
       {currentChapter && selectedBook ? (
         <>
           <Reader
+            key={`${selectedBook.id}-${currentChapter.id}`}
             book={selectedBook}
             chapter={currentChapter}
             theme={theme}
@@ -408,6 +417,18 @@ export function App() {
               }))
             }
             onNavigateToBookChapter={handleNavigateToBookChapter}
+            onProgressChange={(pct) => {
+              setLastRead((prev) => {
+                if (!prev || prev.progressPercent === pct) return prev;
+                const updated = { ...prev, progressPercent: pct };
+                try {
+                  localStorage.setItem('nur_last_read', JSON.stringify(updated));
+                } catch {
+                  // ignore
+                }
+                return updated;
+              });
+            }}
             hasNext={currentChapterIndex < selectedBook.chapters.length - 1}
             hasPrev={currentChapterIndex > 0}
           />
