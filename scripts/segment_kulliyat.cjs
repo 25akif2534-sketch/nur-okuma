@@ -1,105 +1,215 @@
 const fs = require('fs');
 const path = require('path');
 
-const srcDir = path.join(process.env.USERPROFILE, 'Downloads', 'Risale-Diyanet-Acilmis', 'Risale-i-Nur-Diyanet-master');
-const targetPublic = path.join(process.cwd(), 'public', 'kulliyat');
+const targetPublic = path.join(__dirname, '..', 'public', 'kulliyat');
 
-// Orijinal Risale taksimat başlıkları
-const HEADING_REGEX = /^(Birinci|İkinci|Üçüncü|Dördüncü|Beşinci|Altıncı|Yedinci|Sekizinci|Dokuzuncu|Onuncu|On Birinci|On İkinci|On Üçüncü|On Dördüncü|On Beşinci|El-Hâsıl|Hâtime|Mukaddeme|Mukaddime|Fasıl|Makam|Mebhas|Nükte|Mesele|Hakikat|Suret|Remiz|Letaif|İşaret|Deva|Şua|Nokta|Zeyl|Tenbih|İhtar|Sual|Elcevap|Hatime)\b/i;
+const BOOK_PRIORITY = {
+  'sozler': 1,
+  'mektubat': 2,
+  'lem-alar': 3,
+  'sualar': 4,
+  'mesnevi-i-nuriye': 5,
+  'i-saratu-l-i-caz': 6,
+  'muhakemat': 7,
+  'barla-lahikasi': 8,
+  'kastamonu-lahikasi': 9,
+  'emirdag-lahikasi-1': 10,
+  'emirdag-lahikasi-2': 11,
+  'sikke-i-tasdik-i-gaybi': 12,
+  'asa-yi-musa': 13,
+  'tarihce-i-hayat': 14,
+  'kucuk-kitaplar': 15,
+};
 
-const books = fs.readdirSync(srcDir, { withFileTypes: true })
-  .filter(d => d.isDirectory() && d.name !== 'img' && d.name !== '.git');
+const BOOK_TITLES = {
+  'sozler': 'Sözler',
+  'mektubat': 'Mektubat',
+  'lem-alar': "Lem'alar",
+  'sualar': 'Şuâlar',
+  'mesnevi-i-nuriye': 'Mesnevî-i Nuriye',
+  'i-saratu-l-i-caz': "İşaratü'l-İ'caz",
+  'muhakemat': 'Muhakemat',
+  'barla-lahikasi': 'Barla Lâhikası',
+  'kastamonu-lahikasi': 'Kastamonu Lâhikası',
+  'emirdag-lahikasi-1': 'Emirdağ Lâhikası 1',
+  'emirdag-lahikasi-2': 'Emirdağ Lâhikası 2',
+  'sikke-i-tasdik-i-gaybi': 'Sikke-i Tasdik-i Gaybî',
+  'asa-yi-musa': 'Asâ-yı Musa',
+  'tarihce-i-hayat': 'Tarihçe-i Hayat',
+  'kucuk-kitaplar': 'Küçük Kitaplar',
+};
+
+// Yalnızca gerçek müstakil alt başlıkları yakalar; iki nokta (:), nokta (.), soru işareti (?) içeren cümleleri veya "Üçüncüsü" gibi ek almış kelimeleri başlık saymaz.
+const HEADING_REGEX = /^(?:(?:Birinci|İkinci|Üçüncü|Dördüncü|Beşinci|Altıncı|Yedinci|Sekizinci|Dokuzuncu|Onuncu|On Birinci|On İkinci|On Üçüncü|On Dördüncü|On Beşinci|On Altıncı|On Yedinci|On Sekizinci|On Dokuzuncu|Yirminci|Yirmi Birinci|Yirmi İkinci|Yirmi Üçüncü|Yirmi Dördüncü|Yirmi Beşinci|Yirmi Altıncı|Yirmi Yedinci|Yirmi Sekizinci|Yirmi Dokuzuncu|Otuzuncu|Otuz Birinci|Otuz İkinci|Otuz Üçüncü)\s+(?:Söz|Mektup|Lem'a|Lem’a|Şuâ|Şua|Mesele|Nükte|İşaret|Hakikat|Makam|Mebhas|Fasıl|Nokta|Remiz|Suret|Lâtife|Deva|Rica|Zeyl|Mukaddime|Mukaddeme|Hatve|Basamak|Pencere|Kısım|Bab|Bâb|Hüccet-i İmaniye|Nota|Şube|Meziyet|Sebep|Desise|Hâtime|Hatime)|El-Hâsıl|Hâtime|Hatime|Mukaddeme|Mukaddime|Tenbih|İhtar|Zeyl|Tetimme|Münâcat)(?![a-zA-ZğüşıöçĞÜŞİÖÇâîûāīūÂÎÛĀĪŪ’'])/i;
+
+function cleanChapterTitle(bookId, chId, rawTitle) {
+  let t = rawTitle
+    .normalize('NFC')
+    .replace(/i\u0307/g, 'i')
+    .replace(/I\u0307/g, 'İ')
+    .replace(/^.+?-\d+-/, '')
+    .trim();
+
+  if (bookId === 'emirdag-lahikasi-2' && chId === 'ch-1' && t === 'Emirdağ Lâhikası - I') {
+    t = 'Emirdağ Lâhikası - II - Takdim';
+  }
+  if (t === 'Ön söz') {
+    t = 'Ön Söz';
+  }
+  if (bookId === 'kucuk-kitaplar') {
+    const map = {
+      'Divan-i Harb-i Örfî': 'Divan-ı Harb-i Örfî',
+      'Hanimlar Rehberi': 'Hanımlar Rehberi',
+    };
+    if (map[t]) t = map[t];
+  }
+  return t;
+}
+
+function isTrueSubHeading(trimmed) {
+  if (!trimmed || trimmed.length > 55) return false;
+  // Cümle sonu veya açıklama noktalama işaretleri varsa müstakil alt başlık değildir
+  if (/[:.?!,;“”"]/.test(trimmed)) return false;
+  return HEADING_REGEX.test(trimmed);
+}
+
+const indexPath = path.join(targetPublic, 'books-index.json');
+const existingIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
+
+// Kitapları doğru Külliyat sırasına diz
+existingIndex.sort((a, b) => (BOOK_PRIORITY[a.id] || 99) - (BOOK_PRIORITY[b.id] || 99));
 
 let totalPassagesAcrossKulliyat = 0;
-const indexData = [];
+const newBooksIndex = [];
+const searchIndex = [];
 
-for (const b of books) {
-  const bookSrc = path.join(srcDir, b.name);
-  const safeBookId = b.name.toLowerCase()
-    .replace(/â/g, 'a').replace(/î/g, 'i').replace(/ı/g, 'i').replace(/ü/g, 'u').replace(/ö/g, 'o').replace(/ç/g, 'c').replace(/ş/g, 's').replace(/ğ/g, 'g')
-    .replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+for (const book of existingIndex) {
+  const bookId = book.id;
+  const bookTitle = BOOK_TITLES[bookId] || book.title;
+  const bookDir = path.join(targetPublic, bookId);
+  const newChapters = [];
 
-  const bookDest = path.join(targetPublic, safeBookId);
-  fs.mkdirSync(bookDest, { recursive: true });
+  for (const chMeta of book.chapters) {
+    const chPath = path.join(bookDir, `${chMeta.id}.json`);
+    const chData = JSON.parse(fs.readFileSync(chPath, 'utf-8'));
 
-  const files = fs.readdirSync(bookSrc).filter(f => f.endsWith('.txt'));
-  const chapters = [];
+    const chapterTitle = cleanChapterTitle(bookId, chMeta.id, chData.title || chMeta.title);
 
-  for (let i = 0; i < files.length; i++) {
-    const f = files[i];
-    const fullPath = path.join(bookSrc, f);
-    const rawContent = fs.readFileSync(fullPath, 'utf-8');
-    const chapterTitle = f.replace('.txt', '').replace(/^[^-]+-\d+-/, '').trim();
-    const chapterId = 'ch-' + (i + 1);
+    // Tam metni al (rawContent varsa oradan, yoksa mevcut pasajların birleşiminden)
+    const fullText = typeof chData.rawContent === 'string' && chData.rawContent.length > 0
+      ? chData.rawContent
+      : (chData.passages || []).map((p) => p.text).join('\n');
 
-    const lines = rawContent.split(/\r?\n/);
+    const lines = fullText.split(/\r?\n/);
     const passages = [];
-    let currentPassageTitle = 'Giriş / Mukaddeme';
+    let currentSubHeading = '';
     let currentPassageLines = [];
     let subIndex = 1;
 
+    const flushPassage = () => {
+      const hasRealContent = currentPassageLines.some(
+        (l) => l.trim().length > 0 && l.trim() !== '***'
+      );
+      if (!hasRealContent) return;
+
+      const joined = currentPassageLines.join('\n').trim();
+      if (joined.length > 0) {
+        const fullTitle = currentSubHeading
+          ? `${bookTitle} • ${chapterTitle} — ${currentSubHeading}`
+          : `${bookTitle} • ${chapterTitle}`;
+        const shortTitle = currentSubHeading || chapterTitle;
+
+        const psgObj = {
+          id: 'p-' + subIndex,
+          title: fullTitle,
+          shortTitle: shortTitle,
+          text: joined,
+        };
+        passages.push(psgObj);
+
+        if (
+          bookId !== 'kucuk-kitaplar' &&
+          !/fihrist|içindekiler/i.test(chapterTitle)
+        ) {
+          searchIndex.push({
+            bookId,
+            bookTitle,
+            chapterId: chMeta.id,
+            chapterTitle,
+            passageId: psgObj.id,
+            title: psgObj.title,
+            text: psgObj.text,
+          });
+        }
+
+        subIndex++;
+        currentPassageLines = [];
+      }
+    };
+
     for (const line of lines) {
       const trimmed = line.trim();
-      const isHeader = (trimmed.length > 0 && trimmed.length < 70 && HEADING_REGEX.test(trimmed)) || trimmed === '***';
-
-      if (isHeader) {
-        if (currentPassageLines.join('').trim().length > 0) {
-          passages.push({
-            id: 'p-' + subIndex,
-            title: b.name + ' • ' + chapterTitle + ' — ' + currentPassageTitle,
-            shortTitle: currentPassageTitle,
-            text: currentPassageLines.join('\n').trim()
-          });
-          subIndex++;
-          currentPassageLines = [];
-        }
-        if (trimmed !== '***') {
-          currentPassageTitle = trimmed;
-        } else {
-          currentPassageTitle = 'Fasıl ' + subIndex;
-        }
+      if (trimmed === '***') {
+        flushPassage();
+        currentSubHeading = '';
+        // '***' ayracını metin içinde koru ki hiçbir satır kaybolmasın ve tekrar çalıştırıldığında 100% kayıpsız olsun
+        currentPassageLines.push('***');
+      } else if (isTrueSubHeading(trimmed)) {
+        flushPassage();
+        currentSubHeading = trimmed;
+        // Başlık satırını metinden SİLME; metnin ilk satırı olarak yerinde bırak!
+        currentPassageLines.push(trimmed);
       } else {
         currentPassageLines.push(line);
       }
     }
 
-    if (currentPassageLines.join('').trim().length > 0) {
-      passages.push({
-        id: 'p-' + subIndex,
-        title: b.name + ' • ' + chapterTitle + ' — ' + currentPassageTitle,
-        shortTitle: currentPassageTitle,
-        text: currentPassageLines.join('\n').trim()
-      });
-    }
+    flushPassage();
 
     totalPassagesAcrossKulliyat += passages.length;
 
-    fs.writeFileSync(path.join(bookDest, chapterId + '.json'), JSON.stringify({
-      id: chapterId,
-      bookId: safeBookId,
-      bookTitle: b.name,
-      title: chapterTitle,
-      rawContent: rawContent,
-      passages: passages
-    }, null, 2), 'utf-8');
+    // Çift metin tekrarını önlemek için rawContent alanını kaydetmiyoruz (metin passages içinde %100 kayıpsız duruyor)
+    fs.writeFileSync(
+      chPath,
+      JSON.stringify({
+        id: chMeta.id,
+        bookId: bookId,
+        bookTitle: bookTitle,
+        title: chapterTitle,
+        passages: passages,
+      }),
+      'utf-8'
+    );
 
-    chapters.push({
-      id: chapterId,
+    const firstCleanText = (passages[0]?.text || '')
+      .replace(/^\*\*\*\s*/, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    newChapters.push({
+      id: chMeta.id,
       title: chapterTitle,
       passageCount: passages.length,
-      snippet: passages[0]?.text?.substring(0, 160).replace(/\s+/g, ' ').trim() || ''
+      snippet: firstCleanText.substring(0, 160).trim(),
     });
   }
 
-  indexData.push({
-    id: safeBookId,
-    title: b.name,
-    chapterCount: chapters.length,
-    chapters: chapters
+  newBooksIndex.push({
+    id: bookId,
+    title: bookTitle,
+    chapterCount: newChapters.length,
+    chapters: newChapters,
   });
 }
 
-fs.writeFileSync(path.join(targetPublic, 'books-index.json'), JSON.stringify(indexData, null, 2), 'utf-8');
-console.log('Kulliyat bolumleme basariyla tamamlandi!');
-console.log('Toplam Kitap:', indexData.length);
-console.log('Toplam Orijinal Pasaj:', totalPassagesAcrossKulliyat);
+fs.writeFileSync(indexPath, JSON.stringify(newBooksIndex, null, 2), 'utf-8');
+fs.writeFileSync(
+  path.join(targetPublic, 'search-index.json'),
+  JSON.stringify(searchIndex),
+  'utf-8'
+);
+
+console.log('Kulliyat veri temizligi ve bolumleme tamamlandi!');
+console.log('Toplam Kitap:', newBooksIndex.length);
+console.log('Toplam Bolum (Pasaj):', totalPassagesAcrossKulliyat);
+console.log('Arama Dizini Kayit Sayisi:', searchIndex.length);

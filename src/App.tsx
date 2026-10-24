@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { BookMeta, ChapterContent, ThemeMode, Passage } from './types';
-import { BookList } from './components/BookList';
+import { BookList, type LastReadInfo } from './components/BookList';
 import { Reader } from './components/Reader';
 import { SpeedReaderModal } from './components/SpeedReaderModal';
 import { SearchModal } from './components/SearchModal';
-import { preloadSearchIndex } from './utils/searchUtils';
 import { MutalaaDrawer } from './components/MutalaaDrawer';
 import { Loader2, AlertCircle, RotateCcw } from 'lucide-react';
 
@@ -15,9 +14,46 @@ export function App() {
   const [selectedBook, setSelectedBook] = useState<BookMeta | null>(null);
   const [currentChapter, setCurrentChapter] = useState<ChapterContent | null>(null);
   const [loadingChapter, setLoadingChapter] = useState(false);
-  const [theme, setTheme] = useState<ThemeMode>('sepia');
-  const [fontSize, setFontSize] = useState<number>(19);
+
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    try {
+      const saved = localStorage.getItem('nur_theme') as ThemeMode | null;
+      if (saved === 'light' || saved === 'sepia' || saved === 'dark' || saved === 'night') {
+        return saved;
+      }
+    } catch {
+      // ignore storage errors
+    }
+    return 'sepia';
+  });
+
+  const [fontSize, setFontSize] = useState<number>(() => {
+    try {
+      const saved = Number(localStorage.getItem('nur_font_size'));
+      if (!Number.isNaN(saved) && saved >= 14 && saved <= 32) {
+        return saved;
+      }
+    } catch {
+      // ignore storage errors
+    }
+    return 19;
+  });
+
+  const [lastRead, setLastRead] = useState<LastReadInfo | null>(() => {
+    try {
+      const raw = localStorage.getItem('nur_last_read');
+      if (raw) {
+        const parsed = JSON.parse(raw) as LastReadInfo;
+        if (parsed?.bookId && parsed?.chapterId) return parsed;
+      }
+    } catch {
+      // ignore storage errors
+    }
+    return null;
+  });
+
   const [speedReaderOpen, setSpeedReaderOpen] = useState(false);
+  const [speedReaderInitialText, setSpeedReaderInitialText] = useState<string | undefined>(undefined);
   const [searchOpen, setSearchOpen] = useState(false);
   const [highlightQuery, setHighlightQuery] = useState<string>('');
   const [targetPassageId, setTargetPassageId] = useState<string | undefined>(undefined);
@@ -39,7 +75,23 @@ export function App() {
     passage: null,
   });
 
-  // Tarayıcı / Telefon "Geri" (Back) tuşuna basıldığında Çapraz İzah listesinden gelindiyse aynı listeyi tekrar aç
+  useEffect(() => {
+    try {
+      localStorage.setItem('nur_theme', theme);
+    } catch {
+      // ignore
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('nur_font_size', String(fontSize));
+    } catch {
+      // ignore
+    }
+  }, [fontSize]);
+
+  // Tarayıcı / Telefon "Geri" (Back) tuşuna basıldığında Çapraz İzah listesinden gelindiyse aynı listeyi tekrar aç, değilse URL hash durumuna göre bahis veya ana sayfaya dön
   useEffect(() => {
     const handlePopState = () => {
       if (mutalaaState.passage && !mutalaaState.isOpen) {
@@ -47,11 +99,29 @@ export function App() {
           ...prev,
           isOpen: true,
         }));
+        return;
+      }
+
+      const rawHash = window.location.hash.replace(/^#/, '');
+      if (!rawHash) {
+        setCurrentChapter(null);
+        setHighlightQuery('');
+        setTargetPassageId(undefined);
+        return;
+      }
+
+      const [bookId, chapterId] = rawHash.split('/');
+      if (bookId && chapterId && books.length > 0) {
+        const targetBook = books.find((b) => b.id === bookId);
+        if (targetBook && (currentChapter?.id !== chapterId || selectedBook?.id !== bookId)) {
+          void fetchChapterContent(targetBook, chapterId, { skipHistoryPush: true });
+        }
       }
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [mutalaaState.passage, mutalaaState.isOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mutalaaState.passage, mutalaaState.isOpen, books, currentChapter?.id, selectedBook?.id]);
 
   const loadBooksIndex = useCallback(() => {
     fetch('./kulliyat/books-index.json')
@@ -65,8 +135,16 @@ export function App() {
         setBooks(data);
         setErrorMsg(null);
         if (data.length > 0) {
-          const sozler = data.find((b) => b.id.includes('sozler')) || data[0];
-          setSelectedBook(sozler);
+          const rawHash = window.location.hash.replace(/^#/, '');
+          const [hashBookId, hashChapterId] = rawHash.split('/');
+          const hashBook = hashBookId ? data.find((b) => b.id === hashBookId) : undefined;
+          if (hashBook && hashChapterId) {
+            setSelectedBook(hashBook);
+            void fetchChapterContent(hashBook, hashChapterId, { skipHistoryPush: true });
+          } else {
+            const sozler = data.find((b) => b.id.includes('sozler')) || data[0];
+            setSelectedBook(sozler);
+          }
         }
         setLoading(false);
       })
@@ -75,6 +153,7 @@ export function App() {
         setErrorMsg('Külliyat listesi yüklenemedi. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.');
         setLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -96,6 +175,7 @@ export function App() {
       passageId?: string;
       searchQuery?: string;
       keepMutalaa?: boolean;
+      skipHistoryPush?: boolean;
     }
   ) => {
     if (chapterAbortRef.current) {
@@ -125,10 +205,29 @@ export function App() {
 
       setCurrentChapter(data);
 
-      // Kullanıcı bir bölüm açtığında veri tasarrufu kapalıysa arama dizinini arka planda hazırla
-      const navConn = (navigator as unknown as { connection?: { saveData?: boolean } }).connection;
-      if (!navConn?.saveData) {
-        preloadSearchIndex().catch(() => {});
+      // Son okunan yeri kaydet ve URL hash güncelle
+      const info: LastReadInfo = {
+        bookId: book.id,
+        bookTitle: book.title,
+        chapterId: data.id,
+        chapterTitle: data.title,
+      };
+      setLastRead(info);
+      try {
+        localStorage.setItem('nur_last_read', JSON.stringify(info));
+      } catch {
+        // ignore storage errors
+      }
+
+      if (!options?.skipHistoryPush) {
+        try {
+          const targetHash = `#${book.id}/${data.id}`;
+          if (window.location.hash !== targetHash) {
+            window.history.pushState({ bookId: book.id, chapterId: data.id }, '', targetHash);
+          }
+        } catch {
+          // ignore history errors
+        }
       }
 
       if (options?.passageId) {
@@ -222,7 +321,7 @@ export function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 text-stone-800">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 dark:bg-stone-950 text-stone-800 dark:text-stone-200">
         <Loader2 className="w-8 h-8 animate-spin text-amber-600 mb-3" />
         <p className="font-serif text-lg">Külliyat yükleniyor...</p>
       </div>
@@ -248,7 +347,7 @@ export function App() {
             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shrink-0"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Kapat</span>
+            <span>{books.length === 0 ? 'Tekrar Dene' : 'Kapat'}</span>
           </button>
         </div>
       )}
@@ -275,12 +374,22 @@ export function App() {
               setHighlightQuery('');
               setTargetPassageId(undefined);
               setMutalaaState({ isOpen: false, passage: null });
+              try {
+                if (window.location.hash) {
+                  window.history.pushState(null, '', window.location.pathname + window.location.search);
+                }
+              } catch {
+                // ignore history errors
+              }
             }}
             onThemeChange={setTheme}
             onFontSizeChange={(delta) => setFontSize((prev) => Math.max(14, Math.min(32, prev + delta)))}
             onNextChapter={handleNextChapter}
             onPrevChapter={handlePrevChapter}
-            onOpenSpeedReader={() => setSpeedReaderOpen(true)}
+            onOpenSpeedReader={(startText) => {
+              setSpeedReaderInitialText(startText);
+              setSpeedReaderOpen(true);
+            }}
             onOpenSearch={() => setSearchOpen(true)}
             onOpenMutalaa={(passage, snippet) =>
               setMutalaaState({
@@ -304,11 +413,19 @@ export function App() {
           />
 
           <SpeedReaderModal
+            key={`${selectedBook.id}-${currentChapter.id}-${speedReaderInitialText || ''}`}
             isOpen={speedReaderOpen}
-            onClose={() => setSpeedReaderOpen(false)}
+            onClose={() => {
+              setSpeedReaderOpen(false);
+              setSpeedReaderInitialText(undefined);
+            }}
             title={currentChapter.title}
             bookTitle={selectedBook.title}
-            content={currentChapter.rawContent}
+            content={
+              currentChapter.rawContent ||
+              currentChapter.passages.map((p) => p.text).join('\n\n')
+            }
+            initialTextSnippet={speedReaderInitialText}
             theme={theme}
           />
 
@@ -356,12 +473,14 @@ export function App() {
           />
         </>
       ) : (
-        <div className="min-h-screen bg-stone-50 text-stone-900 transition-colors">
+        <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 transition-colors">
           <BookList
             books={books}
             selectedBook={selectedBook}
+            lastRead={lastRead}
             onSelectBook={handleSelectBook}
             onSelectChapter={handleSelectChapter}
+            onResumeLastRead={(info) => handleNavigateToBookChapter(info.bookId, info.chapterId)}
             onOpenSearch={() => setSearchOpen(true)}
           />
 

@@ -59,6 +59,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
   const [concepts, setConcepts] = useState<string[]>([]);
   const [activeConcept, setActiveConcept] = useState<string>('');
   const [customQuery, setCustomQuery] = useState<string>('');
+  const [exactWord, setExactWord] = useState<boolean>(false);
   const [visitedKeys, setVisitedKeys] = useState<Set<string>>(new Set());
 
   const lastSourceKeyRef = useRef<string>('');
@@ -81,8 +82,9 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
 
     lastSourceKeyRef.current = sourceKey;
     let cancelled = false;
+    const hasExplicitSelection = Boolean(selectedTextSnippet && selectedTextSnippet.trim().length > 0);
     const sourceText = (selectedTextSnippet || passageText).trim();
-    const extracted = extractConceptsFromText(sourceText);
+    const extracted = extractConceptsFromText(sourceText, hasExplicitSelection);
     setConcepts(extracted);
     setCustomQuery('');
     setVisitedKeys(new Set());
@@ -94,11 +96,12 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
         if (cancelled) return;
         setIndexData(data);
 
-        let chosen = extracted[0] || '';
+        let chosen = extracted[0] || (hasExplicitSelection ? sourceText.slice(0, 120) : '');
         for (const candidate of extracted) {
           const res = searchKulliyatPassages(data, candidate, {
             excludePassageId: passageId,
             excludeTitle: passageTitle,
+            excludeSnippet: selectedTextSnippet,
             maxResults: 5,
           });
           if (res.length > 0) {
@@ -125,7 +128,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
     };
   }, [isOpen, passageId, passageTitle, passageText, selectedTextSnippet]);
 
-  // Seçili kavramın Külliyat'taki diğer geçtiği cümleleri
+  // Seçili kelime, terkip veya cümlenin Külliyat'taki diğer geçtiği cümleleri
   const matches = useMemo(() => {
     if (!passageId || indexData.length === 0) return [];
     const queryToRun = activeConcept.trim();
@@ -133,9 +136,11 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
     return searchKulliyatPassages(indexData, queryToRun, {
       excludePassageId: passageId,
       excludeTitle: passageTitle,
-      maxResults: 40,
+      excludeSnippet: selectedTextSnippet,
+      exactWord,
+      maxResults: 80,
     });
-  }, [passageId, passageTitle, indexData, activeConcept]);
+  }, [passageId, passageTitle, selectedTextSnippet, indexData, activeConcept, exactWord]);
 
   if (!isOpen || !passage) return null;
 
@@ -220,13 +225,29 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
           </div>
         )}
 
-        {/* Kavram Seçici ve Özel Kavram Arama */}
+        {/* İbare / Terkip / Kelime Seçici ve Arama */}
         <div className="p-4 border-b border-black/10 dark:border-white/10 bg-stone-50 dark:bg-stone-950/40 space-y-3">
           {concepts.length > 0 && (
             <div className="space-y-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 block">
-                Metindeki Kavramlar & Terkipler (Tıklayıp Karşılaştırın):
-              </span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400">
+                  {selectedTextSnippet
+                    ? 'Seçilen İbare, Terkip ve Kelimeler:'
+                    : 'Bu Bahisteki Terkipler (Tıklayıp Ara):'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setExactWord((prev) => !prev)}
+                  className={`px-2 py-0.5 rounded-md text-[11px] font-semibold border transition-colors ${
+                    exactWord
+                      ? 'bg-amber-600 text-white border-amber-700'
+                      : 'bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-700'
+                  }`}
+                  title="Açık olduğunda kelimenin ek almış hallerini değil yalnızca tam eşleşmesini listeler"
+                >
+                  {exactWord ? '✓ Tam Kelime' : 'Tam Kelime'}
+                </button>
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 {concepts.map((concept) => {
                   const isSelected = activeConcept === concept;
@@ -234,9 +255,9 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
                     <button
                       key={concept}
                       onClick={() => handleSelectConcept(concept)}
-                      className={`px-3 py-1 rounded-lg text-xs font-serif font-semibold transition-all border ${
+                      className={`px-3 py-1 rounded-lg text-xs font-serif font-semibold transition-all border max-w-full truncate ${
                         isSelected
-                          ? 'bg-amber-600 text-white border-amber-700 shadow-xs scale-[1.02]'
+                          ? 'bg-amber-600 text-white border-amber-700 shadow-xs scale-[1.01]'
                           : 'bg-stone-200/90 text-stone-900 border-stone-300 hover:bg-amber-100 dark:bg-stone-800 dark:text-stone-100 dark:border-stone-700'
                       }`}
                     >
@@ -248,7 +269,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
             </div>
           )}
 
-          {/* İsteğe Bağlı Kelime/Terkip Arama Kutusu */}
+          {/* İsteğe Bağlı Kelime/Terkip/Cümle Arama Kutusu */}
           <form onSubmit={handleCustomSearchSubmit} className="flex items-center gap-2">
             <div className="relative flex-1">
               <Search className="w-3.5 h-3.5 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -256,7 +277,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
                 type="text"
                 value={customQuery}
                 onChange={(e) => setCustomQuery(e.target.value)}
-                placeholder="Başka bir kavram veya terkip yazın (örn: daire-i vücut)..."
+                placeholder="Kelime, terkip veya cümle yazın (örn: daire-i vücut)..."
                 className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-xs outline-none focus:border-amber-600"
               />
             </div>
@@ -309,7 +330,7 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
           ) : (
             <>
               <div className="text-[11px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400 pb-1">
-                "{activeConcept}" Kavramının Geçtiği Diğer Bahisler ({matches.length} yer)
+                "{activeConcept}" İbaresinin Geçtiği Cümleler ({matches.length}{matches.length === 80 ? '+' : ''} yer)
               </div>
 
               <div className="space-y-3">

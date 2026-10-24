@@ -19,6 +19,7 @@ interface SpeedReaderModalProps {
   bookTitle: string;
   content: string;
   theme: ThemeMode;
+  initialTextSnippet?: string;
 }
 
 const RTL_REGEX = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
@@ -32,6 +33,34 @@ function getOrpIndex(word: string): number {
   return 4;
 }
 
+function findInitialWordIndex(words: string[], snippet?: string): number {
+  if (!snippet || words.length === 0) return 0;
+
+  const normToken = (s: string) =>
+    s.toLowerCase().replace(/^[,.;:!?'"“”‘’()[\]-]+|[,.;:!?'"“”‘’()[\]-]+$/g, '');
+
+  const targetTokens = snippet
+    .trim()
+    .split(/\s+/)
+    .map(normToken)
+    .filter((t) => t.length > 0);
+
+  if (targetTokens.length === 0) return 0;
+
+  const searchLen = Math.min(targetTokens.length, 4);
+  for (let i = 0; i <= words.length - searchLen; i++) {
+    let match = true;
+    for (let j = 0; j < searchLen; j++) {
+      if (!normToken(words[i + j]).includes(targetTokens[j])) {
+        match = false;
+        break;
+      }
+    }
+    if (match) return i;
+  }
+  return 0;
+}
+
 export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
   isOpen,
   onClose,
@@ -39,26 +68,85 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
   bookTitle,
   content,
   theme,
+  initialTextSnippet,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [wpm, setWpm] = useState(350);
+  const [wpm, setWpm] = useState<number>(() => {
+    try {
+      const saved = Number(localStorage.getItem('nur_speed_wpm'));
+      return saved >= 100 && saved <= 900 ? saved : 350;
+    } catch {
+      return 350;
+    }
+  });
   const [chunkSize, setChunkSize] = useState<1 | 2 | 3>(1);
   const [showContext, setShowContext] = useState(true);
+  const [skipArabic, setSkipArabic] = useState(false);
   const [pauseOnPunctuation] = useState(true);
 
   const accumulatedTimeRef = useRef(0);
   const lastTickTimeRef = useRef(0);
   const rafIdRef = useRef<number | null>(null);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('nur_speed_wpm', String(wpm));
+    } catch {
+      // ignore storage error
+    }
+  }, [wpm]);
+
+  // Metni dipnot işaretlerinden ve ayraçlardan temizle, Arapça tek harfli bağlaçları yanındaki kelimeyle birleştir
   const words = useMemo(() => {
     if (!content) return [];
-    return content
+    const cleaned = content
       .replace(/\r\n/g, '\n')
+      .replace(/\*\*\*+/g, ' ')
+      .replace(/۞/g, ' ')
+      .replace(/\(\*+\[\d+\]\)/g, ' ')
+      .replace(/\(Hâşiye\[\d+\]\)/gi, ' ')
+      .replace(/\[\d+\]\s*\*/g, ' ')
+      .replace(/\[\d+\]/g, ' ');
+
+    const rawTokens = cleaned
       .split(/\s+/)
       .map((w) => w.trim())
-      .filter((w) => w.length > 0);
-  }, [content]);
+      .filter((w) => w.length > 0 && w !== '*');
+
+    const processed: string[] = [];
+    let i = 0;
+    while (i < rawTokens.length) {
+      const token = rawTokens[i];
+      const isAr = RTL_REGEX.test(token);
+      if (isAr) {
+        if (skipArabic) {
+          i++;
+          continue;
+        }
+        // Arapça tek/iki harfli edatları (و , فى , لا vb.) veya kısa ibareleri 2-3 kelimelik anlamlı grup yap
+        let group = token;
+        let count = 1;
+        while (
+          i + 1 < rawTokens.length &&
+          RTL_REGEX.test(rawTokens[i + 1]) &&
+          (group.length <= 4 || count < 3)
+        ) {
+          i++;
+          group += ' ' + rawTokens[i];
+          count++;
+        }
+        processed.push(group);
+      } else {
+        processed.push(token);
+      }
+      i++;
+    }
+    return processed;
+  }, [content, skipArabic]);
+
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    findInitialWordIndex(words, initialTextSnippet)
+  );
 
   // Word delay calculation with punctuation intelligence
   const getWordDelay = useCallback(
@@ -66,6 +154,9 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
       const baseDelay = (60 / Math.max(100, wpm)) * 1000 * chunkSize;
       if (!pauseOnPunctuation || !word) return baseDelay;
 
+      if (RTL_REGEX.test(word)) {
+        return baseDelay * 1.6;
+      }
       const lastChar = word.slice(-1);
       if (['.', '!', '?', '…'].includes(lastChar) || word.endsWith('...')) {
         return baseDelay * 1.8;
@@ -156,7 +247,8 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentWord = words[currentIndex] || '';
+  const safeIndex = Math.min(currentIndex, Math.max(0, words.length - 1));
+  const currentWord = words[safeIndex] || '';
   const isArabic = RTL_REGEX.test(currentWord);
 
   // Color pallet based on reader theme
@@ -173,7 +265,7 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
     }
   };
 
-  const currentChunk = words.slice(currentIndex, currentIndex + chunkSize).join(' ');
+  const currentChunk = words.slice(safeIndex, safeIndex + chunkSize).join(' ');
 
   // ORP segmentation for Single Word
   const orpIdx = getOrpIndex(currentWord);
@@ -182,14 +274,14 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
   const suffix = currentWord.substring(orpIdx + 1);
 
   // Context snippet around current index
-  const contextStart = Math.max(0, currentIndex - 12);
-  const contextEnd = Math.min(words.length, currentIndex + 18);
+  const contextStart = Math.max(0, safeIndex - 12);
+  const contextEnd = Math.min(words.length, safeIndex + 18);
 
-  const percent = words.length > 0 ? Math.round(((currentIndex + 1) / words.length) * 100) : 0;
-  const remainingMinutes = Math.ceil((words.length - currentIndex) / Math.max(100, wpm));
+  const percent = words.length > 0 ? Math.min(100, Math.round(((safeIndex + 1) / words.length) * 100)) : 0;
+  const remainingMinutes = Math.ceil(Math.max(0, words.length - safeIndex) / Math.max(100, wpm));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm">
       <div
         className={`w-full max-w-4xl rounded-3xl shadow-2xl border flex flex-col max-h-[92vh] overflow-hidden ${getModalBg()}`}
       >
@@ -213,6 +305,7 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
               onClose();
             }}
             className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            title="Kapat"
           >
             <X className="w-5 h-5" />
           </button>
@@ -233,8 +326,8 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
               {words.length === 0 ? (
                 <span className="text-sm opacity-50 font-sans">Metin bulunamadı</span>
               ) : isArabic ? (
-                <span className="text-amber-600 dark:text-amber-400 font-serif" dir="rtl">
-                  {currentChunk}
+                <span className="text-amber-700 dark:text-amber-400 font-serif text-center leading-relaxed" dir="rtl">
+                  {currentWord}
                 </span>
               ) : chunkSize === 1 ? (
                 <div className="flex items-baseline w-full font-mono">
@@ -254,7 +347,7 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
           </div>
 
           {/* Quick Tip */}
-          <div className="text-[11px] opacity-50 mt-4 font-mono">
+          <div className="text-[11px] opacity-50 mt-4 font-mono text-center">
             [Boşluk]: {isPlaying ? 'Durdur' : 'Başlat'} • [← / →]: Geri/İleri • [↑ / ↓]: Hız (WPM)
           </div>
         </div>
@@ -264,15 +357,19 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
           <div className="px-6 py-3 border-t border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 text-xs sm:text-sm font-serif leading-relaxed text-center line-clamp-2">
             {words.slice(contextStart, contextEnd).map((w, idx) => {
               const actualIdx = contextStart + idx;
-              const isCurr = actualIdx >= currentIndex && actualIdx < currentIndex + chunkSize;
+              const isCurr = actualIdx >= safeIndex && actualIdx < safeIndex + chunkSize;
               return (
                 <span
                   key={actualIdx}
-                  className={
+                  onClick={() => {
+                    setIsPlaying(false);
+                    setCurrentIndex(actualIdx);
+                  }}
+                  className={`cursor-pointer ${
                     isCurr
                       ? 'bg-amber-500/30 text-amber-900 dark:text-amber-200 font-bold px-1 rounded'
-                      : 'opacity-60'
-                  }
+                      : 'opacity-60 hover:opacity-100'
+                  }`}
                 >
                   {w}{' '}
                 </span>
@@ -287,7 +384,7 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
           <div className="space-y-1">
             <div className="flex justify-between text-xs font-mono opacity-60">
               <span>
-                {currentIndex + 1} / {words.length} kelime
+                {safeIndex + 1} / {words.length} adım
               </span>
               <span>
                 %{percent} • Kalan: ~{remainingMinutes} dk
@@ -297,7 +394,7 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
               type="range"
               min={0}
               max={Math.max(0, words.length - 1)}
-              value={currentIndex}
+              value={safeIndex}
               onChange={(e) => {
                 setIsPlaying(false);
                 setCurrentIndex(Number(e.target.value));
@@ -349,7 +446,7 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
             </div>
 
             {/* WPM and Options Deck */}
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5">
               {/* Presets */}
               <div className="hidden sm:flex items-center gap-1 text-xs font-mono">
                 {[250, 350, 450, 600].map((rate) => (
@@ -401,6 +498,19 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
                   3 Kelime
                 </option>
               </select>
+
+              {/* Arapça Göster / Atla Düğmesi */}
+              <button
+                onClick={() => setSkipArabic((prev) => !prev)}
+                className={`px-2.5 py-1.5 rounded-xl border text-xs font-medium transition-colors ${
+                  skipArabic
+                    ? 'bg-amber-600 text-white border-amber-600'
+                    : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
+                }`}
+                title="Arapça ibareleri hızlı okumada atla veya göster"
+              >
+                {skipArabic ? 'Arapça: Atla' : 'Arapça: Açık'}
+              </button>
 
               {/* Toggle Context */}
               <button

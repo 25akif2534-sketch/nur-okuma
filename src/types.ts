@@ -24,7 +24,7 @@ export interface ChapterContent {
   bookId: string;
   bookTitle: string;
   title: string;
-  rawContent: string;
+  rawContent?: string;
   passages: Passage[];
 }
 
