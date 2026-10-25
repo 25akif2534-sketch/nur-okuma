@@ -1,0 +1,6331 @@
+[
+  {
+    "id": "sozler",
+    "title": "Sözler",
+    "chapterCount": 36,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Birinci Söz",
+        "passageCount": 3,
+        "snippet": "Birinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ بِهٖ نَسْتَعٖينُ اَلْحَمْدُ لِلّٰهِ رَبِّ الْعَالَمٖينَ وَ الصَّلَاةُ وَ السَّلَامُ عَلٰى سَيِّدِنَا مُحَمّ",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "On Dördüncü Lem’a’nın İkinci Makamı"
+          }
+        ]
+      },
+      {
+        "id": "ch-2",
+        "title": "İkinci Söz",
+        "passageCount": 1,
+        "snippet": "İkinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلَّذٖينَ يُؤْمِنُونَ بِالْغَيْبِ İmanda ne kadar büyük bir saadet ve nimet ve ne kadar büyük bir lezzet ve ra"
+      },
+      {
+        "id": "ch-3",
+        "title": "Üçüncü Söz",
+        "passageCount": 1,
+        "snippet": "Üçüncü Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَٓا اَيُّهَا النَّاسُ اعْبُدُوا İbadet, ne büyük bir ticaret ve saadet; fısk ve sefahet, ne büyük bir hasaret"
+      },
+      {
+        "id": "ch-4",
+        "title": "Dördüncü Söz",
+        "passageCount": 1,
+        "snippet": "Dördüncü Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلصَّلَاةُ عِمَادُ الدّٖينِ Namaz, ne kadar kıymettar ve mühim hem ne kadar ucuz ve az bir masraf ile kazanı"
+      },
+      {
+        "id": "ch-5",
+        "title": "Beşinci Söz",
+        "passageCount": 1,
+        "snippet": "Beşinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اِنَّ اللّٰهَ مَعَ الَّذٖينَ اتَّقَوْا وَالَّذٖينَ هُمْ مُحْسِنُونَ Namaz kılmak ve büyük günahları işlememek,"
+      },
+      {
+        "id": "ch-6",
+        "title": "Altıncı Söz",
+        "passageCount": 1,
+        "snippet": "Altıncı Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اِنَّ اللّٰهَ اشْتَرٰى مِنَ الْمُؤْمِنٖينَ اَنْفُسَهُمْ وَاَمْوَالَهُمْ بِاَنَّ لَهُمُ الْجَنَّةَ Nefis ve mal"
+      },
+      {
+        "id": "ch-7",
+        "title": "Yedinci Söz",
+        "passageCount": 1,
+        "snippet": "Yedinci Söz Şu kâinatın tılsım-ı muğlakını açan اٰمَنْتُ بِاللّٰهِ وَ بِالْيَوْمِ الْاٰخِرِ ruh-u beşer için saadet kapısını fetheden ne kadar kıymettar iki tıl"
+      },
+      {
+        "id": "ch-8",
+        "title": "Sekizinci Söz",
+        "passageCount": 1,
+        "snippet": "Sekizinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَللّٰهُ لَٓا اِلٰهَ اِلَّا هُوَ الْحَىُّ الْقَيُّومُ ۞ اِنَّ الدّٖينَ عِنْدَ اللّٰهِ الْاِسْلَامُ Şu dünya"
+      },
+      {
+        "id": "ch-9",
+        "title": "Dokuzuncu Söz",
+        "passageCount": 6,
+        "snippet": "Dokuzuncu Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ فَسُبْحَانَ اللّٰهِ حٖينَ تُمْسُونَ وَحٖينَ تُصْبِحُونَ ۞ وَلَهُ الْحَمْدُ فِى السَّمٰوَاتِ وَالْاَرْضِ وَعَ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "Onuncu Söz",
+        "passageCount": 22,
+        "snippet": "Onuncu Söz Haşir Bahsi İhtar: Şu risalelerde teşbih ve temsilleri, hikâyeler suretinde yazdığımın sebebi hem teshil hem hakaik-i İslâmiye ne kadar makul, mütena",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Hakikat"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Hakikat"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Hakikat"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Hakikat"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Hakikat"
+          },
+          {
+            "id": "p-8",
+            "title": "Altıncı Hakikat"
+          },
+          {
+            "id": "p-9",
+            "title": "Yedinci Hakikat"
+          },
+          {
+            "id": "p-10",
+            "title": "Sekizinci Hakikat"
+          },
+          {
+            "id": "p-11",
+            "title": "Dokuzuncu Hakikat"
+          },
+          {
+            "id": "p-12",
+            "title": "Onuncu Hakikat"
+          },
+          {
+            "id": "p-13",
+            "title": "On Birinci Hakikat"
+          },
+          {
+            "id": "p-14",
+            "title": "On İkinci Hakikat"
+          },
+          {
+            "id": "p-15",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-16",
+            "title": "Onuncu Söz’ün Mühim Bir Zeyli ve Lâhikasının Birinci Parçası"
+          },
+          {
+            "id": "p-18",
+            "title": "Zeylin İkinci Parçası"
+          },
+          {
+            "id": "p-19",
+            "title": "Zeylin Üçüncü Parçası"
+          },
+          {
+            "id": "p-20",
+            "title": "Zeylin Dördüncü Parçası"
+          },
+          {
+            "id": "p-21",
+            "title": "Zeylin Beşinci Parçası"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "On Birinci Söz",
+        "passageCount": 1,
+        "snippet": "On Birinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَالشَّمْسِ وَضُحٰيهَا ۞ وَالْقَمَرِ اِذَا تَلٰيهَا ۞ وَالنَّهَارِ اِذَا جَلّٰيهَا ۞ وَ الَّيْلِ اِذَا يَغْ"
+      },
+      {
+        "id": "ch-12",
+        "title": "On İkinci Söz",
+        "passageCount": 1,
+        "snippet": "On İkinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَمَنْ يُؤْتَ الْحِكْمَةَ فَقَدْ اُوتِىَ خَيْرًا كَثٖيرًا Kur’an-ı Hakîm’in hikmet-i kudsiyesi ile felsefe h"
+      },
+      {
+        "id": "ch-13",
+        "title": "On Üçüncü Söz",
+        "passageCount": 12,
+        "snippet": "On Üçüncü Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَنُنَزِّلُ مِنَ الْقُرْاٰنِ مَا هُوَ شِفَٓاءٌ وَرَحْمَةٌ لِلْمُؤْمِنٖينَ ۞ وَمَا عَلَّمْنَاهُ الشِّعْرَ وَم",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "On Üçüncü Söz’ün İkinci Makamı"
+          },
+          {
+            "id": "p-8",
+            "title": "Leyle-i Kadirde İhtar Edilen Bir Mesele-i Mühimme"
+          },
+          {
+            "id": "p-9",
+            "title": "On Üçüncü Söz’ün İkinci Makamı’nın Zeyli"
+          },
+          {
+            "id": "p-10",
+            "title": "Meyve Risalesi’nden Altıncı Mesele"
+          },
+          {
+            "id": "p-11",
+            "title": "Hüve Nüktesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-14",
+        "title": "On Dördüncü Söz",
+        "passageCount": 4,
+        "snippet": "On Dördüncü Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ الٓرٰ كِتَابٌ اُحْكِمَتْ اٰيَاتُهُ ثُمَّ فُصِّلَتْ مِنْ لَدُنْ حَكٖيمٍ خَبٖيرٍ Kur’an-ı Hakîm’in ve Kur’an",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-3",
+            "title": "On Dördüncü Söz’ün Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-15",
+        "title": "On Beşinci Söz",
+        "passageCount": 4,
+        "snippet": "On Beşinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَلَقَدْ زَيَّنَّا السَّمَٓاءَ الدُّنْيَا بِمَصَابٖيحَ وَجَعَلْنَاهَا رُجُومًا لِلشَّيَاطٖينِ Ey kozmoğrafy",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "On Beşinci Söz’ün Zeyli"
+          },
+          {
+            "id": "p-3",
+            "title": "Yirmi Altıncı Mektup’un Birinci Mebhası"
+          }
+        ]
+      },
+      {
+        "id": "ch-16",
+        "title": "On Altıncı Söz",
+        "passageCount": 6,
+        "snippet": "On Altıncı Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اِنَّمَٓا اَمْرُهُٓ اِذَٓا اَرَادَ شَيْئًا اَنْ يَقُولَ لَهُ كُنْ فَيَكُونُ ۞ فَسُبْحَانَ الَّذٖى بِيَدِهٖ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Şuâ"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Şuâ"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Şuâ"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Şuâ"
+          },
+          {
+            "id": "p-6",
+            "title": "Küçük Bir Zeyl"
+          }
+        ]
+      },
+      {
+        "id": "ch-17",
+        "title": "On Yedinci Söz",
+        "passageCount": 10,
+        "snippet": "On Yedinci Söz بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اِنَّا جَعَلْنَا مَا عَلَى الْاَرْضِ زٖينَةً لَهَا لِنَبْلُوَهُمْ اَيُّهُمْ اَحْسَنُ عَمَلًا ۞ وَاِنَّا لَج",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "On Yedinci Söz’ün İkinci Makamı"
+          },
+          {
+            "id": "p-3",
+            "title": "Siyah Dutun Bir Meyvesi"
+          },
+          {
+            "id": "p-4",
+            "title": "Kalbe Farisî Olarak Tahattur Eden Bir Münâcat"
+          }
+        ]
+      },
+      {
+        "id": "ch-18",
+        "title": "On Sekizinci Söz",
+        "passageCount": 7,
+        "snippet": "On Sekizinci Söz Bu sözün iki makamı var. İkinci Makamı daha yazılmamıştır.",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Makamı"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Nokta"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Nokta"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Nokta"
+          }
+        ]
+      },
+      {
+        "id": "ch-19",
+        "title": "On Dokuzuncu Söz",
+        "passageCount": 2,
+        "snippet": "On Dokuzuncu Söz Risalet-i Ahmediyeye Dairdir وَ مَا مَدَحْتُ مُحَمَّدًا بِمَقَالَتٖى § وَ لٰكِنْ مَدَحْتُ مَقَالَتٖى بِمُحَمَّدٍ (ع.ص.م) Evet, şu söz güzeldir."
+      },
+      {
+        "id": "ch-20",
+        "title": "Yirminci Söz",
+        "passageCount": 7,
+        "snippet": "Yirminci Söz İki Makamdır",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Makam"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Yirminci Söz’ün İkinci Makamı"
+          }
+        ]
+      },
+      {
+        "id": "ch-21",
+        "title": "Yirmi Birinci Söz",
+        "passageCount": 4,
+        "snippet": "Yirmi Birinci Söz İki makamdır.",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Makam"
+          },
+          {
+            "id": "p-3",
+            "title": "Yirmi Birinci Söz’ün İkinci Makamı"
+          }
+        ]
+      },
+      {
+        "id": "ch-22",
+        "title": "Yirmi İkinci Söz",
+        "passageCount": 17,
+        "snippet": "Yirmi İkinci Söz İki makamdır",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Makam"
+          },
+          {
+            "id": "p-3",
+            "title": "Yirmi İkinci Söz’ün İkinci Makamı"
+          },
+          {
+            "id": "p-4",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-5",
+            "title": "Birinci Lem’a"
+          },
+          {
+            "id": "p-6",
+            "title": "Birinci nükte içinde bir ihtar"
+          },
+          {
+            "id": "p-7",
+            "title": "İkinci Lem’a"
+          },
+          {
+            "id": "p-8",
+            "title": "Üçüncü Lem’a"
+          },
+          {
+            "id": "p-9",
+            "title": "Dördüncü Lem’a"
+          },
+          {
+            "id": "p-10",
+            "title": "Beşinci Lem’a"
+          },
+          {
+            "id": "p-11",
+            "title": "Altıncı Lem’a"
+          },
+          {
+            "id": "p-12",
+            "title": "Yedinci Lem’a"
+          },
+          {
+            "id": "p-13",
+            "title": "Sekizinci Lem’a"
+          },
+          {
+            "id": "p-14",
+            "title": "Dokuzuncu Lem’a"
+          },
+          {
+            "id": "p-15",
+            "title": "Onuncu Lem’a"
+          },
+          {
+            "id": "p-16",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-23",
+        "title": "Yirmi Üçüncü Söz",
+        "passageCount": 13,
+        "snippet": "Yirmi Üçüncü Söz Şu sözün iki mebhası vardır. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ لَقَدْ خَلَقْنَا الْاِنْسَانَ فٖٓى اَحْسَنِ تَقْوٖيمٍ ۞ ثُمَّ رَدَدْنَاهُ اَ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mebhas"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Nokta"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Nokta"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Nokta"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Nokta"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Nokta"
+          },
+          {
+            "id": "p-8",
+            "title": "İkinci Mebhas"
+          },
+          {
+            "id": "p-9",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-10",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-11",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-12",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-13",
+            "title": "Beşinci Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-24",
+        "title": "Yirmi Dördüncü Söz",
+        "passageCount": 2,
+        "snippet": "Yirmi Dördüncü Söz Şu Söz beş daldır. Dördüncü Dal’a dikkat et. Beşinci Dal’a yapış çık, meyvelerini kopar al. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَللّٰهُ لَ"
+      },
+      {
+        "id": "ch-25",
+        "title": "Yirmi Beşinci Söz",
+        "passageCount": 16,
+        "snippet": "Yirmi Beşinci Söz Mu’cizat-ı Kur’aniye Risalesi Elde Kur’an gibi bir mu’cize-i bâki varken Başka bürhan aramak aklıma zâid görünür. Elde Kur’an gibi bir bürhan-",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "İhtar"
+          },
+          {
+            "id": "p-4",
+            "title": "Mu’cizat-ı Kur’aniye Risalesi"
+          },
+          {
+            "id": "p-5",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-6",
+            "title": "BİRİNCİ ŞULE"
+          },
+          {
+            "id": "p-7",
+            "title": "Birinci Şuâ"
+          },
+          {
+            "id": "p-8",
+            "title": "İkinci Şuâ"
+          },
+          {
+            "id": "p-9",
+            "title": "Üçüncü Şuâ"
+          },
+          {
+            "id": "p-10",
+            "title": "İKİNCİ ŞULE"
+          },
+          {
+            "id": "p-11",
+            "title": "ÜÇÜNCÜ ŞULE"
+          },
+          {
+            "id": "p-12",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-13",
+            "title": "BİRİNCİ ZEYL"
+          },
+          {
+            "id": "p-14",
+            "title": "On Birinci Şuâ Olan Meyve Risalesi’nin Onuncu Meselesi"
+          },
+          {
+            "id": "p-15",
+            "title": "Bu Onuncu Meseleye Bir Hâtime Olarak İki Hâşiyedir"
+          }
+        ]
+      },
+      {
+        "id": "ch-26",
+        "title": "Yirmi Altıncı Söz",
+        "passageCount": 9,
+        "snippet": "Yirmi Altıncı Söz Kader Risalesi بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ اِنْ مِنْ شَىْءٍ اِلَّا عِنْدَنَا خَزَٓائِنُهُ وَمَا نُنَزِّلُهُٓ اِلَّا بِقَدَرٍ مَعْ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mebhas"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mebhas"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mebhas"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Mebhas"
+          },
+          {
+            "id": "p-6",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-7",
+            "title": "Zeyl"
+          }
+        ]
+      },
+      {
+        "id": "ch-27",
+        "title": "Yirmi Yedinci Söz",
+        "passageCount": 4,
+        "snippet": "Yirmi Yedinci Söz İçtihad Risalesi Beş altı sene mukaddem, Arabî bir risalede, içtihada dair yazdığım bir mesele, iki kardeşimin arzularıyla, o meseleye dair ha",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-3",
+            "title": "Yirmi Yedinci Söz’ün Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-28",
+        "title": "Yirmi Sekizinci Söz",
+        "passageCount": 3,
+        "snippet": "Yirmi Sekizinci Söz Şu söz, cennete dairdir. Şu Söz’ün iki makamı var. Birinci Makam, cennetin bazı letaifine işaret eder. Fakat Onuncu Söz’de on iki hakikat-i",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Cennet Sözüne Küçük Bir Zeyl"
+          }
+        ]
+      },
+      {
+        "id": "ch-29",
+        "title": "Yirmi Dokuzuncu Söz",
+        "passageCount": 6,
+        "snippet": "Yirmi Dokuzuncu Söz Beka-i Ruh ve Melaike ve Haşre Dairdir اَعُوذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجٖيمِ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ تَنَزَّلُ الْمَل",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Maksat"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Maksat"
+          }
+        ]
+      },
+      {
+        "id": "ch-30",
+        "title": "Otuzuncu Söz",
+        "passageCount": 9,
+        "snippet": "Tılsım-ı kâinatı keşfeden, Kur’an-ı Hakîm’in mühim bir tılsımını halleden",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Birinci Maksat"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Maksat"
+          },
+          {
+            "id": "p-5",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-6",
+            "title": "Birinci Nokta"
+          },
+          {
+            "id": "p-7",
+            "title": "İkinci Nokta"
+          },
+          {
+            "id": "p-8",
+            "title": "Üçüncü Nokta"
+          }
+        ]
+      },
+      {
+        "id": "ch-31",
+        "title": "Otuz Birinci Söz",
+        "passageCount": 3,
+        "snippet": "Otuz Birinci Söz Mi’rac-ı Nebeviyeye dairdir İhtar: Mi’rac meselesi, erkân-ı imaniyenin usûlünden sonra terettüp eden bir neticedir. Ve erkân-ı imaniyenin nurla",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "ON DOKUZUNCU VE OTUZ BİRİNCİ SÖZLERİN ZEYLİ"
+          }
+        ]
+      },
+      {
+        "id": "ch-32",
+        "title": "Otuz İkinci Söz",
+        "passageCount": 14,
+        "snippet": "Otuz İkinci Söz Şu Söz üç mevkıftır. Yirmi İkinci Söz’ün Sekizinci Lem’a’sını izah eden bir zeyldir. Mevcudat-ı âlem, vahdaniyete şehadet ettikleri elli beş lis",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "BİRİNCİ MEVKIF"
+          },
+          {
+            "id": "p-4",
+            "title": "Birinci Mevkıf’ın Küçük Bir Zeyli"
+          },
+          {
+            "id": "p-5",
+            "title": "İKİNCİ MEVKIF"
+          },
+          {
+            "id": "p-6",
+            "title": "Birinci Maksat"
+          },
+          {
+            "id": "p-7",
+            "title": "İkinci Maksat"
+          },
+          {
+            "id": "p-8",
+            "title": "Üçüncü Maksat"
+          },
+          {
+            "id": "p-9",
+            "title": "ÜÇÜNCÜ MEVKIF"
+          },
+          {
+            "id": "p-10",
+            "title": "Birinci Mebhas"
+          },
+          {
+            "id": "p-11",
+            "title": "İkinci Nokta’nın İkinci Mebhası"
+          },
+          {
+            "id": "p-12",
+            "title": "Tenbih"
+          },
+          {
+            "id": "p-13",
+            "title": "MÜNÂCAT"
+          }
+        ]
+      },
+      {
+        "id": "ch-33",
+        "title": "Otuz Üçüncü Söz",
+        "passageCount": 36,
+        "snippet": "Otuz Üçüncü Söz Otuz Üç Penceredir Bir cihette Otuz Üçüncü Mektup ve bir cihette Otuz Üçüncü Söz. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ سَنُرٖيهِمْ اٰيَاتِنَا ف",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Pencere"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Pencere"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Pencere"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Pencere"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Pencere"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı Pencere"
+          },
+          {
+            "id": "p-8",
+            "title": "Yedinci Pencere"
+          },
+          {
+            "id": "p-9",
+            "title": "Sekizinci Pencere"
+          },
+          {
+            "id": "p-10",
+            "title": "Dokuzuncu Pencere"
+          },
+          {
+            "id": "p-11",
+            "title": "Onuncu Pencere"
+          },
+          {
+            "id": "p-12",
+            "title": "On Birinci Pencere"
+          },
+          {
+            "id": "p-13",
+            "title": "On İkinci Pencere"
+          },
+          {
+            "id": "p-14",
+            "title": "On Üçüncü Pencere"
+          },
+          {
+            "id": "p-15",
+            "title": "On Dördüncü Pencere"
+          },
+          {
+            "id": "p-16",
+            "title": "On Beşinci Pencere"
+          },
+          {
+            "id": "p-17",
+            "title": "On Altıncı Pencere"
+          },
+          {
+            "id": "p-18",
+            "title": "On Yedinci Pencere"
+          },
+          {
+            "id": "p-19",
+            "title": "On Sekizinci Pencere"
+          },
+          {
+            "id": "p-20",
+            "title": "On Dokuzuncu Pencere"
+          },
+          {
+            "id": "p-21",
+            "title": "Yirminci Pencere (Hâşiye[2])"
+          },
+          {
+            "id": "p-22",
+            "title": "Yirmi Birinci Pencere"
+          },
+          {
+            "id": "p-23",
+            "title": "Yirmi İkinci Pencere"
+          },
+          {
+            "id": "p-24",
+            "title": "Yirmi Üçüncü Pencere"
+          },
+          {
+            "id": "p-25",
+            "title": "Yirmi Dördüncü Pencere"
+          },
+          {
+            "id": "p-26",
+            "title": "Yirmi Beşinci Pencere"
+          },
+          {
+            "id": "p-27",
+            "title": "Yirmi Altıncı Pencere (Hâşiye[3])"
+          },
+          {
+            "id": "p-28",
+            "title": "Yirmi Yedinci Pencere"
+          },
+          {
+            "id": "p-29",
+            "title": "Yirmi Sekizinci Pencere"
+          },
+          {
+            "id": "p-30",
+            "title": "Yirmi Dokuzuncu Pencere"
+          },
+          {
+            "id": "p-31",
+            "title": "Otuzuncu Pencere"
+          },
+          {
+            "id": "p-32",
+            "title": "Otuz Birinci Pencere"
+          },
+          {
+            "id": "p-33",
+            "title": "Otuz İkinci Pencere"
+          },
+          {
+            "id": "p-34",
+            "title": "Otuz Üçüncü Pencere"
+          },
+          {
+            "id": "p-35",
+            "title": "İhtar"
+          }
+        ]
+      },
+      {
+        "id": "ch-34",
+        "title": "Lemaat (Sözler)",
+        "passageCount": 92,
+        "snippet": "Lemaat مِنْ بَيْنِ هِلَالِ الصَّوْمِ وَ هِلَالِ الْعٖيدِ Çekirdekler Çiçekleri Risale-i Nur şakirdlerine küçük bir mesnevî ve imanî bir divandır. Müellifi: Bedî",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Tenbih"
+          },
+          {
+            "id": "p-3",
+            "title": "İhtar"
+          },
+          {
+            "id": "p-5",
+            "title": "Sebep sırf zahirîdir"
+          },
+          {
+            "id": "p-10",
+            "title": "Küçük şeyler büyük şeylerle merbuttur"
+          },
+          {
+            "id": "p-11",
+            "title": "Kâinatın nazmında büyük bir i’caz var"
+          },
+          {
+            "id": "p-12",
+            "title": "Kudrete nisbet her şey müsavidir"
+          },
+          {
+            "id": "p-17",
+            "title": "Fıtratın şehadeti sadıkadır"
+          },
+          {
+            "id": "p-18",
+            "title": "Nübüvvet beşerde zaruriyedir"
+          },
+          {
+            "id": "p-20",
+            "title": "Kelime-i şehadetin bürhanı içindedir"
+          },
+          {
+            "id": "p-21",
+            "title": "Hayat bir çeşit tecelli-i vahdettir"
+          },
+          {
+            "id": "p-24",
+            "title": "Hayat sebebiyle karınca küreden büyük olur"
+          },
+          {
+            "id": "p-25",
+            "title": "Nasraniyet İslâmiyet’e teslim olacak"
+          },
+          {
+            "id": "p-29",
+            "title": "Kudretin âyineleri çoktur"
+          },
+          {
+            "id": "p-30",
+            "title": "Temessülün aksamı muhtelifedir"
+          },
+          {
+            "id": "p-34",
+            "title": "Hazmolmayan ilim telkin edilmemeli"
+          },
+          {
+            "id": "p-36",
+            "title": "Kuvvet hakka hizmetkâr olmalı"
+          },
+          {
+            "id": "p-38",
+            "title": "Menfaati esas tutan siyaset canavardır"
+          },
+          {
+            "id": "p-41",
+            "title": "Gaye-i hayal olmazsa enaniyet kuvvetleşir"
+          },
+          {
+            "id": "p-43",
+            "title": "Beşer hayatını isterse enva-ı ribayı öldürmeli"
+          },
+          {
+            "id": "p-46",
+            "title": "Cebir ve İtizal’de birer dane-i hakikat bulunur"
+          },
+          {
+            "id": "p-47",
+            "title": "Acz ve cez’ bîçarelerin kârıdır"
+          },
+          {
+            "id": "p-51",
+            "title": "Bir meclis-i misalîde"
+          },
+          {
+            "id": "p-53",
+            "title": "Mübalağa zemm-i zımnîdir"
+          },
+          {
+            "id": "p-54",
+            "title": "Şöhret zalimedir"
+          },
+          {
+            "id": "p-59",
+            "title": "Beğendiğin şeyde ifrat etme"
+          },
+          {
+            "id": "p-61",
+            "title": "Hakkı bulduktan sonra ehak için ihtilafı çıkarma"
+          },
+          {
+            "id": "p-65",
+            "title": "Allah’ın rahmet ve gazabından fazla tahassüs hatadır"
+          },
+          {
+            "id": "p-68",
+            "title": "Niyet gibi tarz-ı nazar dahi âdeti ibadete çevirir"
+          },
+          {
+            "id": "p-70",
+            "title": "Zaman olur ki adem-i nimet nimettir"
+          },
+          {
+            "id": "p-72",
+            "title": "Büyük görünme küçülürsün"
+          },
+          {
+            "id": "p-73",
+            "title": "Hasletlerin yerleri değişse mahiyetleri değişir"
+          },
+          {
+            "id": "p-75",
+            "title": "Bir kısım desatir-i içtimaiye"
+          },
+          {
+            "id": "p-86",
+            "title": "Îcaz ile beyan i’caz-ı Kur’an"
+          },
+          {
+            "id": "p-88",
+            "title": "Dallar semeratı rahmet namına takdim ediyor"
+          },
+          {
+            "id": "p-89",
+            "title": "Fatiha’nın âhirinde işaret olunan üç yolun beyanı"
+          },
+          {
+            "id": "p-91",
+            "title": "Anglikan Kilisesine Cevap"
+          }
+        ]
+      },
+      {
+        "id": "ch-35",
+        "title": "Konferans (Sözler)",
+        "passageCount": 3,
+        "snippet": "KONFERANS Teşrin-i sânî 1950’de Ankara Üniversitesinde, profesör ve mebuslarımız ve Pakistanlı misafirlerimiz ve muhtelif fakülte talebelerinin huzurunda, fakül"
+      },
+      {
+        "id": "ch-36",
+        "title": "Fihrist (Sözler)",
+        "passageCount": 2,
+        "snippet": "Fihrist Âyât-ı Kur’aniyenin bir nevi tefsiri olan Risale-i Nur eczalarından “Sözler mecmuası”nın mücmel bir fihristesidir. BİRİNCİ SÖZ: بِسْمِ اللّٰهِ الرَّحْمٰ"
+      }
+    ]
+  },
+  {
+    "id": "mektubat",
+    "title": "Mektubat",
+    "chapterCount": 39,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Birinci Mektup",
+        "passageCount": 2,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ بِهٖ نَسْتَعٖينُ"
+      },
+      {
+        "id": "ch-2",
+        "title": "İkinci Mektup",
+        "passageCount": 1,
+        "snippet": "İkinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ (O mezkûr ve malûm talebesinin hediyesine karşı cevaptan bir parçadır.) Sâli"
+      },
+      {
+        "id": "ch-3",
+        "title": "Üçüncü Mektup",
+        "passageCount": 1,
+        "snippet": "Üçüncü Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ (O malûm talebesine gönderilen mektubun bir parçasıdır.) Hâmisen: Bir mektup"
+      },
+      {
+        "id": "ch-4",
+        "title": "Dördüncü Mektup",
+        "passageCount": 2,
+        "snippet": "Dördüncü Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ سَلَامُ اللّٰهِ وَ رَحْمَتُهُ وَ بَرَكَاتُهُ عَلَيْكُمْ وَ عَلٰى اِخْوَانِ"
+      },
+      {
+        "id": "ch-5",
+        "title": "Beşinci Mektup",
+        "passageCount": 1,
+        "snippet": "Beşinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Silsile-i Nakşî’nin kahramanı ve bir güneşi olan İmam-ı Rabbanî (ra) Mektub"
+      },
+      {
+        "id": "ch-6",
+        "title": "Altıncı Mektup",
+        "passageCount": 1,
+        "snippet": "Altıncı Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ سَلَامُ اللّٰهِ وَ رَحْمَتُهُ وَ بَرَكَاتُهُ عَلَيْكُمَا وَ عَلٰى اِخْوَانِ"
+      },
+      {
+        "id": "ch-7",
+        "title": "Yedinci Mektup",
+        "passageCount": 1,
+        "snippet": "Yedinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ اَبَدًا دَائِمًا"
+      },
+      {
+        "id": "ch-8",
+        "title": "Sekizinci Mektup",
+        "passageCount": 1,
+        "snippet": "Sekizinci Mektup بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلرَّحْمٰنِ الرَّحٖيمِ isimleri بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ e girdiklerini"
+      },
+      {
+        "id": "ch-9",
+        "title": "Dokuzuncu Mektup",
+        "passageCount": 1,
+        "snippet": "Dokuzuncu Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ (Yine o hâlis talebesine gönderdiği mektubun bir parçasıdır.) Sâniyen: Ne"
+      },
+      {
+        "id": "ch-10",
+        "title": "Onuncu Mektup",
+        "passageCount": 1,
+        "snippet": "Onuncu Mektup (İki sualin cevabıdır) بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Birincisi: Otuzuncu Söz’ün İkinci Maksat’ının tahavvülat-ı zerrat"
+      },
+      {
+        "id": "ch-11",
+        "title": "On Birinci Mektup",
+        "passageCount": 1,
+        "snippet": "On Birinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Bu mektup, mühim bir ilaç olup dört âyetin hazinesinden dört küçük cevhe"
+      },
+      {
+        "id": "ch-12",
+        "title": "On İkinci Mektup",
+        "passageCount": 1,
+        "snippet": "On İkinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ عَلٰى رُفَقَائِكُمْ Aziz kardeşlerim! O gece be"
+      },
+      {
+        "id": "ch-13",
+        "title": "On Üçüncü Mektup",
+        "passageCount": 1,
+        "snippet": "On Üçüncü Mektup بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلٰى مَنِ اتَّبَعَ الْهُدٰى وَالْمَلَامُ عَلٰى مَنِ اتَّبَعَ الْهَوٰى Az"
+      },
+      {
+        "id": "ch-14",
+        "title": "On Dördüncü Mektup",
+        "passageCount": 1,
+        "snippet": "On Dördüncü Mektup Telif edilmemiştir."
+      },
+      {
+        "id": "ch-15",
+        "title": "On Beşinci Mektup",
+        "passageCount": 2,
+        "snippet": "On Beşinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Aziz kardeşim! Senin birinci sualin ki: Sahabeler nazar-ı velayetle müfs"
+      },
+      {
+        "id": "ch-16",
+        "title": "On Altıncı Mektup",
+        "passageCount": 8,
+        "snippet": "On Altıncı Mektup بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلَّذٖينَ قَالَ لَهُمُ النَّاسُ اِنَّ النَّاسَ قَدْ جَمَعُوا لَكُمْ فَاخْشَوْهُمْ فَزَادَهُمْ اٖيمَانًا",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Nokta"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Nokta"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Nokta"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Nokta"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Nokta"
+          },
+          {
+            "id": "p-7",
+            "title": "On Altıncı Mektup’un Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-17",
+        "title": "On Yedinci Mektup",
+        "passageCount": 1,
+        "snippet": "On Yedinci Mektup Yirmi Beşinci Lem’a’nın Zeyli Çocuk Taziyenamesi بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Aziz âhiret kardeşim Hâfız Hâlid Ef"
+      },
+      {
+        "id": "ch-18",
+        "title": "On Sekizinci Mektup",
+        "passageCount": 4,
+        "snippet": "On Sekizinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Bu mektup üç mesele-i mühimmedir.",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mesele-i Mühimme"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mesele-i Mühimme"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mesele"
+          }
+        ]
+      },
+      {
+        "id": "ch-19",
+        "title": "On Dokuzuncu Mektup",
+        "passageCount": 21,
+        "snippet": "On Dokuzuncu Mektup Bu risale, üç yüzden fazla mu’cizatı beyan eder. Risalet-i Ahmediyenin (asm) mu’cizesini beyan ettiği gibi kendisi de o mu’cizenin bir keram",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mu’cizat-ı Ahmediye (asm)"
+          },
+          {
+            "id": "p-3",
+            "title": "Sekizinci İşaret"
+          },
+          {
+            "id": "p-4",
+            "title": "Dokuzuncu İşaret"
+          },
+          {
+            "id": "p-5",
+            "title": "Onuncu İşaret"
+          },
+          {
+            "id": "p-6",
+            "title": "On Birinci İşaret"
+          },
+          {
+            "id": "p-7",
+            "title": "On İkinci İşaret"
+          },
+          {
+            "id": "p-8",
+            "title": "On Üçüncü İşaret"
+          },
+          {
+            "id": "p-9",
+            "title": "Bu parça altın ve elmas ile yazılsa liyakati var"
+          },
+          {
+            "id": "p-11",
+            "title": "On Dördüncü İşaret"
+          },
+          {
+            "id": "p-12",
+            "title": "On Beşinci İşaret"
+          },
+          {
+            "id": "p-13",
+            "title": "On Altıncı İşaret"
+          },
+          {
+            "id": "p-14",
+            "title": "On Yedinci İşaret"
+          },
+          {
+            "id": "p-15",
+            "title": "On Sekizinci İşaret"
+          },
+          {
+            "id": "p-16",
+            "title": "Bir İkram-ı İlahî ve Bir Eser-i İnayet-i Rabbaniye"
+          },
+          {
+            "id": "p-17",
+            "title": "Mu’cizat-ı Ahmediye’nin Birinci Zeyli"
+          },
+          {
+            "id": "p-18",
+            "title": "Şakk-ı Kamer Mu’cizesine Dairdir"
+          },
+          {
+            "id": "p-19",
+            "title": "Mu’cizat-ı Ahmediye (asm) Zeylinin Bir Parçasıdır"
+          }
+        ]
+      },
+      {
+        "id": "ch-20",
+        "title": "Yirminci Mektup",
+        "passageCount": 28,
+        "snippet": "Yirminci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ لَا اِلٰهَ اِلَّا اللّٰهُ وَحْدَهُ ل",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "BİRİNCİ MAKAM"
+          },
+          {
+            "id": "p-4",
+            "title": "Birinci Kelime"
+          },
+          {
+            "id": "p-5",
+            "title": "İkinci Kelime"
+          },
+          {
+            "id": "p-6",
+            "title": "Üçüncü Kelime"
+          },
+          {
+            "id": "p-7",
+            "title": "Dördüncü Kelime"
+          },
+          {
+            "id": "p-8",
+            "title": "Beşinci Kelime"
+          },
+          {
+            "id": "p-9",
+            "title": "Altıncı Kelime"
+          },
+          {
+            "id": "p-10",
+            "title": "Yedinci Kelime"
+          },
+          {
+            "id": "p-11",
+            "title": "Sekizinci Kelime"
+          },
+          {
+            "id": "p-12",
+            "title": "Dokuzuncu Kelime"
+          },
+          {
+            "id": "p-13",
+            "title": "Onuncu Kelime"
+          },
+          {
+            "id": "p-14",
+            "title": "On Birinci Kelime"
+          },
+          {
+            "id": "p-15",
+            "title": "İKİNCİ MAKAM"
+          },
+          {
+            "id": "p-27",
+            "title": "Yirminci Mektup’un Onuncu Kelimesine Zeyldir"
+          }
+        ]
+      },
+      {
+        "id": "ch-21",
+        "title": "Yirmi Birinci Mektup",
+        "passageCount": 1,
+        "snippet": "Yirmi Birinci Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اِمَّا يَبْلُغَنَّ عِنْدَكَ الْ"
+      },
+      {
+        "id": "ch-22",
+        "title": "Yirmi İkinci Mektup",
+        "passageCount": 5,
+        "snippet": "Yirmi İkinci Mektup بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Şu Mektup, iki mebhastır. Birinci Mebhas, ehl-i imanı uhuvvete ve muhabbete davet",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mebhas"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mebhas"
+          },
+          {
+            "id": "p-4",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-23",
+        "title": "Yirmi Üçüncü Mektup",
+        "passageCount": 1,
+        "snippet": "Yirmi Üçüncü Mektup بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ اَبَدًا بِعَ"
+      },
+      {
+        "id": "ch-24",
+        "title": "Yirmi Dördüncü Mektup",
+        "passageCount": 17,
+        "snippet": "Yirmi Dördüncü Mektup بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَفْعَلُ اللّٰهُ مَا يَشَٓاءُ ۞ وَ يَحْكُمُ مَا يُرٖيدُ Sual: Eâzım-ı esma-i İlahiyeden olan Rahîm v",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "BİRİNCİ MAKAM"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Remiz"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Remiz"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Remiz"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Remiz"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Remiz"
+          },
+          {
+            "id": "p-8",
+            "title": "İKİNCİ MAKAM"
+          },
+          {
+            "id": "p-9",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-10",
+            "title": "Birinci İşaret"
+          },
+          {
+            "id": "p-11",
+            "title": "İkinci İşaret"
+          },
+          {
+            "id": "p-12",
+            "title": "Üçüncü İşaret"
+          },
+          {
+            "id": "p-13",
+            "title": "Dördüncü İşaret"
+          },
+          {
+            "id": "p-14",
+            "title": "Beşinci İşaret"
+          },
+          {
+            "id": "p-15",
+            "title": "Yirmi Dördüncü Mektup’un Birinci Zeyli"
+          },
+          {
+            "id": "p-16",
+            "title": "Yirmi Dördüncü Mektup’un İkinci Zeyli"
+          },
+          {
+            "id": "p-17",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-25",
+        "title": "Yirmi Beşinci Mektup",
+        "passageCount": 1,
+        "snippet": "Yirmi Beşinci Mektup Telif edilmemiştir."
+      },
+      {
+        "id": "ch-26",
+        "title": "Yirmi Altıncı Mektup",
+        "passageCount": 15,
+        "snippet": "Yirmi Altıncı Mektup Şu Yirmi Altıncı Mektup, birbiriyle münasebeti az dört mebhastır.",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mebhas"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mebhas"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mebhas"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Mebhas"
+          },
+          {
+            "id": "p-6",
+            "title": "İkinci Mesele"
+          },
+          {
+            "id": "p-7",
+            "title": "Üçüncü Mesele"
+          },
+          {
+            "id": "p-8",
+            "title": "Dördüncü Mesele"
+          },
+          {
+            "id": "p-9",
+            "title": "Beşinci Mesele"
+          },
+          {
+            "id": "p-10",
+            "title": "Altıncı Mesele"
+          },
+          {
+            "id": "p-11",
+            "title": "Yedinci Mesele"
+          },
+          {
+            "id": "p-12",
+            "title": "Sekizinci Mesele"
+          },
+          {
+            "id": "p-13",
+            "title": "Dokuzuncu Mesele"
+          },
+          {
+            "id": "p-14",
+            "title": "Onuncu Mesele"
+          }
+        ]
+      },
+      {
+        "id": "ch-27",
+        "title": "Yirmi Yedinci Mektup",
+        "passageCount": 1,
+        "snippet": "Yirmi Yedinci Mektup (Bu mektup, Risale-i Nur Müellifinin talebelerine yazdığı ayn-ı hakikat ve çok letafetli, güzel mektuplarıyla; Risale-i Nur talebelerinin,"
+      },
+      {
+        "id": "ch-28",
+        "title": "Yirmi Sekizinci Mektup",
+        "passageCount": 21,
+        "snippet": "Yirmi Sekizinci Mektup Şu Mektup sekiz meseledir.",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Risale Olan Birinci Mesele"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mesele Olan İkinci Risale"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mesele Olan Üçüncü Risale"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Risale Olan Dördüncü Mesele"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Risale Olan Beşinci Mesele"
+          },
+          {
+            "id": "p-8",
+            "title": "Altıncı Risale Olan Altıncı Mesele"
+          },
+          {
+            "id": "p-9",
+            "title": "Yedinci Risale Olan Yedinci Mesele"
+          },
+          {
+            "id": "p-10",
+            "title": "Mahrem Bir Suale Cevaptır"
+          },
+          {
+            "id": "p-11",
+            "title": "Yedinci Mesele’nin Hâtimesidir"
+          },
+          {
+            "id": "p-14",
+            "title": "Sekizinci Risale olan Sekizinci Mesele"
+          },
+          {
+            "id": "p-15",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-16",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-17",
+            "title": "Beşinci Nükte"
+          },
+          {
+            "id": "p-18",
+            "title": "Altıncı Nükte"
+          },
+          {
+            "id": "p-19",
+            "title": "Yedinci Nükte"
+          },
+          {
+            "id": "p-20",
+            "title": "Sekizinci Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-29",
+        "title": "Yirmi Dokuzuncu Mektup",
+        "passageCount": 47,
+        "snippet": "Yirmi Dokuzuncu Mektup Yirmi Dokuzuncu Mektup dokuz kısımdır. Bu kısım Birinci Kısım’dır Dokuz nüktedir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ اِنْ مِنْ شَىْ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Nükte"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı Nükte"
+          },
+          {
+            "id": "p-8",
+            "title": "Yedinci Nükte"
+          },
+          {
+            "id": "p-9",
+            "title": "Sekizinci Nükte"
+          },
+          {
+            "id": "p-10",
+            "title": "Dokuzuncu Nükte"
+          },
+          {
+            "id": "p-11",
+            "title": "İkinci Risale Olan İkinci Kısım"
+          },
+          {
+            "id": "p-22",
+            "title": "Üçüncü Risale Olan Üçüncü Kısım"
+          },
+          {
+            "id": "p-23",
+            "title": "Birinci Mesele"
+          },
+          {
+            "id": "p-25",
+            "title": "Beşinci Risale Olan Beşinci Kısım"
+          },
+          {
+            "id": "p-26",
+            "title": "Altıncı Risale Olan Altıncı Kısım"
+          },
+          {
+            "id": "p-27",
+            "title": "Birinci Desise"
+          },
+          {
+            "id": "p-28",
+            "title": "İkinci Desise"
+          },
+          {
+            "id": "p-29",
+            "title": "Üçüncü Desise-i Şeytaniye"
+          },
+          {
+            "id": "p-30",
+            "title": "Dördüncü Desise-i Şeytaniye"
+          },
+          {
+            "id": "p-31",
+            "title": "Beşinci Desise-i Şeytaniye"
+          },
+          {
+            "id": "p-32",
+            "title": "Altıncı Desise-i Şeytaniye şudur ki"
+          },
+          {
+            "id": "p-33",
+            "title": "Kudsî Bir Tarihçe"
+          },
+          {
+            "id": "p-34",
+            "title": "Altıncı Risale Olan Altıncı Kısmın Zeyli"
+          },
+          {
+            "id": "p-35",
+            "title": "Yedinci Kısım"
+          },
+          {
+            "id": "p-36",
+            "title": "Birinci İşaret"
+          },
+          {
+            "id": "p-37",
+            "title": "İkinci İşaret"
+          },
+          {
+            "id": "p-38",
+            "title": "Üçüncü İşaret"
+          },
+          {
+            "id": "p-39",
+            "title": "Dördüncü İşaret"
+          },
+          {
+            "id": "p-40",
+            "title": "Birinci İşaret ki Beşinci İşaret’tir"
+          },
+          {
+            "id": "p-41",
+            "title": "İkinci İşaret yani Altıncı İşaret"
+          },
+          {
+            "id": "p-42",
+            "title": "Yedinci İşaret yani Üçüncü Sual"
+          },
+          {
+            "id": "p-43",
+            "title": "Sekizinci Kısım Olan Rumuzat-ı Semaniye"
+          },
+          {
+            "id": "p-44",
+            "title": "Dokuzuncu Kısım"
+          },
+          {
+            "id": "p-45",
+            "title": "Zeyl"
+          },
+          {
+            "id": "p-46",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-30",
+        "title": "Otuzuncu Mektup",
+        "passageCount": 1,
+        "snippet": "Otuzuncu Mektup Matbu, Arabî “İşaratü’l-İ’caz Tefsiri”dir."
+      },
+      {
+        "id": "ch-31",
+        "title": "Otuz Birinci Mektup",
+        "passageCount": 1,
+        "snippet": "Otuz Birinci Mektup Otuz bir “Lem’a”dır."
+      },
+      {
+        "id": "ch-32",
+        "title": "Otuz İkinci Mektup",
+        "passageCount": 1,
+        "snippet": "Otuz İkinci Mektup Kendi kendine manzum tarzını alan matbu “Lemaat” risalesidir. Aynı zamanda “Otuz İkinci Lem’a” olup Sözler mecmuasının âhirinde neşredilmişti"
+      },
+      {
+        "id": "ch-33",
+        "title": "Otuz Üçüncü Mektup",
+        "passageCount": 1,
+        "snippet": "Otuz Üçüncü Mektup Marifet-i İlahiyeye pencereler açan “Otuz Üç Pencereli Risale” olup bir cihette “Otuz Üçüncü Söz” olduğundan Sözler mecmuasında neşredilmiş,"
+      },
+      {
+        "id": "ch-34",
+        "title": "İşarat-ı Gaybiye Hakkında Bir Takriz",
+        "passageCount": 3,
+        "snippet": "İşarat-ı Gaybiye Hakkında Bir Takriz İmam-ı Ali radıyallahu anhın, Risale-i Nur hakkında ihbar-ı gaybîsinden bir parça olan bu kısım; Sikke-i Tasdik-i Gaybî mec",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Yedinci Remiz"
+          },
+          {
+            "id": "p-3",
+            "title": "Sekizinci Remiz"
+          }
+        ]
+      },
+      {
+        "id": "ch-35",
+        "title": "Hakikat Çekirdekleri",
+        "passageCount": 2,
+        "snippet": "Hakikat Çekirdekleri Otuz beş sene evvel tabedilen “Hakikat Çekirdekleri” namındaki risaleden vecizelerdir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلْحَمْدُ لِل"
+      },
+      {
+        "id": "ch-36",
+        "title": "Gönüller Fatihi Büyük Üstada",
+        "passageCount": 2,
+        "snippet": "Medine-i Münevvere’de bulunan mühim bir âlimin, Risale-i Nur hakkında yazdığı bir manzumesidir. Gönüller Fatihi Büyük Üstada Nuruyla bütün gönlümü fetheyleyen ü"
+      },
+      {
+        "id": "ch-37",
+        "title": "Fihriste-i Mektubat",
+        "passageCount": 27,
+        "snippet": "Fihriste-i Mektubat BİRİNCİ MEKTUP: Dört sualin cevabıdır. Birinci Sual: Hazret-i Hızır’ın hayatı hakkında ve o münasebetle hayatın beş mertebesini gayet güzel",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Bu Mektubun Birinci Mebhası"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Mebhas"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Mebhas"
+          },
+          {
+            "id": "p-5",
+            "title": "Birinci Risale Olan Birinci Mesele"
+          },
+          {
+            "id": "p-6",
+            "title": "İkinci Mesele Olan İkinci Risale"
+          },
+          {
+            "id": "p-7",
+            "title": "Üçüncü Mesele Olan Üçüncü Risale"
+          },
+          {
+            "id": "p-8",
+            "title": "Dördüncü Risale Olan Dördüncü Mesele"
+          },
+          {
+            "id": "p-9",
+            "title": "Beşinci Risale Olan Beşinci Mesele"
+          },
+          {
+            "id": "p-10",
+            "title": "Altıncı Risale Olan Altıncı Mesele"
+          },
+          {
+            "id": "p-11",
+            "title": "Yedinci Risale Olan Yedinci Mesele"
+          },
+          {
+            "id": "p-12",
+            "title": "Sekizinci Risale Olan Sekizinci Mesele"
+          },
+          {
+            "id": "p-13",
+            "title": "YİRMİ DOKUZUNCU MEKTUP"
+          },
+          {
+            "id": "p-14",
+            "title": "Birinci Risale Olan Birinci Kısım"
+          },
+          {
+            "id": "p-15",
+            "title": "İkinci Risale Olan İkinci Kısım"
+          },
+          {
+            "id": "p-16",
+            "title": "Üçüncü Risale Olan Üçüncü Kısım"
+          },
+          {
+            "id": "p-17",
+            "title": "Dördüncü Kısım Olan Dördüncü Risale"
+          },
+          {
+            "id": "p-18",
+            "title": "Beşinci Risale Olan Beşinci Kısım"
+          },
+          {
+            "id": "p-19",
+            "title": "Altıncı Risale Olan Altıncı Kısım"
+          },
+          {
+            "id": "p-20",
+            "title": "Sekizinci Kısım Olan Rumuzat-ı Semaniye"
+          },
+          {
+            "id": "p-21",
+            "title": "Dokuzuncu Kısım Olan Dokuzuncu Risale"
+          },
+          {
+            "id": "p-22",
+            "title": "ZEYL"
+          },
+          {
+            "id": "p-23",
+            "title": "OTUZUNCU MEKTUP"
+          },
+          {
+            "id": "p-24",
+            "title": "OTUZ BİRİNCİ MEKTUP"
+          },
+          {
+            "id": "p-25",
+            "title": "OTUZ İKİNCİ MEKTUP"
+          },
+          {
+            "id": "p-26",
+            "title": "OTUZ ÜÇÜNCÜ MEKTUP"
+          }
+        ]
+      },
+      {
+        "id": "ch-38",
+        "title": "Hakikat Işıkları",
+        "passageCount": 1,
+        "snippet": "Hakikat Işıkları Herkes bilmez gökte ne var Görür onu göz sahibi Parıldıyor güneş kadar Hakikati umman gibi İster gönül elbet huzur Âhir demde etmiş zuhur Âleml"
+      },
+      {
+        "id": "ch-39",
+        "title": "Dua (Mektubat)",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَا اَللّٰهُ يَا رَحْمٰنُ يَا رَحٖيمُ يَا فَرْدُ يَا حَىُّ يَا قَيُّومُ يَا حَكَمُ يَا عَدْلُ يَا قُدُّوسُ İsm-i a’zamın h"
+      }
+    ]
+  },
+  {
+    "id": "lem-alar",
+    "title": "Lem'alar",
+    "chapterCount": 36,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Birinci Lem'a",
+        "passageCount": 2,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ فَنَادٰى فِى الظُّلُمَاتِ اَنْ لَٓا اِلٰهَ اِلَّٓا اَنْتَ سُبْحَانَكَ اِنّٖى كُنْتُ مِنَ الظَّالِمٖينَ ۞ اِذْ نَادٰى رَبَّ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-2",
+        "title": "İkinci Lem'a",
+        "passageCount": 7,
+        "snippet": "İkinci Lem’a بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اِذْ نَادٰى رَبَّهُٓ اَنّٖى مَسَّنِىَ الضُّرُّ وَاَنْتَ اَرْحَمُ الرَّاحِمٖينَ Sabır kahramanı Hazret-i Eyyüb",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "İkinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Nükte"
+          },
+          {
+            "id": "p-7",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "Üçüncü Lem'a",
+        "passageCount": 5,
+        "snippet": "Üçüncü Lem’a Bu Lem’a’ya bir derece his ve zevk karışmış. His ve zevkin coşkunlukları ise aklın düsturlarını, fikrin mizanlarını çok dinlemediklerinden ve müraa",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Üçüncü Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "Dördüncü Lem'a",
+        "passageCount": 8,
+        "snippet": "Dördüncü Lem’a “Minhacü’s-Sünne” bu risaleye lâyık görülmüştür. “Mesele-i İmamet” bir mesele-i fer’iye olduğu halde, ziyade ehemmiyet verildiğinden bir mesail-i",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Dördüncü Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci Makam"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-7",
+            "title": "İkinci Makam"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "Beşinci Lem'a",
+        "passageCount": 2,
+        "snippet": "Beşinci Lem’a (*[1]) حَسْبُنَا اللّٰهُ وَنِعْمَ الْوَكٖيلُ âyetinin gayet mühim bir hakikatini on beş mertebe ile beyan edecek bir risale olacaktı. Fakat hakika",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Beşinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "Altıncı Lem'a",
+        "passageCount": 1,
+        "snippet": "Altıncı Lem’a (*[1]) لَا حَوْلَ وَلَا قُوَّةَ اِلَّا بِاللّٰهِ الْعَلِىِّ الْعَظٖيمِ cümlesinin ifade ettiği çok âyâtın mühim hakikatini yine on beş yirmi merte",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Altıncı Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-7",
+        "title": "Yedinci Lem'a",
+        "passageCount": 5,
+        "snippet": "Yedinci Lem’a Sure-i Feth’in âhirindeki âyetin yedi nevi ihbar-ı gaybîsine dairdir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ لَقَدْ صَدَقَ اللّٰهُ رَسُولَهُ الرُّؤ",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yedinci Lem’a"
+          },
+          {
+            "id": "p-3",
+            "title": "BU TETİMMEYE İKİNCİ BİR İZAH (*[1])"
+          },
+          {
+            "id": "p-4",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "Sekizinci Lem'a",
+        "passageCount": 1,
+        "snippet": "Sekizinci Lem’a Keramet-i Gavsiye Risalesi’dir. Sikke-i Tasdik-i Gaybî mecmuasında ve hatt-ı Kur’an Lem’alar mecmuasında neşredilmiştir.",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Sekizinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "Dokuzuncu Lem'a",
+        "passageCount": 1,
+        "snippet": "Dokuzuncu Lem’a Hatt-ı Kur’an Lem’alar mecmuasında neşredilmiştir.",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Dokuzuncu Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "Onuncu Lem'a",
+        "passageCount": 2,
+        "snippet": "Onuncu Lem’a Şefkat Tokatları Risalesi بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَوْمَ تَجِدُ كُلُّ نَفْسٍ مَا عَمِلَتْ مِنْ خَيْرٍ مُحْضَرًا وَمَا عَمِلَتْ مِنْ س",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Onuncu Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "On Birinci Lem'a",
+        "passageCount": 12,
+        "snippet": "On Birinci Lem’a Mirkatü’s-Sünneti ve Tiryaku Marazı’l-Bid’a بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ لَقَدْ جَٓاءَكُمْ رَسُولٌ مِنْ اَنْفُسِكُمْ عَزٖيزٌ عَلَيْهِ",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Birinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Nükte"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı Nükte"
+          },
+          {
+            "id": "p-8",
+            "title": "Yedinci Nükte"
+          },
+          {
+            "id": "p-9",
+            "title": "Sekizinci Nükte"
+          },
+          {
+            "id": "p-10",
+            "title": "Dokuzuncu Nükte"
+          },
+          {
+            "id": "p-11",
+            "title": "Onuncu Nükte"
+          },
+          {
+            "id": "p-12",
+            "title": "On Birinci Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-12",
+        "title": "On İkinci Lem'a",
+        "passageCount": 2,
+        "snippet": "On İkinci Lem’a Re’fet Bey’in iki cüz’î suali münasebetiyle, iki nükte-i Kur’aniyenin beyanına dairdir. بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّ",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On İkinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-13",
+        "title": "On Üçüncü Lem'a",
+        "passageCount": 14,
+        "snippet": "On Üçüncü Lem’a اَعُوذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجٖيمِ sırrına dairdir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَقُلْ رَبِّ اَعُوذُ بِكَ مِنْ هَمَزَاتِ ا",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Üçüncü Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci İşaret"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci İşaret"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü İşaret"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü İşaret"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci İşaret"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı İşaret"
+          },
+          {
+            "id": "p-8",
+            "title": "Yedinci İşaret"
+          },
+          {
+            "id": "p-9",
+            "title": "Sekizinci İşaret"
+          },
+          {
+            "id": "p-10",
+            "title": "Dokuzuncu İşaret"
+          },
+          {
+            "id": "p-11",
+            "title": "Onuncu İşaret"
+          },
+          {
+            "id": "p-12",
+            "title": "On Birinci İşaret"
+          },
+          {
+            "id": "p-13",
+            "title": "On İkinci İşaret"
+          },
+          {
+            "id": "p-14",
+            "title": "On Üçüncü İşaret"
+          }
+        ]
+      },
+      {
+        "id": "ch-14",
+        "title": "On Dördüncü Lem'a",
+        "passageCount": 4,
+        "snippet": "On Dördüncü Lem’a İki Makamdır.",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Dördüncü Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci Makamı"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Makam"
+          }
+        ]
+      },
+      {
+        "id": "ch-15",
+        "title": "On Beşinci Lem'a",
+        "passageCount": 1,
+        "snippet": "On Beşinci Lem’a Risale-i Nur Külliyatı’nın Sözler, Mektubat ve On Dördüncü Lem’a’ya kadar olan kısmının fihristesidir. Her kısmın fihristesi, yani Sözler kısmı",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Beşinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-16",
+        "title": "On Altıncı Lem'a",
+        "passageCount": 5,
+        "snippet": "On Altıncı Lem’a بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ Aziz, sıddık kardeşlerim Ho",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Altıncı Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-17",
+        "title": "On Yedinci Lem'a",
+        "passageCount": 18,
+        "snippet": "On Yedinci Lem’a Zühre’den gelmiş on beş notadan ibarettir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Yedinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Nota"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Nota"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Nota"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Nota"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Nota"
+          },
+          {
+            "id": "p-8",
+            "title": "Altıncı Nota"
+          },
+          {
+            "id": "p-9",
+            "title": "Yedinci Nota"
+          },
+          {
+            "id": "p-10",
+            "title": "Sekizinci Nota"
+          },
+          {
+            "id": "p-11",
+            "title": "Dokuzuncu Nota"
+          },
+          {
+            "id": "p-12",
+            "title": "Onuncu Nota"
+          },
+          {
+            "id": "p-13",
+            "title": "On Birinci Nota"
+          },
+          {
+            "id": "p-14",
+            "title": "On İkinci Nota"
+          },
+          {
+            "id": "p-15",
+            "title": "On Üçüncü Nota"
+          },
+          {
+            "id": "p-16",
+            "title": "On Dördüncü Nota"
+          },
+          {
+            "id": "p-17",
+            "title": "ON BEŞİNCİ NOTA"
+          }
+        ]
+      },
+      {
+        "id": "ch-18",
+        "title": "On Sekizinci Lem'a",
+        "passageCount": 1,
+        "snippet": "On Sekizinci Lem’a Hatt-ı Kur’an Lem’alar ve Sikke-i Tasdik-i Gaybî mecmuasında neşredilmiştir.",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Sekizinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-19",
+        "title": "On Dokuzuncu Lem'a",
+        "passageCount": 9,
+        "snippet": "On Dokuzuncu Lem’a İktisat Risalesi İktisat ve kanaate, israf ve tebzire dairdir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ كُلُوا وَ اشْرَبُوا وَ لَا تُسْرِفُوا Şu",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Dokuzuncu Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Nükte"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı Nükte"
+          },
+          {
+            "id": "p-8",
+            "title": "Yedinci Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-20",
+        "title": "Yirminci Lem'a",
+        "passageCount": 9,
+        "snippet": "Yirminci Lem’a İhlas hakkında On Yedinci Lem’a’nın On Yedinci Nota’sının yedi meselesinden, beş noktadan ibaret olan İkinci Mesele’sinin Birinci Nokta’sı iken,",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirminci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "BİRİNCİ NOKTA"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Sebep"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Sebep"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Sebep"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Sebep"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı Sebep"
+          },
+          {
+            "id": "p-8",
+            "title": "Yedinci Sebep"
+          }
+        ]
+      },
+      {
+        "id": "ch-21",
+        "title": "Yirmi Birinci Lem'a",
+        "passageCount": 3,
+        "snippet": "Yirmi Birinci Lem’a İhlas hakkında On Yedinci Lem’a’nın On Yedinci Nota’sının yedi meselesinden Dördüncü Meselesi iken, ihlas münasebetiyle Yirminci Lem’a’nın İ",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Birinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Bir kısım kardeşlerime hususi bir mektuptur"
+          }
+        ]
+      },
+      {
+        "id": "ch-22",
+        "title": "Yirmi İkinci Lem'a",
+        "passageCount": 6,
+        "snippet": "Yirmi İkinci Lem’a بِاسْمِهٖ سُبْحَانَهُ Isparta’nın âdil valisine ve adliyesine ve zabıtasına, en mahrem ve en has ve hâlis kardeşlerime mahsus olarak yirmi ik",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi İkinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci İşaret"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci İşaret"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü İşaret"
+          },
+          {
+            "id": "p-5",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-23",
+        "title": "Yirmi Üçüncü Lem'a",
+        "passageCount": 5,
+        "snippet": "Yirmi Üçüncü Lem’a Tabiat Risalesi On Yedinci Lem’a’nın On Altıncı Notası iken, ehemmiyetine binaen Yirmi Üçüncü Lem’a olmuştur. Tabiattan gelen fikr-i küfrîyi",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Üçüncü Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "İhtar"
+          },
+          {
+            "id": "p-3",
+            "title": "Üçüncü Kelime"
+          },
+          {
+            "id": "p-4",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-24",
+        "title": "Yirmi Dördüncü Lem'a",
+        "passageCount": 3,
+        "snippet": "Yirmi Dördüncü Lem’a Tesettür hakkında On Beşinci Nota’nın İkinci ve Üçüncü Meseleleri iken ehemmiyetine binaen Yirmi Dördüncü Lem’a olmuştur. بِسْمِ اللّٰهِ ال",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Dördüncü Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-25",
+        "title": "Yirmi Beşinci Lem'a",
+        "passageCount": 31,
+        "snippet": "Yirmi Beşinci Lem’a Yirmi beş devadır. Hastalara bir merhem, bir teselli, manevî bir reçete, bir iyadetü’l-mariz ve geçmiş olsun makamında yazılmıştır.",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Beşinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "İhtar ve İ’tizar"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Deva"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Deva"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Deva"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Deva"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Deva"
+          },
+          {
+            "id": "p-8",
+            "title": "Altıncı Deva"
+          },
+          {
+            "id": "p-9",
+            "title": "Altıncı Deva (Hâşiye[2])"
+          },
+          {
+            "id": "p-10",
+            "title": "Yedinci Deva"
+          },
+          {
+            "id": "p-11",
+            "title": "Sekizinci Deva"
+          },
+          {
+            "id": "p-12",
+            "title": "Dokuzuncu Deva"
+          },
+          {
+            "id": "p-13",
+            "title": "Onuncu Deva"
+          },
+          {
+            "id": "p-14",
+            "title": "On Birinci Deva"
+          },
+          {
+            "id": "p-15",
+            "title": "On İkinci Deva"
+          },
+          {
+            "id": "p-16",
+            "title": "On Üçüncü Deva"
+          },
+          {
+            "id": "p-17",
+            "title": "On Dördüncü Deva"
+          },
+          {
+            "id": "p-18",
+            "title": "On Beşinci Deva"
+          },
+          {
+            "id": "p-19",
+            "title": "On Altıncı Deva"
+          },
+          {
+            "id": "p-20",
+            "title": "On Yedinci Deva"
+          },
+          {
+            "id": "p-21",
+            "title": "On Sekizinci Deva"
+          },
+          {
+            "id": "p-22",
+            "title": "On Dokuzuncu Deva"
+          },
+          {
+            "id": "p-23",
+            "title": "Yirminci Deva"
+          },
+          {
+            "id": "p-24",
+            "title": "Yirmi Birinci Deva"
+          },
+          {
+            "id": "p-25",
+            "title": "Yirmi İkinci Deva"
+          },
+          {
+            "id": "p-26",
+            "title": "Yirmi Üçüncü Deva"
+          },
+          {
+            "id": "p-27",
+            "title": "Yirmi Dördüncü Deva"
+          },
+          {
+            "id": "p-28",
+            "title": "Yirmi Beşinci Deva"
+          },
+          {
+            "id": "p-30",
+            "title": "Yirmi Beşinci Lem’a’nın Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-26",
+        "title": "Yirmi Altıncı Lem'a",
+        "passageCount": 21,
+        "snippet": "Yirmi Altıncı Lem’a İhtiyarlar Lem’ası Yirmi altı rica ve ziya-yı teselliyi câmi’dir. İhtar: Her bir “rica”nın başında manevî derdimi gayet elîm ve sizi müteess",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Altıncı Lem’a"
+          },
+          {
+            "id": "p-4",
+            "title": "Birinci Rica"
+          },
+          {
+            "id": "p-5",
+            "title": "İkinci Rica"
+          },
+          {
+            "id": "p-6",
+            "title": "Üçüncü Rica"
+          },
+          {
+            "id": "p-7",
+            "title": "Dördüncü Rica"
+          },
+          {
+            "id": "p-8",
+            "title": "Beşinci Rica"
+          },
+          {
+            "id": "p-9",
+            "title": "Altıncı Rica"
+          },
+          {
+            "id": "p-10",
+            "title": "Yedinci Rica"
+          },
+          {
+            "id": "p-11",
+            "title": "Sekizinci Rica"
+          },
+          {
+            "id": "p-12",
+            "title": "Dokuzuncu Rica"
+          },
+          {
+            "id": "p-13",
+            "title": "Onuncu Rica"
+          },
+          {
+            "id": "p-14",
+            "title": "On Birinci Rica"
+          },
+          {
+            "id": "p-15",
+            "title": "On İkinci Rica"
+          },
+          {
+            "id": "p-16",
+            "title": "On Üçüncü Rica (Hâşiye[9])"
+          },
+          {
+            "id": "p-17",
+            "title": "On Dördüncü Rica"
+          },
+          {
+            "id": "p-18",
+            "title": "On Beşinci Rica (Hâşiye[11])"
+          },
+          {
+            "id": "p-19",
+            "title": "On Altıncı Rica"
+          },
+          {
+            "id": "p-20",
+            "title": "Yirmi Altıncı Lem’a’nın Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-27",
+        "title": "Yirmi Yedinci Lem'a",
+        "passageCount": 1,
+        "snippet": "Yirmi Yedinci Lem’a Eskişehir Mahkeme Müdafaası olup Hatt-ı Kur’an Lem’alar mecmuasında ve kısmen de Tarihçe-i Hayat’ta neşredilmiştir.",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Yedinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-28",
+        "title": "Yirmi Sekizinci Lem'a",
+        "passageCount": 15,
+        "snippet": "Yirmi Sekizinci Lem’a Bazı kısımları buraya dercedilen bu risalenin tamamı, Hatt-ı Kur’an Lem’alar mecmuasında neşredilmiştir.",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Sekizinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Bir Suale Cevap"
+          },
+          {
+            "id": "p-10",
+            "title": "Manidar Bir Tevafuk-u Latîfe"
+          },
+          {
+            "id": "p-12",
+            "title": "Zekâi’nin Rüyası"
+          },
+          {
+            "id": "p-14",
+            "title": "Yirmi Sekizinci Lem’a’nın Yirmi Sekizinci Nüktesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-29",
+        "title": "Yirmi Dokuzuncu Lem'a",
+        "passageCount": 3,
+        "snippet": "Yirmi Dokuzuncu Lem’a بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ İfade-i Meram On üç seneden beri kalbim, aklım ile imtizaç edip Kur’an-ı Mu’cizü’l-Beyan’ın لَعَلَّك",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Dokuzuncu Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-30",
+        "title": "Otuzuncu Lem'a",
+        "passageCount": 10,
+        "snippet": "Otuzuncu Lem’a Otuz Birinci Mektup’un Otuzuncu Lem’a’sı ve Eskişehir Hapishanesinin bir meyvesi Altı nüktedir. Denizli Medrese-i Yusufiyesinin bir ders-i a’zamı",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Otuzuncu Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-3",
+            "title": "Otuzuncu Lem’a’nın İkinci Nüktesi"
+          },
+          {
+            "id": "p-4",
+            "title": "İsm-i a’zamın altı nurundan üçüncü nuruna işaret eden"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-6",
+            "title": "Otuzuncu Lem’a’nın Dördüncü Nüktesi"
+          },
+          {
+            "id": "p-7",
+            "title": "Otuzuncu Lem’a’nın Beşinci Nüktesi"
+          },
+          {
+            "id": "p-8",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-9",
+            "title": "Otuzuncu Lem’a’nın Altıncı Nüktesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-31",
+        "title": "Otuz Birinci Lem'a",
+        "passageCount": 1,
+        "snippet": "Otuz Birinci Lem’a Şuâlara inkısam etmiş olup Şuâların on üçü telif edilmiş, bir kısmı henüz telif edilmemiştir. “Şuâlar” namı altında müstakil bir mecmua halin",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Otuz Birinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-32",
+        "title": "Otuz İkinci Lem'a",
+        "passageCount": 1,
+        "snippet": "Otuz İkinci Lem’a Eski Said’in en son telifi ve yirmi gün ramazanda telif edilen, kendi kendine manzum gelen “Lemaat” risalesidir. “Sözler” mecmuasında neşredil",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Otuz İkinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-33",
+        "title": "Otuz Üçüncü Lem'a",
+        "passageCount": 1,
+        "snippet": "Otuz Üçüncü Lem’a Yeni Said’in en evvel hakikatten şuhud derecesinde kalbine zahir olan ve Arabî ibaresinde Katre, Habbe, Şemme, Zerre, Hubab, Zühre, Şule ve on",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Otuz Üçüncü Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-34",
+        "title": "Münâcat (Lem'alar)",
+        "passageCount": 1,
+        "snippet": "Münâcat Yâ İlahî ve yâ Rabbî! Ben, imanın gözüyle ve Kur’an’ın talimiyle ve nuruyla ve Resul-i Ekrem aleyhissalâtü vesselâmın dersiyle ve ism-i Hakîm’in gösterm",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Münâcat"
+          }
+        ]
+      },
+      {
+        "id": "ch-35",
+        "title": "Fihrist (Lem'alar)",
+        "passageCount": 4,
+        "snippet": "Fihrist BİRİNCİ LEM’A: Hazret-i Yunus aleyhisselâmın münâcat-ı meşhuresi olan فَنَادٰى فِى الظُّلُمَاتِ اَنْ لَٓا اِلٰهَ اِلَّٓا اَنْتَ سُبْحَانَكَ اِنّٖى كُنْت",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Sekizinci Lem’a’nın Fihristesinden Bir Parça"
+          },
+          {
+            "id": "p-3",
+            "title": "Yirmi Sekizinci Lem’a’nın Fihristesinden Bir Parça"
+          }
+        ]
+      },
+      {
+        "id": "ch-36",
+        "title": "Dua (Lem'alar)",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَا اَللّٰهُ يَا رَحْمٰنُ يَا رَحٖيمُ يَا فَرْدُ يَا حَىُّ يَا قَيُّومُ يَا حَكَمُ يَا عَدْلُ يَا قُدُّوسُ İsm-i a’zamın h"
+      }
+    ]
+  },
+  {
+    "id": "sualar",
+    "title": "Şuâlar",
+    "chapterCount": 18,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Birinci Şuâ",
+        "passageCount": 3,
+        "snippet": "Birinci Şuâ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ بِهٖ نَسْتَعٖينُ İki acib suale karşı def’aten hatıra gelen garib cevaptır. Birinci Sual: Denildi ki: “Fati"
+      },
+      {
+        "id": "ch-2",
+        "title": "İkinci Şuâ",
+        "passageCount": 10,
+        "snippet": "İkinci Şuâ Eskişehir Hapishanesinin Son Meyvesi Otuz Birinci Lem’a’nın İkinci Şuâı بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ On altı sene evvel, Eskişehir Hapishane",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "İhtar"
+          },
+          {
+            "id": "p-4",
+            "title": "Birinci Makam’ın Birinci Meyvesi"
+          },
+          {
+            "id": "p-5",
+            "title": "İkinci Makam"
+          },
+          {
+            "id": "p-6",
+            "title": "Üçüncü Makam"
+          },
+          {
+            "id": "p-7",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-8",
+            "title": "Tevhidî bir münâcat ve mukaddimesi"
+          },
+          {
+            "id": "p-9",
+            "title": "Münâcat"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "Üçüncü Şuâ",
+        "passageCount": 3,
+        "snippet": "Üçüncü Şuâ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "Münâcat"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "Dördüncü Şuâ",
+        "passageCount": 3,
+        "snippet": "Dördüncü Şuâ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ حَسْبُنَا اللّٰهُ وَنِعْمَ الْوَكٖيلُ Manen ve rütbeten Beşinci Lem’a ve sureten ve makamen Otuz Birinci Mekt"
+      },
+      {
+        "id": "ch-5",
+        "title": "Beşinci Şuâ",
+        "passageCount": 6,
+        "snippet": "Beşinci Şuâ Otuz sene evvel yazılan matbu “Muhakemat-ı Bedîiye”de bahsedilen Sedd-i Zülkarneyn ve Ye’cüc Me’cüc ve sair eşrat-ı kıyametten yirmi mesele, o Muhak",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-4",
+            "title": "Beşinci Şuâ’nın İkinci Makamı ve Meseleleri"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "Altıncı Şuâ",
+        "passageCount": 1,
+        "snippet": "Altıncı Şuâ Yalnız iki nüktedir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ Namazdaki teşehhüdde bulunan اَلتَّحِيَّاتُ اَلْمُبَارَكَاتُ اَلصَّلَوَاتُ اَلطَّيِّبَاتُ"
+      },
+      {
+        "id": "ch-7",
+        "title": "Yedinci Şuâ",
+        "passageCount": 9,
+        "snippet": "Yedinci Şuâ Âyetü’l-Kübra Mühim bir ihtar ve bir ifade-i meram Bu ehemmiyetli risalenin herkes her bir meselesini anlamaz. Fakat hissesiz de kalmaz. Büyük bir b",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "Âyetü’l-Kübra"
+          },
+          {
+            "id": "p-4",
+            "title": "İşte bu manayı ifade için Birinci Makam’ın beşinci mertebesinde"
+          },
+          {
+            "id": "p-5",
+            "title": "İhtar"
+          },
+          {
+            "id": "p-6",
+            "title": "İkinci Bab"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "Sekizinci Şuâ",
+        "passageCount": 10,
+        "snippet": "Sekizinci Şuâ Üçüncü Bir Keramet-i Aleviye Bir İfade-i Meram Malûm olsun ki ben, Risale-i Nur’un kıymetini ve ehemmiyetini beyan etmekle Kur’an’ın hakikatlerini",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "İKİNCİ REMİZ"
+          },
+          {
+            "id": "p-4",
+            "title": "ÜÇÜNCÜ REMİZ"
+          },
+          {
+            "id": "p-5",
+            "title": "DÖRDÜNCÜ REMİZ"
+          },
+          {
+            "id": "p-6",
+            "title": "BEŞİNCİ REMİZ"
+          },
+          {
+            "id": "p-7",
+            "title": "ALTINCI REMİZ"
+          },
+          {
+            "id": "p-8",
+            "title": "YEDİNCİ REMİZ"
+          },
+          {
+            "id": "p-9",
+            "title": "SEKİZİNCİ REMİZ"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "Dokuzuncu Şuâ",
+        "passageCount": 3,
+        "snippet": "Dokuzuncu Şuâ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Onuncu Söz’ün Mühim Bir Zeyli ve Lâhikasının Birinci Parçası"
+          },
+          {
+            "id": "p-3",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "On Birinci Şuâ",
+        "passageCount": 21,
+        "snippet": "On Birinci Şuâ Denizli Hapsinin Bir Meyvesi Zındıka ve küfr-ü mutlaka karşı Risale-i Nur’un bir müdafaanamesidir. Ve bu hapsimizde hakiki müdafaanamemiz dahi bu",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Meyve Risalesi"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Meselenin Hülâsası"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mesele"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Mesele"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Mesele"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı Mesele"
+          },
+          {
+            "id": "p-8",
+            "title": "Yedinci Mesele"
+          },
+          {
+            "id": "p-9",
+            "title": "Sekizinci Meselenin Bir Hülâsası"
+          },
+          {
+            "id": "p-10",
+            "title": "Dokuzuncu Mesele"
+          },
+          {
+            "id": "p-11",
+            "title": "Onuncu Mesele"
+          },
+          {
+            "id": "p-12",
+            "title": "Bu Onuncu Meseleye Bir Hâtime Olarak İki Hâşiyedir"
+          },
+          {
+            "id": "p-13",
+            "title": "Onuncu Mesele Münasebetiyle Hüsrev’in Üstadına Yazdığı Mektup"
+          },
+          {
+            "id": "p-14",
+            "title": "On Birinci Mesele"
+          },
+          {
+            "id": "p-15",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-17",
+            "title": "On Birinci Mesele’nin Hâşiyesinin Bir Lâhikasıdır"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "On İkinci Şuâ",
+        "passageCount": 16,
+        "snippet": "On İkinci Şuâ Denizli Mahkemesi Müdafaatından … Evet, biz bir cemiyetiz ve öyle bir cemiyetimiz var ki her asırda üç yüz elli milyon dâhil mensupları var. Ve he",
+        "subHeadings": [
+          {
+            "id": "p-10",
+            "title": "Bu gelen kısım çok ehemmiyetlidir"
+          },
+          {
+            "id": "p-11",
+            "title": "Son Sözün Bir Mühim Parçası"
+          },
+          {
+            "id": "p-14",
+            "title": "Mühim Bir Suale Hakikatli Bir Cevaptır"
+          }
+        ]
+      },
+      {
+        "id": "ch-12",
+        "title": "On Üçüncü Şuâ",
+        "passageCount": 76,
+        "snippet": "On Üçüncü Şuâ Üstadın talebelerine gönderdiği gayet kıymettar, nurlu mektuplardır. Risale-i Nur’un parlak mücahedatını bu samimi mektuplar gayet parlak gösteriy"
+      },
+      {
+        "id": "ch-13",
+        "title": "On Dördüncü Şuâ",
+        "passageCount": 112,
+        "snippet": "On Dördüncü Şuâ İfademin Kısacık Bir Tetimmesi Afyon Mahkemesine beyan ediyorum ki: Nazarınıza ve kanun adaletine takdim edilen ifademde bulunan üç vecihle kanu",
+        "subHeadings": [
+          {
+            "id": "p-5",
+            "title": "Gençlik Rehberi’nin Küçük Bir Hâşiyesi"
+          },
+          {
+            "id": "p-74",
+            "title": "Bedîüzzaman’ın akıllara hayret veren bir seciyesi"
+          },
+          {
+            "id": "p-98",
+            "title": "Hüsrev’in Müdafaasıdır"
+          },
+          {
+            "id": "p-99",
+            "title": "Tahirî’nin Müdafaasıdır"
+          },
+          {
+            "id": "p-100",
+            "title": "Zübeyr’in Müdafaasıdır"
+          },
+          {
+            "id": "p-101",
+            "title": "Temyiz Mahkemesi Lâyihasından Bir Parçadır"
+          },
+          {
+            "id": "p-102",
+            "title": "Mustafa Sungur’un Müdafaasıdır"
+          },
+          {
+            "id": "p-103",
+            "title": "Mustafa Sungur’un Temyiz Lâyihasıdır"
+          },
+          {
+            "id": "p-104",
+            "title": "Mehmed Feyzi’nin Müdafaasıdır"
+          },
+          {
+            "id": "p-105",
+            "title": "Ahmed Feyzi’nin Müdafaasıdır"
+          },
+          {
+            "id": "p-106",
+            "title": "Ceylan’ın Müdafaasıdır"
+          },
+          {
+            "id": "p-107",
+            "title": "Mustafa Osman’ın Müdafaasıdır"
+          },
+          {
+            "id": "p-108",
+            "title": "Hıfzı Bayram’ın Müdafaasıdır"
+          },
+          {
+            "id": "p-109",
+            "title": "Emirdağlı Mustafa’nın müdafaasıdır"
+          },
+          {
+            "id": "p-110",
+            "title": "Halil Çalışkan’ın Müdafaasıdır"
+          },
+          {
+            "id": "p-111",
+            "title": "Mustafa Gül’ün Müdafaasıdır"
+          },
+          {
+            "id": "p-112",
+            "title": "Küçük İbrahim’in Müdafaasıdır"
+          }
+        ]
+      },
+      {
+        "id": "ch-14",
+        "title": "On Beşinci Şuâ",
+        "passageCount": 26,
+        "snippet": "On Beşinci Şuâ El-Hüccetü’z-Zehra İki Makamdır Bu ders zahiren küçük, hakikaten pek büyük ve çok kuvvetli ve çok geniş bir risaledir. Hem benim tefekkürî hayatı",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Makam"
+          },
+          {
+            "id": "p-3",
+            "title": "Yirminci Mektup’un Hülâsatü’l-hülâsası"
+          },
+          {
+            "id": "p-4",
+            "title": "Birinci Kelime"
+          },
+          {
+            "id": "p-5",
+            "title": "İkinci Kelime"
+          },
+          {
+            "id": "p-6",
+            "title": "Üçüncü Kelime"
+          },
+          {
+            "id": "p-7",
+            "title": "Dördüncü Kelime"
+          },
+          {
+            "id": "p-8",
+            "title": "Beşinci Kelime"
+          },
+          {
+            "id": "p-9",
+            "title": "Altıncı Kelime"
+          },
+          {
+            "id": "p-10",
+            "title": "Yedinci Kelime"
+          },
+          {
+            "id": "p-11",
+            "title": "Sekizinci Kelime"
+          },
+          {
+            "id": "p-12",
+            "title": "Dokuzuncu Kelime"
+          },
+          {
+            "id": "p-13",
+            "title": "Onuncu Kelime"
+          },
+          {
+            "id": "p-14",
+            "title": "On Birinci Kelime"
+          },
+          {
+            "id": "p-15",
+            "title": "Fatiha-i Şerife’nin Bir Muhtasar Hülâsası"
+          },
+          {
+            "id": "p-17",
+            "title": "ÜÇÜNCÜ KISMI"
+          },
+          {
+            "id": "p-18",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-19",
+            "title": "El-Hüccetü’z-Zehra’nın İkinci Makamı"
+          },
+          {
+            "id": "p-20",
+            "title": "Birinci Basamak olan"
+          }
+        ]
+      },
+      {
+        "id": "ch-15",
+        "title": "Yirmi Dokuzuncu Lem'a'dan İkinci Bab",
+        "passageCount": 2,
+        "snippet": "Yirmi Dokuzuncu Lem’a’dan İkinci Bab بِاسْمِهٖ سُبْحَانَهُ Bu İkinci Bab “Elhamdülillah” hakkındadır. İkinci Bab ile tabir edilen şu risalecikte “Elhamdülillah”"
+      },
+      {
+        "id": "ch-16",
+        "title": "Eddâî",
+        "passageCount": 2,
+        "snippet": "اَلدَّاعٖى (*[1]) Yıkılmış bir mezarım ki yığılmıştır içinde Said’den yetmiş dokuz emvat (**[2]) bâ-âsam âlâma. Sekseninci olmuştur, mezara bir mezar taş Berabe"
+      },
+      {
+        "id": "ch-17",
+        "title": "Dua (Şuâlar)",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَا اَللّٰهُ يَا رَحْمٰنُ يَا رَحٖيمُ يَا فَرْدُ يَا حَىُّ يَا قَيُّومُ يَا حَكَمُ يَا عَدْلُ يَا قُدُّوسُ İsm-i a’zamın h"
+      },
+      {
+        "id": "ch-18",
+        "title": "İçindekiler (Şuâlar)",
+        "passageCount": 22,
+        "snippet": "İÇİNDEKİLER",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "İKİNCİ ŞUÂ"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Makam"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Makam"
+          },
+          {
+            "id": "p-5",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-6",
+            "title": "ÜÇÜNCÜ ŞUÂ (Münâcat Risalesi)"
+          },
+          {
+            "id": "p-7",
+            "title": "DÖRDÜNCÜ ŞUÂ (Âyet-i Hasbiye Risalesi)"
+          },
+          {
+            "id": "p-8",
+            "title": "DOKUZUNCU ŞUÂ (Onuncu Söz’ün mühim bir zeyli)"
+          },
+          {
+            "id": "p-9",
+            "title": "BİRİNCİ MESELE"
+          },
+          {
+            "id": "p-10",
+            "title": "İKİNCİ MESELE"
+          },
+          {
+            "id": "p-11",
+            "title": "ÜÇÜNCÜ MESELE"
+          },
+          {
+            "id": "p-12",
+            "title": "DÖRDÜNCÜ MESELE"
+          },
+          {
+            "id": "p-13",
+            "title": "BEŞİNCİ MESELE"
+          },
+          {
+            "id": "p-14",
+            "title": "ALTINCI MESELE"
+          },
+          {
+            "id": "p-15",
+            "title": "YEDİNCİ MESELE"
+          },
+          {
+            "id": "p-16",
+            "title": "SEKİZİNCİ MESELE"
+          },
+          {
+            "id": "p-17",
+            "title": "DOKUZUNCU MESELE"
+          },
+          {
+            "id": "p-18",
+            "title": "ON BİRİNCİ MESELE"
+          },
+          {
+            "id": "p-19",
+            "title": "ON İKİNCİ ŞUÂ (Denizli Mahkemesi müdafaatından)"
+          },
+          {
+            "id": "p-20",
+            "title": "BİRİNCİ MAKAM"
+          },
+          {
+            "id": "p-21",
+            "title": "İKİNCİ MAKAM"
+          },
+          {
+            "id": "p-22",
+            "title": "SEKİZİNCİ ŞUÂ (KERAMET-İ ALEVİYE)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mesnevi-i-nuriye",
+    "title": "Mesnevî-i Nuriye",
+    "chapterCount": 16,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "İ'tizar",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ İ’tizar Risale-i Nur Külliyatı’ndan “El-Mesneviyyü’l-Arabî” ile muanven, büyük Üstadın cihan-baha pek kıymettar şu eserini"
+      },
+      {
+        "id": "ch-2",
+        "title": "Mukaddime",
+        "passageCount": 1,
+        "snippet": "Risale-i Nur’un bir nevi Arabî Mesnevî-i Şerif’i hükmünde olan bu mecmuanın mukaddimesi beş noktadır Birinci Nokta: Kırk elli sene evvel Eski Said, ziyade ulûm-"
+      },
+      {
+        "id": "ch-3",
+        "title": "Lem'alar Risalesi",
+        "passageCount": 17,
+        "snippet": "Mesnevî-i Nuriye’nin Birinci Parçası Olan Lem’alar Risalesi (Türkçe Risale-i Nur’un Yirmi İkinci Söz’ü ile aynı mealdedir.) بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيم",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Mesnevî-i Nuriye’nin Birinci Parçası Olan Lem’alar Risalesi"
+          },
+          {
+            "id": "p-2",
+            "title": "Tenbih"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Lem’a"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Lem’a"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Lem’a"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Lem’a"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Lem’a"
+          },
+          {
+            "id": "p-8",
+            "title": "Altıncı Lem’a"
+          },
+          {
+            "id": "p-9",
+            "title": "Yedinci Lem’a"
+          },
+          {
+            "id": "p-10",
+            "title": "Sekizinci Lem’a"
+          },
+          {
+            "id": "p-11",
+            "title": "Dokuzuncu Lem’a"
+          },
+          {
+            "id": "p-12",
+            "title": "Onuncu Lem’a"
+          },
+          {
+            "id": "p-13",
+            "title": "On Birinci Lem’a"
+          },
+          {
+            "id": "p-14",
+            "title": "On İkinci Lem’a"
+          },
+          {
+            "id": "p-15",
+            "title": "On Üçüncü Lem’a"
+          },
+          {
+            "id": "p-16",
+            "title": "On Dördüncü Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "Reşhalar",
+        "passageCount": 2,
+        "snippet": "Reşhalar بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Tenbih"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "Lâsiyyemalar",
+        "passageCount": 1,
+        "snippet": "Lâsiyyemalar (Onuncu Söz’ün bir cihette esası ve Yirmi Sekizinci Söz’ün Arabî ikinci makamıdır.) بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ Kâinatın bütün zerratı mü"
+      },
+      {
+        "id": "ch-6",
+        "title": "Katre",
+        "passageCount": 9,
+        "snippet": "Katre Tevhid Denizinden İfade-i Meram Malûmdur ki insan, hasbe’l-kader çok yollara sülûk eder. Ve o yolda çok musibet ve düşmanlara rast gelir. Bazen kurtulursa",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-4",
+            "title": "Birinci Bab"
+          },
+          {
+            "id": "p-5",
+            "title": "Takriz"
+          },
+          {
+            "id": "p-6",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-7",
+            "title": "İ’tizar"
+          },
+          {
+            "id": "p-8",
+            "title": "Katre’nin Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-7",
+        "title": "Hubab",
+        "passageCount": 5,
+        "snippet": "Hubab Kur’an-ı Hakîm’in ummanından خُدَاىِ پُرْ كَرَمْ خُودْ مُلْكِ خُودْ رَا مٖى خَرَدْ اَزْ تُو بَرَاىِ تُو نِگَهْ دَارَدْ بَهَاىِ بٖى گِرَانْ دَادَه Said Nur",
+        "subHeadings": [
+          {
+            "id": "p-4",
+            "title": "Zeylü’l-Hubab"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "Habbe",
+        "passageCount": 5,
+        "snippet": "Cennet-i Kur’aniyenin semeratından bir semerenin ihtiva ettiği Habbe حَبَّه مٖى گُويَدْ مَنْ شَاخِ دِرَخْتَمْ پُرْ اَزْ مَيْوَۀِ تَوْحٖيدْ يَكْ شَبْنَمَمْ اَزْ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Tazarru ve Niyaz"
+          },
+          {
+            "id": "p-3",
+            "title": "Zeylü’l-Habbe"
+          },
+          {
+            "id": "p-4",
+            "title": "Zeylü’z-Zeyl"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "Zühre",
+        "passageCount": 18,
+        "snippet": "Zühre (On Yedinci Lem’a) (*[1]) Zühre’den gelmiş ve On Yedi Nota’dan ibarettir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "BİRİNCİ NOTA"
+          },
+          {
+            "id": "p-4",
+            "title": "İKİNCİ NOTA"
+          },
+          {
+            "id": "p-5",
+            "title": "ÜÇÜNCÜ NOTA"
+          },
+          {
+            "id": "p-6",
+            "title": "DÖRDÜNCÜ NOTA"
+          },
+          {
+            "id": "p-7",
+            "title": "BEŞİNCİ NOTA"
+          },
+          {
+            "id": "p-8",
+            "title": "ALTINCI NOTA"
+          },
+          {
+            "id": "p-9",
+            "title": "YEDİNCİ NOTA"
+          },
+          {
+            "id": "p-10",
+            "title": "SEKİZİNCİ NOTA"
+          },
+          {
+            "id": "p-11",
+            "title": "DOKUZUNCU NOTA"
+          },
+          {
+            "id": "p-12",
+            "title": "ONUNCU NOTA"
+          },
+          {
+            "id": "p-13",
+            "title": "ON BİRİNCİ NOTA"
+          },
+          {
+            "id": "p-14",
+            "title": "ON İKİNCİ NOTA"
+          },
+          {
+            "id": "p-15",
+            "title": "ON ÜÇÜNCÜ NOTA"
+          },
+          {
+            "id": "p-16",
+            "title": "ON DÖRDÜNCÜ NOTA"
+          },
+          {
+            "id": "p-17",
+            "title": "ON BEŞİNCİ NOTA"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "Zerre",
+        "passageCount": 1,
+        "snippet": "Hidayet-i Kur’aniyenin şuâından Zerre بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ İ’lem eyyühe’l-aziz! Cenab-ı Hakk’a nâzır ve ona vâsıl olan yollar, kapılar; âlemin"
+      },
+      {
+        "id": "ch-11",
+        "title": "Şemme Risalesi",
+        "passageCount": 2,
+        "snippet": "Hidayet-i Kur’aniyenin nesîminden Şemme Risalesi بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلْحَمْدُ لِلّٰهِ رَبِّ الْعَالَمٖينَ عَلٰى رَحْمَتِهٖ عَلَى الْعَالَمٖي"
+      },
+      {
+        "id": "ch-12",
+        "title": "Onuncu Risale",
+        "passageCount": 9,
+        "snippet": "وَمِنَ اللّٰهِ التَّوْفٖيقِ لِأَقْوَمِ الطَّرٖيقِ"
+      },
+      {
+        "id": "ch-13",
+        "title": "Şule",
+        "passageCount": 2,
+        "snippet": "Şule بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ İ’lem eyyühe’l-aziz! Bütün esma-i hüsnanın ifade ettiği manalar ile bütün sıfât-ı kemaliyeye lafza-i Celal olan “Alla",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Şule’nin Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-14",
+        "title": "Nokta",
+        "passageCount": 3,
+        "snippet": "Nokta مِنْ نُورِ مَعْرِفَةِ اللّٰهِ جَلَّ جَلَالُهُ Kırk beş sene evvel telif edilmiş bir risalenin bir kısmıdır. İfade-i Meram Bir bahçeye girsem iyisini intih"
+      },
+      {
+        "id": "ch-15",
+        "title": "Münderecat Hakkında",
+        "passageCount": 2,
+        "snippet": "Münderecat Hakkında Bu mühim mecmuanın cümle-i mukaddimatından olan bir “İ’lem”de: “Bu Risale, bazı âyât-ı Kur’aniyenin şuhudî bir nevi tefsiridir. Ve ondaki me"
+      },
+      {
+        "id": "ch-16",
+        "title": "Fihrist (Mesnevî)",
+        "passageCount": 4,
+        "snippet": "Fihrist",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "Hubab’ın Birinci Zeyli"
+          },
+          {
+            "id": "p-4",
+            "title": "İ’tizar"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "i-saratu-l-i-caz",
+    "title": "İşaratü'l-İ'caz",
+    "chapterCount": 27,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Tenbih",
+        "passageCount": 4,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ بِهٖ نَسْتَعٖينُ"
+      },
+      {
+        "id": "ch-2",
+        "title": "İfadetü'l-Meram",
+        "passageCount": 2,
+        "snippet": "İfadetü’l-Meram Kur’an-ı Azîmüşşan bütün zamanlarda gelip geçen nev-i beşerin tabakalarına, milletlerine ve fertlerine hitaben arş-ı a’lâdan îrad edilen İlahî v"
+      },
+      {
+        "id": "ch-3",
+        "title": "Kur'an'ın Tarifi",
+        "passageCount": 2,
+        "snippet": "Kur’an Nedir? Tarifi Nasıldır? KUR’AN, şu kitab-ı kebir-i kâinatın bir tercüme-i ezeliyesi ve âyât-ı tekviniyeyi okuyan mütenevvi dillerinin tercüman-ı ebedîsi"
+      },
+      {
+        "id": "ch-4",
+        "title": "Fatiha Suresi",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلرَّحْمٰنُ ۞ عَلَّمَ الْقُرْاٰنَ ۞ خَلَقَ الْاِنْسَانَ ۞ عَلَّمَهُ الْبَيَانَ فَنَحْمَدُهُ مُصَلّٖينَ عَلٰى نَبِيِّهٖ مُ"
+      },
+      {
+        "id": "ch-5",
+        "title": "Bakara Suresi 1- 2- 3. âyetler",
+        "passageCount": 1,
+        "snippet": "Sure-i Bakara Sual: Îcaz ile i’caz sıfatlarını hâvi Kur’an-ı Azîmüşşan’da بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ ve فَبِاَىِّ اٰلَٓاءِ رَبِّكُمَا…الخ ve وَيْلٌ ي"
+      },
+      {
+        "id": "ch-6",
+        "title": "Bakara Suresi 4-5. âyetler",
+        "passageCount": 1,
+        "snippet": "وَالَّذٖينَ يُؤْمِنُونَ بِمَٓا اُنْزِلَ اِلَيْكَ وَمَٓا اُنْزِلَ مِنْ قَبْلِكَ وَبِالْاٰخِرَةِ هُمْ يُوقِنُونَ Kur’an-ı Kerîm, bu âyet gibi çok âyetlerde terkip"
+      },
+      {
+        "id": "ch-7",
+        "title": "Bakara Suresi 6. âyet",
+        "passageCount": 1,
+        "snippet": "اِنَّ الَّذٖينَ كَفَرُوا سَوَٓاءٌ عَلَيْهِمْ ءَاَنْذَرْتَهُمْ اَمْ لَمْ تُنْذِرْهُمْ لَا يُؤْمِنُونَ Bu cümlenin mâkabliyle cihet-i nazmı: Arkadaş! Cenab-ı Hakk"
+      },
+      {
+        "id": "ch-8",
+        "title": "Bakara Suresi 7. âyet",
+        "passageCount": 2,
+        "snippet": "خَتَمَ اللّٰهُ عَلٰى قُلُوبِهِمْ وَعَلٰى سَمْعِهِمْ وَعَلٰٓى اَبْصَارِهِمْ غِشَاوَةٌ وَلَهُمْ عَذَابٌ عَظٖيمٌ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "Bakara Suresi 8. âyet",
+        "passageCount": 1,
+        "snippet": "وَمِنَ النَّاسِ مَنْ يَقُولُ اٰمَنَّا بِاللّٰهِ وَبِالْيَوْمِ الْاٰخِرِ وَمَا هُمْ بِمُؤْمِنٖينَ Bu âyetin mâkabliyle vech-i nazmı: Nasıl ki bir hükümde iki müf"
+      },
+      {
+        "id": "ch-10",
+        "title": "Bakara Suresi 9-10. âyetler",
+        "passageCount": 1,
+        "snippet": "يُخَادِعُونَ اللّٰهَ وَالَّذٖينَ اٰمَنُوا وَمَايَخْدَعُونَ اِلَّٓا اَنْفُسَهُمْ وَمَا يَشْعُرُونَ ۞ فٖى قُلُوبِهِمْ مَرَضٌ فَزَادَ هُمُ اللّٰهُ مَرَضًا وَلَهُمْ"
+      },
+      {
+        "id": "ch-11",
+        "title": "Bakara Suresi 11-12. âyetler",
+        "passageCount": 1,
+        "snippet": "وَاِذَا قٖيلَ لَهُمْ لَاتُفْسِدُوا فِى الْاَرْضِ قَالُٓوا اِنَّمَا نَحْنُ مُصْلِحُونَ ۞ اَلَٓا اِنَّهُمْ هُمُ الْمُفْسِدُونَ وَلٰكِنْ لَايَشْعُرُونَ Bu âyetin e"
+      },
+      {
+        "id": "ch-12",
+        "title": "Bakara Suresi 13. âyet",
+        "passageCount": 1,
+        "snippet": "وَاِذَا قٖيلَ لَهُمْ اٰمَنُوا كَمَٓا اٰمِنَ النَّاسُ قَالُٓوا اَنُؤْمِنُ كَمَٓا اٰمَنَ السُّفَهَٓاءُ اَلَٓا اِنَّهُمْ هُمُ السُّفَهَٓاءُ وَلٰكِنْ لَا يَعْلَمُون"
+      },
+      {
+        "id": "ch-13",
+        "title": "Bakara Suresi 14-15. âyetler",
+        "passageCount": 1,
+        "snippet": "وَاِذَا لَقُوا الَّذٖينَ اٰمَنُوا قَالُٓوا اٰمَنَّا وَاِذَا خَلَوْا اِلٰى شَيَاطٖينِهِمْ قَالُٓوا اِنَّا مَعَكُمْ اِنَّمَا نَحْنُ مُسْتَهْزِؤُنَ ۞ اَللّٰهُ يَسْ"
+      },
+      {
+        "id": "ch-14",
+        "title": "Bakara Suresi 16. âyet",
+        "passageCount": 1,
+        "snippet": "اُولٰٓئِكَ الَّذٖينَ اشْتَرَوُا الضَّلَالَةَ بِالْهُدٰى فَمَا رَبِحَتْ تِجَارَتُهُمْ وَمَا كَانُوا مُهْتَدٖينَ Yani “Onlar, hidayeti verip dalaleti satın alan b"
+      },
+      {
+        "id": "ch-15",
+        "title": "19-20. âyetler",
+        "passageCount": 1,
+        "snippet": "مَثَلُهُمْ كَمَثَلِ الَّذِى اسْتَوْقَدَ نَارًا فَلَمَّٓا اَضَٓاءَتْ مَا حَوْلَهُ ذَهَبَ اللّٰهُ بِنُورِهِمْ وَ تَرَكَهُمْ فٖى ظُلُمَاتٍ لَا يُبْصِرُونَ ۞ صُمٌّ"
+      },
+      {
+        "id": "ch-16",
+        "title": "Bakara Suresi 21-22. âyetler",
+        "passageCount": 3,
+        "snippet": "يَٓا اَيُّهَا النَّاسُ اعْبُدُوا رَبَّكُمُ الَّذٖى خَلَقَكُمْ وَ الَّذٖينَ مِنْ قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ ۞ اَلَّذٖى جَعَلَ لَكُمُ الْاَرْضَ فِرَاشًا وَ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-17",
+        "title": "Bakara Suresi 23-24. âyetler",
+        "passageCount": 3,
+        "snippet": "Nübüvvet Hakkında وَاِنْ كُنْتُمْ فٖى رَيْبٍ مِمَّا نَزَّلْنَا عَلٰى عَبْدِنَا فَاْتُوا بِسُورَةٍ مِنْ مِثْلِهٖ وَادْعُوا شُهَدَٓاءَكُمْ مِنْ دُونِ اللّٰهِ اِنْ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-18",
+        "title": "Bakara Suresi 25. âyet",
+        "passageCount": 3,
+        "snippet": "وَبَشِّرِ الَّذٖينَ اٰمَنُوا وَعَمِلُوا الصَّالِحَاتِ اَنَّ لَهُمْ جَنَّاتٍ تَجْرٖى مِنْ تَحْتِهَا الْاَنْهَارُ كُلَّمَا رُزِقُوا مِنْهَا مِنْ ثَمَرَةٍ رِزْقًا",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-19",
+        "title": "Bakara Suresi 26-27. âyetler",
+        "passageCount": 2,
+        "snippet": "اِنَّ اللّٰهَ لَا يَسْتَحْيٖٓى اَنْ يَضْرِبَ مَثَلًا مَا بَعُوضَةً فَمَا فَوْقَهَا فَاَمَّا الَّذٖينَ اٰمَنُوا فَيَعْلَمُونَ اَنَّهُ الْحَقُّ مِنْ رَبِّهِمْ وَ"
+      },
+      {
+        "id": "ch-20",
+        "title": "Bakara Suresi 28. âyet",
+        "passageCount": 1,
+        "snippet": "كَيْفَ تَكْفُرُونَ بِاللّٰهِ وَكُنْتُمْ اَمْوَاتًا فَاَحْيَاكُمْ ثُمَّ يُمٖيتُكُمْ ثُمَّ يُحْيٖيكُمْ ثُمَّ اِلَيْهِ تُرْجَعُونَ Yani “Ne suretle Allah’ı inkâr e"
+      },
+      {
+        "id": "ch-21",
+        "title": "Bakara Suresi 29. âyet",
+        "passageCount": 1,
+        "snippet": "هُوَ الَّذٖى خَلَقَ لَكُمْ مَا فِى الْاَرْضِ جَمٖيعًا ثُمَّ اسْتَوٰٓى اِلَى السَّمَٓاءِ فَسَوّٰيهُنَّ سَبْعَ سَمٰوَاتٍ وَهُوَ بِكُلِّ شَىْءٍ عَلٖيمٌ Bu âyetin s"
+      },
+      {
+        "id": "ch-22",
+        "title": "Bakara Suresi 30. âyet",
+        "passageCount": 1,
+        "snippet": "وَ اِذْ قَالَ رَبُّكَ لِلْمَلٰٓئِكَةِ اِنّٖى جَاعِلٌ فِى الْاَرْضِ خَلٖيفَةً قَالُٓوا اَتَجْعَلُ فٖيهَا مَنْ يُفْسِدُ فٖيهَا وَ يَسْفِكُ الدِّمَٓاءَ وَ نَحْنُ ن"
+      },
+      {
+        "id": "ch-23",
+        "title": "33. âyetler",
+        "passageCount": 3,
+        "snippet": "وَعَلَّمَ اٰدَمَ الْاَسْمَٓاءَ كُلَّهَا ثُمَّ عَرَضَهُمْ عَلَى الْمَلٰٓئِكَةِ فَقَالَ اَنْبِئُونٖى بِاَسْمَٓاءِ هٰٓؤُلَٓاءِ اِنْ كُنْتُمْ صَادِقٖينَ ۞ قَالُوا س",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-24",
+        "title": "Ecnebi Feylesofların Kur'an Hakkındaki Beyanatları",
+        "passageCount": 1,
+        "snippet": "Ecnebi Feylesofların Kur’an’ı Tasdiklerine Dair Şehadetleri (Bu feylesofların Kur’an hakkındaki senalarının bir hülâsası Küçük Tarihçe-i Hayat’ta ve Nur Çeşmesi"
+      },
+      {
+        "id": "ch-25",
+        "title": "Mehmed Kayalar'ın Bir Müdafaası",
+        "passageCount": 1,
+        "snippet": "Birkaç defa beraet kazanan Risale-i Nur’un birkaç vilayette haksız müsaderesine dair, Nur’un yüksek bir talebesinin mahkemesindeki müdafaasından bir parçadır (B"
+      },
+      {
+        "id": "ch-26",
+        "title": "Dua (İşaratü'l-İ'caz)",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَا اَللّٰهُ يَا رَحْمٰنُ يَارَحٖيمُ يَا فَرْدُ يَا حَىُّ يَا قَيُّومُ يَا حَكَمُ يَا عَدْلُ يَا قُدُّوسُ İsm-i a’zamın ha"
+      },
+      {
+        "id": "ch-27",
+        "title": "Fihrist (İşaratü'l-İ'caz)",
+        "passageCount": 2,
+        "snippet": "Fihrist",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Tenbih"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "muhakemat",
+    "title": "Muhakemat",
+    "chapterCount": 6,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Giriş",
+        "passageCount": 3,
+        "snippet": "MUHAKEMAT Müellifi Bedîüzzaman Said Nursî Marîz bir asrın, hasta bir unsurun, alîl bir uzvun reçetesi veyahut Saykalü’l-İslâmiyet veyahut Bedîüzzaman’ın Muhakem",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-2",
+        "title": "Birinci Makale",
+        "passageCount": 33,
+        "snippet": "BİRİNCİ MAKALE Maksada urûc etmek için mukaddimelerden istimdad etmek, ehl-i tahkikin düsturlarındandır. Öyle ise biz de on iki basamaklı bir merdiven yapacağız",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mukaddime"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mukaddime"
+          },
+          {
+            "id": "p-5",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Mukaddime"
+          },
+          {
+            "id": "p-8",
+            "title": "Beşinci Mukaddime"
+          },
+          {
+            "id": "p-10",
+            "title": "Altıncı Mukaddime"
+          },
+          {
+            "id": "p-12",
+            "title": "Yedinci Mukaddime"
+          },
+          {
+            "id": "p-14",
+            "title": "Sekizinci Mukaddime"
+          },
+          {
+            "id": "p-16",
+            "title": "Dokuzuncu Mukaddime"
+          },
+          {
+            "id": "p-18",
+            "title": "Onuncu Mukaddime"
+          },
+          {
+            "id": "p-20",
+            "title": "On Birinci Mukaddime"
+          },
+          {
+            "id": "p-22",
+            "title": "On İkinci Mukaddime"
+          },
+          {
+            "id": "p-25",
+            "title": "Birinci Mesele"
+          },
+          {
+            "id": "p-26",
+            "title": "İkinci Mesele"
+          },
+          {
+            "id": "p-27",
+            "title": "Üçüncü Mesele"
+          },
+          {
+            "id": "p-28",
+            "title": "Dördüncü Mesele"
+          },
+          {
+            "id": "p-29",
+            "title": "Beşinci Mesele"
+          },
+          {
+            "id": "p-30",
+            "title": "Altıncı Mesele"
+          },
+          {
+            "id": "p-31",
+            "title": "Yedinci Mesele"
+          },
+          {
+            "id": "p-32",
+            "title": "Sekizinci Mesele"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "İkinci Makale",
+        "passageCount": 15,
+        "snippet": "Unsuru’l-Belâgat بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلطَّيِّبَاتُ لِلّٰهِ وَ الصَّلَوَاتُ عَلٰى نَبِيِّهٖ İkinci Makale Belâgatın ruhuna taalluk eden birkaç",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mesele"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mesele"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mesele"
+          },
+          {
+            "id": "p-5",
+            "title": "Dördüncü Mesele"
+          },
+          {
+            "id": "p-6",
+            "title": "Beşinci Mesele"
+          },
+          {
+            "id": "p-7",
+            "title": "Altıncı Mesele"
+          },
+          {
+            "id": "p-8",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-9",
+            "title": "Yedinci Mesele"
+          },
+          {
+            "id": "p-10",
+            "title": "Sekizinci Mesele"
+          },
+          {
+            "id": "p-11",
+            "title": "Dokuzuncu Mesele"
+          },
+          {
+            "id": "p-12",
+            "title": "Onuncu Mesele"
+          },
+          {
+            "id": "p-13",
+            "title": "On Birinci Mesele"
+          },
+          {
+            "id": "p-14",
+            "title": "On İkinci Mesele"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "Üçüncü Makale",
+        "passageCount": 12,
+        "snippet": "Unsuru’l-Akide Üçüncü Makale بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَشْهَدُ اَنْ لَا اِلٰهَ اِلَّا اللّٰهُ وَ اَشْهَدُ اَنَّ مُحَمَّدًا رَسُولُ اللّٰهِ Bu kelim",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-4",
+            "title": "Birinci Maksat"
+          },
+          {
+            "id": "p-5",
+            "title": "İkinci Maksat"
+          },
+          {
+            "id": "p-8",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-10",
+            "title": "Üçüncü Maksat"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "Fihrist (Muhakemat)",
+        "passageCount": 4,
+        "snippet": "FİHRİST",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "İkinci Mesele (Arzın öküz ve balık üzerinde olması)"
+          },
+          {
+            "id": "p-4",
+            "title": "Üçüncü Mesele (Kaf Dağı)"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "Takriz",
+        "passageCount": 1,
+        "snippet": "Bu risalenin müellifi, Üstad Bedîüzzaman Hazretleri bu risalenin telifinden otuz sene sonra telif ettiği Risale-i Nur Külliyatı’ndan “Dokuzuncu Şuâ”ın başında d"
+      }
+    ]
+  },
+  {
+    "id": "barla-lahikasi",
+    "title": "Barla Lâhikası",
+    "chapterCount": 20,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Takdim",
+        "passageCount": 1,
+        "snippet": "TAKDİM Bu lâhika mektupları –ki Yirmi Yedinci Mektup’tur– Risale-i Nur’un ilk telifi ile başlayıp devam edegelmiştir. Risaleler Barla’da telif edilmeye başlanıp"
+      },
+      {
+        "id": "ch-2",
+        "title": "Yedinci Risale (Yirmi Sekizinci Mektup'tan)",
+        "passageCount": 4,
+        "snippet": "(Yirmi Sekizinci Mektup’tan)",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Yedinci Risale olan Yedinci Mesele"
+          },
+          {
+            "id": "p-3",
+            "title": "Mahrem Bir Suale Cevaptır"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "s.21-39 • Mukaddime (Hulûsi ve Sabri Efendi)",
+        "passageCount": 28,
+        "snippet": "بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-3",
+            "title": "Yirmi Yedinci Mektup ve Zeylleri"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "s.40-58 • Yirmi Yedinci Mektup'un Zeyli",
+        "passageCount": 39,
+        "snippet": "YİRMİ YEDİNCİ MEKTUP’UN ZEYLİ VE İKİNCİ KISMI (Hulusi-i Sânî ve büyük bir âlim olan Sabri Efendi’nin fıkralarıdır.) Mebus-u âlem aleyhissalâtü vesselâm Efendimi",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "YİRMİ YEDİNCİ MEKTUP’UN ZEYLİ VE İKİNCİ KISMI"
+          },
+          {
+            "id": "p-30",
+            "title": "İKİNCİ ZEYL"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "s.59-80 • Hulûsi Bey'in Uzun Fıkrası",
+        "passageCount": 23,
+        "snippet": "(Bu uzun fıkra Hulusi Bey’indir.) بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ بِعَدَدِ ا",
+        "subHeadings": [
+          {
+            "id": "p-6",
+            "title": "YİRMİ YEDİNCİ MEKTUP’UN ÜÇÜNCÜ ZEYLİ"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "s.80-102 • Sabri Efendi'nin Fıkrası",
+        "passageCount": 19,
+        "snippet": "(Sabri’nin bir fıkrasıdır.) Eyyühe’l-Üstadü’l-Muhterem! Bi’l-istinsah takdim-i huzur-u fâzılaneleri kılınan Yirmi Sekizinci Mektup’un Yedinci Meselesi tam zaman"
+      },
+      {
+        "id": "ch-7",
+        "title": "s.103-121 • Murad Efendi'nin Fıkrası",
+        "passageCount": 18,
+        "snippet": "(Sözler hakkında Murad Efendi’nin fıkrasıdır.) Aziz Dost! Derya-yı maariften sema-yı irfana İlahî bir hava ile coşup fışkıran ve sema-yı irfandan zemin-i maarif",
+        "subHeadings": [
+          {
+            "id": "p-8",
+            "title": "YİRMİ YEDİNCİ MEKTUP’UN ÜÇÜNCÜ KISMI VE ÜÇÜNCÜ ZEYLİN NİHAYETİDİR"
+          },
+          {
+            "id": "p-10",
+            "title": "Yirmi Dokuzuncu Mektup’un Yedinci Kısmı"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "s.121-146 • Hediye İadesi Hakkında Mektup",
+        "passageCount": 15,
+        "snippet": "(Said’in fıkrasıdır.) (Hulusi gibi mühim bir talebemin bana gönderdiği hediyesinin iadesine dair yazdığım bir mektubu, arkadaşlarımın tensiblerine binaen onları"
+      },
+      {
+        "id": "ch-9",
+        "title": "s.146-159 • Hâfız Halid'in Fıkrası",
+        "passageCount": 7,
+        "snippet": "(Risale-i Nur’un tesvidinde çok hizmeti sebkat eden temiz kalpli, ihlaslı, güzel bir hâfız, müdakkik bir hoca olan Hâfız Hâlid’in bir fıkrasıdır.) Risale-i Nur’"
+      },
+      {
+        "id": "ch-10",
+        "title": "s.160-180 • Hâfız Mustafa'nın Fıkrası",
+        "passageCount": 15,
+        "snippet": "(Kuleönü karyesinden elmas kalemli Mustafa’nın kıymettar arkadaşı Hâfız Mustafa’nın fıkrasıdır.) Ey Feyyaz-ı Mutlak ve Vâhid-i Ehad olan Cenab-ı Allah’a giden t",
+        "subHeadings": [
+          {
+            "id": "p-7",
+            "title": "MEKTUBAT’IN ÜÇÜNCÜ KISMI"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "s.181-201 • Hâfız Ali'nin Fıkrası (Hikmetü'l-İstiaze)",
+        "passageCount": 18,
+        "snippet": "(Hâfız Ali’nin fıkrasıdır.) Sevgili Üstadım! Bu defa irsaline inayet buyurulan Hikmetü’l-İstiaze’nin İkinci Kısmını aldım. Sekizinci İşaret’te ispat edilip göst"
+      },
+      {
+        "id": "ch-12",
+        "title": "s.202-221 • Hulûsi Bey'in Fıkrası",
+        "passageCount": 11,
+        "snippet": "(Hulusi’nin fıkrasıdır.) 18 Receb tarihli, Otuz Birinci Mektup’un Birinci, İkinci Lem’alarıyla Yirmi Dokuzuncu Mektup’un Birinci Remzi’nin Birinci Makam’ını, şa"
+      },
+      {
+        "id": "ch-13",
+        "title": "s.221-240 • Ahmed Hüsrev'in Fıkrası",
+        "passageCount": 19,
+        "snippet": "(Ahmed Hüsrev’in fıkrasıdır.) Sevgili Üstadım! Bu fakir talebenize teselli veren mektubunuzu aldım ve ba’de’t-takbil okudum. Ruhumda hasıl olan manevî yaraların"
+      },
+      {
+        "id": "ch-14",
+        "title": "s.241-261 • Hâfız Ali'nin Fıkrası (Mirkatü's-Sünne)",
+        "passageCount": 15,
+        "snippet": "(Hâfız Ali’nin fıkrasıdır.) Üstad-ı Âlîşanım Efendim Hazretleri! On bir nükteyi hâvi Mirkatü’s-Sünne’yi istinsaha muvaffak oldum. Bu ziyadar Lem’a şu zamanda şi"
+      },
+      {
+        "id": "ch-15",
+        "title": "s.262-280 • Üçüncü Mektup'un Baş Kısmı",
+        "passageCount": 9,
+        "snippet": "(Üçüncü Mektup’un baş kısmı) بِاسْمِ مَنْ تُسَبِّحُ لَهُ السَّمٰوَاتُ بِكَلِمَاتِ النُّجُومِ وَ الشُّمُوسِ وَالْاَقْمَارِ وَالسَّيَّارَاتِ اَلسَّلَامُ عَلَيْكُم",
+        "subHeadings": [
+          {
+            "id": "p-6",
+            "title": "MESAİL-İ MÜTEFERRİKA"
+          }
+        ]
+      },
+      {
+        "id": "ch-16",
+        "title": "s.280-299 • Hüsrev'e Hitaben Mektup",
+        "passageCount": 14,
+        "snippet": "(Hüsrev’e hitaben yazılan bir mektuptur.) بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَ"
+      },
+      {
+        "id": "ch-17",
+        "title": "s.300-321 • Üç Asılsız Vehme Cevap",
+        "passageCount": 13,
+        "snippet": "(Ehl-i dünyanın Üstadımız hakkındaki asılsız üç vehimleri münasebetiyle, bir kardeşimizin ettiği sualine karşı cevaptır.) Üstadımız Barla’da kimsesiz kaldığı iç",
+        "subHeadings": [
+          {
+            "id": "p-11",
+            "title": "Yirmi Sekizinci Mektup’un Sekizinci Mesele’sinin İkinci Nüktesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-18",
+        "title": "s.321-340 • Yirmi Dokuzuncu Mektup'a Dair",
+        "passageCount": 17,
+        "snippet": "وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ بِعَدَدِ عَاشِرَاتِ دَقَائِقِ اَيَّامِ الْفِرَاقِ Aziz",
+        "subHeadings": [
+          {
+            "id": "p-4",
+            "title": "On Beşinci Nota’nın Üçüncü Meselesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-19",
+        "title": "s.340-362 • Re'fet Bey'e Mektup",
+        "passageCount": 18,
+        "snippet": "بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ Aziz kardeşim Re’fet Bey! Bu sabah namazdan"
+      },
+      {
+        "id": "ch-20",
+        "title": "s.363-392 • Muhtelif Lâhika Mektupları",
+        "passageCount": 16,
+        "snippet": "Bundan sonraki kısım Hazret-i Üstadın Kastamonu ve Emirdağı hayatında iken yazılan ve el yazma nüshalarda dercedilen mektuplardır. (Risale-i Nur’un faal bir şak",
+        "subHeadings": [
+          {
+            "id": "p-15",
+            "title": "Onuncu Lem’a"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kastamonu-lahikasi",
+    "title": "Kastamonu Lâhikası",
+    "chapterCount": 13,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Takdim",
+        "passageCount": 1,
+        "snippet": "TAKDİM Bu lâhika mektupları –ki Yirmi Yedinci Mektup’tur– Risale-i Nur’un ilk telifi ile başlayıp devam edegelmiştir. Risaleler Barla’da telif edilmeye başlanıp"
+      },
+      {
+        "id": "ch-2",
+        "title": "s.10-30 • Hizmet-i Kur’âniye ve İhlas Mektupları",
+        "passageCount": 19,
+        "snippet": "بِاسْمِهٖ مَنْ تُسَبِّحُ لَهُ السَّمٰوَاتُ السَّبْعُ وَالْاَرْضُ وَمَنْ فٖيهِنَّ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْم",
+        "subHeadings": [
+          {
+            "id": "p-18",
+            "title": "Âhiret Kardeşlerime Mühim Bir İhtar"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "s.30-51 • Manevî Bir İhtar ve İki İnce Mesele",
+        "passageCount": 16,
+        "snippet": "Manevî bir ihtar ile bir iki ince meseleyi size yazıyorum: BİRİNCİSİ: Geçen ramazan-ı şerifte, Ehl-i Sünnet’in selâmet ve necatı için edilen pek çok duaların şi",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Âhir zamandan haber veren mühim bir hadîs"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "s.52-69 • Nur ve Gül Fabrikalarının Vaziyeti",
+        "passageCount": 14,
+        "snippet": "بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ بِعَدَدِ تَوَافُقَاتِ الْكَلِمَاتِ وَحُرُوفَ",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Birden İhtar Edilen Bir Mesele"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "s.70-91 • Şuhur-u Selâse ve Hizmet Tebriği",
+        "passageCount": 18,
+        "snippet": "بِاسْمِهٖ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ بِعَدَدِ حَاصِلِ ضَرْبِ حُرُوفِ مَا اَرْسَلْ"
+      },
+      {
+        "id": "ch-6",
+        "title": "s.91-109 • Risale-i Nur Dairesinin Sebatı",
+        "passageCount": 16,
+        "snippet": "Aziz, sıddık ve sebatkâr kardeşlerim! Sizin faaliyetiniz ve sebatkârane çalışmanız, Risale-i Nur dairesinin zembereği hükmünde bizleri ve çok yerleri harekete g"
+      },
+      {
+        "id": "ch-7",
+        "title": "s.110-129 • İki Hatıradan İki İhtar",
+        "passageCount": 15,
+        "snippet": "Bugünlerde iki hatıradan iki ihtar: Birincisi: Bu şehirde Risale-i Nur’a intisap eden ihtiyare hanımlar sebat ettiklerini ve başkalar gibi sarsılmadıklarını düş"
+      },
+      {
+        "id": "ch-8",
+        "title": "s.130-149 • İhtiyat ve Hizmet-i Nuriye Mektupları",
+        "passageCount": 14,
+        "snippet": "İstanbul’a uğrayan Risale-i Nur şakirdleri senin gayret ve ciddiyetini ve tesirli vaazını bize haber verdiler. Senin gibi metin ve hâlis bir zatı, Risale-i Nur"
+      },
+      {
+        "id": "ch-9",
+        "title": "s.150-166 • Lemaat'tan (Fâtiha'daki Üç Yol)",
+        "passageCount": 4,
+        "snippet": "Lemaat’tan Fatiha’nın âhirinde işaret olunan üç yolun beyanı Ey birader-i pür emel! Hayalini ele al, benimle beraber gel. İşte bir zemindeyiz, etrafına bakarız;",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Îcaz ile beyan i’caz-ı Kur’an"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "s.167-189 • İ’caz-ı Kur’ân ve Hizmet Mektupları",
+        "passageCount": 15,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ Aziz, sıddık kardeşlerim! Bu parça hem Lâhika’ya hem İ’caz-ı Kur’an’ın âhirine y",
+        "subHeadings": [
+          {
+            "id": "p-5",
+            "title": "Küçük Hüsrev Feyzi’nin bir istihracıdır"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "s.190-210 • Karadağ'ın Bir Meyvesi",
+        "passageCount": 16,
+        "snippet": "Karadağ’ın Bir Meyvesi Bir âyetin mana-yı işarîsinin külliyetinden bir ferdi, Hürriyet’ten bu ana kadardır. Teşrin-i sânî otuzuncu gün, bin üç yüz elli sekizde"
+      },
+      {
+        "id": "ch-12",
+        "title": "s.211-230 • İşârât-ı Kur’âniye ve Teselli Mektupları",
+        "passageCount": 16,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ Aziz kardeşlerim! Kur’an’a ait en cüz’î en küçük bir nüktenin de kıymeti büyük olduğundan"
+      },
+      {
+        "id": "ch-13",
+        "title": "s.231-255 • Merhum Mehmed Zühdü ve Risale-i Nur'un Takdiri",
+        "passageCount": 15,
+        "snippet": "Aziz, sıddık kardeşlerim! Merhum Mehmed Zühdü’nün vefatı, hakikaten Risale-i Nur cihetinde büyük bir zayiattır. Fakat Cenab-ı Hakk’a hadsiz şükür olsun ki o müb"
+      }
+    ]
+  },
+  {
+    "id": "emirdag-lahikasi-1",
+    "title": "Emirdağ Lâhikası 1",
+    "chapterCount": 15,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Takdim",
+        "passageCount": 1,
+        "snippet": "Takdim Bu lâhika mektupları –ki Yirmi Yedinci Mektup’tur– Risale-i Nur’un ilk telifi ile başlayıp devam edegelmiştir. Risaleler Barla’da telif edilmeye başlanıp"
+      },
+      {
+        "id": "ch-2",
+        "title": "s.10-31 • Emirdağ'daki Kardeşlere ve Evhamlara Cevap",
+        "passageCount": 14,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ بِعَدَدِ حُرُوفَاتِ رَسَائِلِ ال",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mühim Bir Suale Hakikatli Bir Cevaptır"
+          },
+          {
+            "id": "p-5",
+            "title": "Denizli Mahkemesinin İttifakla Verdiği Karar Suretidir"
+          },
+          {
+            "id": "p-6",
+            "title": "Kendi Kendime Bir Hasbihaldir"
+          },
+          {
+            "id": "p-7",
+            "title": "Kendi kendime hasbihal namındaki parçaya lâhika olarak"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "s.31-50 • Yağmur Duası ve Musibetler Hakkında Sual-Cevap",
+        "passageCount": 15,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ Bana Hizmet Eden Küçücük Bir Risale-i Nur Talebesinin Çoklar Namına Sorduğu Sualine Cevaptır Sual: Üstadım, yağmur duası ve namazın netice"
+      },
+      {
+        "id": "ch-4",
+        "title": "s.50-69 • Ankara Ehl-i Vukuf Raporuna Dair",
+        "passageCount": 14,
+        "snippet": "Aziz, sıddık, metin, sarsılmaz, sebatkâr, fedakâr, vefadar kardeşlerim! Bilirsiniz ki Ankara ehl-i vukufu Risale-i Nur’a ait kerametleri ve işaret-i gaybiyeleri",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Hiss-i Kable’l-vukuun Tetimmesi"
+          },
+          {
+            "id": "p-6",
+            "title": "İkramı İzhar Mektubunun Tetimmesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "s.70-90 • İki Ehemmiyetli Mesele ve Hizmet İhtarları",
+        "passageCount": 15,
+        "snippet": "Gayet ehemmiyetli iki meseleyi, sizlere –zekâvetinize itimaden– Risale-i Nur’da müteferrikan parçaları bulunmalarına binaen, gayet muhtasar konuşacağım. Birinci",
+        "subHeadings": [
+          {
+            "id": "p-12",
+            "title": "Yirmi Yedinci Mektup’un Lâhikasının Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "s.90-110 • İki Şıklı Bir Sualin Cevabı",
+        "passageCount": 16,
+        "snippet": "Aziz, sıddık kardeşlerim! Manen maruz kaldığım iki şıklı bir sualin cevabıdır: Birincisi: “Neden en ziyade senin şahsın hakkında hüsn-ü zan eden ve sana büyük b",
+        "subHeadings": [
+          {
+            "id": "p-8",
+            "title": "Risale-i Nur"
+          }
+        ]
+      },
+      {
+        "id": "ch-7",
+        "title": "s.110-130 • Asâ-yı Musa Hizmeti ve Tebrik",
+        "passageCount": 11,
+        "snippet": "Aziz, sıddık kardeşlerim! Evvela: Sizleri, birinci vazife-i Nuriyeyi, Asâ-yı Musa’ya ait hizmete başlamanızı tebrik ve Isparta’nızı diyanette ve âdab-ı İslâmiye"
+      },
+      {
+        "id": "ch-8",
+        "title": "s.131-150 • Re'fet Bey'e ve Nur Talebelerine Mektuplar",
+        "passageCount": 17,
+        "snippet": "Re’fet Kardeş! Sen de çok safalar geldin ve Risale-i Nur yazısı ile meşguliyetin beni cidden sevindirdi. Hulusi ve Sabri gibi senin de suallerinin Risale-i Nur’",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Vasiyetnamemdir"
+          },
+          {
+            "id": "p-10",
+            "title": "Dâhiliye Vekili ile Hasbihalden Bir Parçadır"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "s.150-170 • Kastamonu ve Isparta Kahramanlarına Mektuplar",
+        "passageCount": 22,
+        "snippet": "Aziz, sıddık kardeşlerim ve ebed ve hak yolunda hakikatli arkadaşlarım! Kastamonu efelerinden ve Nur’un kahramanlarından ve Safranbolu fedakârlarından size orad",
+        "subHeadings": [
+          {
+            "id": "p-6",
+            "title": "Yeşil Salih’e Yazılan Mektuptur"
+          },
+          {
+            "id": "p-9",
+            "title": "Bir Derece Mahremdir"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "s.170-190 • Leyle-i Berat ve Ramazan-ı Şerif Tebriği",
+        "passageCount": 32,
+        "snippet": "Aziz, sıddık kardeşlerim! Evvela: Geçen mübarek Leyle-i Beratınızı ve gelecek ramazan-ı şerifinizi tebrik ederiz. Bu sene Berat Gecesi, Nurcular hakkında çok be",
+        "subHeadings": [
+          {
+            "id": "p-5",
+            "title": "Emirdağı Zabıtasıyla Bir Hasbihal"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "s.190-211 • Risale-i Nur'u Yazmanın Dünyevî ve Uhrevî Faydaları",
+        "passageCount": 14,
+        "snippet": "يُوزَنُ مِدَادُ الْعُلَمَاءِ بِدِمَاءِ الشُّهَدَاءِ مَنْ تَمَسَّكَ بِسُنَّتٖى عِنْدَ فَسَادِ اُمَّتٖى فَلَهُ اَجْرُ مِاَةِ شَهٖيدٍ Bu iki hadîs-i şeriften alına"
+      },
+      {
+        "id": "ch-12",
+        "title": "s.212-230 • Süleyman Rüşdü ve Nur'un Fütuhatı",
+        "passageCount": 15,
+        "snippet": "Aziz, sıddık, bahtiyar kardeşim Süleyman Rüşdü! Seni ve kardeşin kahraman Burhan’ı ve senin iki mübarek, masum evladını ve senin hane halkını, Risale-i Nur namı"
+      },
+      {
+        "id": "ch-13",
+        "title": "s.230-251 • Emirdağ Yağmuru ve Hizmet Mektupları",
+        "passageCount": 22,
+        "snippet": "Garibdir ki müstesna olarak her tarafta yağmura ihtiyaç var iken, bu Emirdağı’na mahsus şiddetli bir yağmur ve emsali görülmemiş fındık kadar taneleri büyük ve"
+      },
+      {
+        "id": "ch-14",
+        "title": "s.251-270 • Müsadere Edilen Kitapların İadesi ve Bayram Tebriği",
+        "passageCount": 17,
+        "snippet": "Bu defa Nurların galebesiyle ve manevî fütuhatıyla müsadere edilen kitaplarınızı Ankara’nın emriyle size iade etmeleri, büyük bir fâl-i hayırdır. Ve Risale-i Nu"
+      },
+      {
+        "id": "ch-15",
+        "title": "s.271-288 • Re'fet Bey'e ve Hizmetin İstikametine Dair",
+        "passageCount": 14,
+        "snippet": "Aziz, sıddık kardeşim Re’fet Bey! Evvela: Bazı bize temas eden cüz’î hâdiseler münasebetiyle bir hakikati beyan etmek şiddetle ruhuma ihtar edildi. Şöyle ki: Ri"
+      }
+    ]
+  },
+  {
+    "id": "emirdag-lahikasi-2",
+    "title": "Emirdağ Lâhikası 2",
+    "chapterCount": 13,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Takdim",
+        "passageCount": 1,
+        "snippet": "Risale-i Nur Külliyatı’ndan Yirmi Yedinci Mektup’tan EMİRDAĞ LÂHİKASI – 2 (Emirdağ’ında ve Isparta’da Son İkametlerinde Yazılan Mektuplardır) Müellifi Bedîüzzam"
+      },
+      {
+        "id": "ch-2",
+        "title": "s.6-26 • Bayram Tebriği ve Her Bir Talebenin Birer Said Olması",
+        "passageCount": 21,
+        "snippet": "Aziz, sıddık kardeşlerim! Bayram tebriğiyle beraber her birinizi derecesine göre birer Said ve birer vârisim ve benim yerimde Nurların birer bekçi muhafızı olar",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Afyon Hapsinden Sonra Emirdağı’nda Yazılan Mektuplar"
+          },
+          {
+            "id": "p-12",
+            "title": "Celal Bayar"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "s.27-50 • Sözler Mecmuası ve Tashih Hizmeti",
+        "passageCount": 27,
+        "snippet": "Aziz kardeşim! Evvela: Bin mâşâallah, Sözler mecmuasında yanlışlar yok gibidir. Birkaç kelime var ki leffen gönderildi. Sâniyen: Eğer münasip görseniz gönderdiğ",
+        "subHeadings": [
+          {
+            "id": "p-7",
+            "title": "Nihaî Vesika"
+          },
+          {
+            "id": "p-27",
+            "title": "Hapsin Latîf Bir Hatırası"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "s.51-70 • “Risale-i Nur İmha Edilmez!” Dilekçesi",
+        "passageCount": 19,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ اَبَدًا دَائِمًا Çok sevgili Üstadımız Efendimiz! “Risale-i Nur imha edilmez!” d",
+        "subHeadings": [
+          {
+            "id": "p-12",
+            "title": "Müdafaatın bir hâşiyesidir"
+          },
+          {
+            "id": "p-13",
+            "title": "Papalık Makam-ı Âlîsi"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "s.70-90 • Dindar Milletvekillerine ve Âlem-i İslâm’a Hitap",
+        "passageCount": 9,
+        "snippet": "Dindar ve hamiyetkâr ve vatan-perver milletvekillerine şunu arz ediyorum: Mekke-i Mükerreme’de Hacerü’l-Esved yanında hürmet için konulduğunu, hacıların gördükl"
+      },
+      {
+        "id": "ch-6",
+        "title": "s.91-109 • Er-Rahmân Sûresi Tefsirinin Hülâsası",
+        "passageCount": 9,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اَلرَّحْمٰنُ ۞ عَلَّمَ الْقُرْاٰنَ ۞ خَلَقَ الْاِنْسَانَ ۞ عَلَّمَهُ الْبَيَانَ فَنَحْمَدُهُ مصلّيا على نبيه محمّد الّذى ا",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Tercümesinin Bir Hülâsası"
+          },
+          {
+            "id": "p-5",
+            "title": "Emirdağı’nın Manidar Bir Hatırası"
+          }
+        ]
+      },
+      {
+        "id": "ch-7",
+        "title": "s.110-128 • Eski Said'in Matbu Eserlerinden Bir Fıkra",
+        "passageCount": 7,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ Aziz kardeşlerim! Eski Said’in matbu eski eserlerinden birisi elime geçti. Merak ve dikkatle baktım. Bu gelen fıkra kalbe geldi. Münasipse",
+        "subHeadings": [
+          {
+            "id": "p-4",
+            "title": "Nur Âleminin Bir Anahtarı’nın Bir Hâşiyesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "s.129-148 • Ehl-i Vukuf Raporuna İtiraz ve Hakikat-i Hal",
+        "passageCount": 5,
+        "snippet": "Ehl-i vukuf raporuna hafif bir itiraz tarzında hakikat-i hali beyan etmektir Dinî hissiyatı siyasete âlet ediyorum diye ithamlarına karşı deriz: Bütün hayatımı",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Heyet-i Sıhhiyeye"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "s.149-170 • Yeni Hurufla Yazılan Bir Mektuba Cevap",
+        "passageCount": 9,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ Aziz, sıddık kardeşlerim! Bir zat, uzunca bir mektup yeni hurufla bana yazmış, kendisinin kim olduğunu bildirmemiş. Üç noktada şüphe edip",
+        "subHeadings": [
+          {
+            "id": "p-6",
+            "title": "Kalbe İhtar Edilen İçtimaî Hayatımıza Ait Bir Hakikat"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "s.171-189 • Bağdat “Eddifa” Gazetesinin Makalesi",
+        "passageCount": 14,
+        "snippet": "Bağdat’ta çıkan, ehemmiyetli, siyasî bir ceride olan “Eddifa” gazetesinin muharriri İsa Abdülkadir diyor ki: Nur talebelerinin mürşidi olan Bedîüzzaman Said Nur",
+        "subHeadings": [
+          {
+            "id": "p-12",
+            "title": "Üstadın Ziyaretçilere Dair Bir Mektubu"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "s.190-210 • Leyle-i Kadir İhtarı ve Hizmet Mektupları",
+        "passageCount": 16,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ اَبَدًا دَائِمًا Aziz, sıddık ka",
+        "subHeadings": [
+          {
+            "id": "p-8",
+            "title": "Üstadımızın Vasiyetnamesi"
+          },
+          {
+            "id": "p-9",
+            "title": "Menderes’in Konya Nutkuna Dair Açıklaması"
+          },
+          {
+            "id": "p-14",
+            "title": "Demokratlara Büyük Bir Hakikati İhtar"
+          }
+        ]
+      },
+      {
+        "id": "ch-12",
+        "title": "s.210-229 • Hizmet-i İmaniye Tebriği ve İhtarlar",
+        "passageCount": 11,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ وَ اِنْ مِنْ شَىْءٍ اِلَّا يُسَبِّحُ بِحَمْدِهٖ اَلسَّلَامُ عَلَيْكُمْ وَ رَحْمَةُ اللّٰهِ وَ بَرَكَاتُهُ اَبَدًا دَائِمًا Aziz, sıddık, v",
+        "subHeadings": [
+          {
+            "id": "p-5",
+            "title": "Hüseyin Avni ve Tahsin Tola ile Bir Hasbihaldir"
+          }
+        ]
+      },
+      {
+        "id": "ch-13",
+        "title": "s.230-247 • Cumhuriyet Gazetesinin İftiralarına Cevap",
+        "passageCount": 11,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ Üstadımız ifade buyurdular ki: Aleyhimizde olan Cumhuriyet gazetesi müdafaamı çok yanlış ve gayet fena bir tarzda tağyir etmiş, hattâ “Bir",
+        "subHeadings": [
+          {
+            "id": "p-9",
+            "title": "Bedîüzzaman Said Nursî’nin Gazetelere Bir Mektubu"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sikke-i-tasdik-i-gaybi",
+    "title": "Sikke-i Tasdik-i Gaybî",
+    "chapterCount": 8,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Parlak Fıkralar ve Güzel Mektuplar 1",
+        "passageCount": 40,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ بِاسْمِهٖ سُبْحَانَهُ Bu Sikke-i Gaybiye’yi mahrem tutardık, yalnız has kardeşlerime mahsustu. Ben vefat ettikten sonra ne",
+        "subHeadings": [
+          {
+            "id": "p-7",
+            "title": "Şamlı Hâfız Tevfik’in Fıkrası"
+          },
+          {
+            "id": "p-13",
+            "title": "BİRİNCİ MESELE"
+          },
+          {
+            "id": "p-17",
+            "title": "Emin ve Tahsin ve Hilmi’nin Bir Fıkrasıdır"
+          },
+          {
+            "id": "p-20",
+            "title": "Emin ve Feyzi’nin Bir Fıkrasıdır"
+          },
+          {
+            "id": "p-21",
+            "title": "Mehmed Feyzi’nin yediği şefkat tokadıdır"
+          },
+          {
+            "id": "p-23",
+            "title": "Hüsrev’in Bir Fıkrasıdır"
+          },
+          {
+            "id": "p-24",
+            "title": "Hulusi Bey’in Bir Fıkrasıdır"
+          },
+          {
+            "id": "p-27",
+            "title": "Risale-i Nur’un Beş Talebesinin Bir Fıkrasıdır"
+          },
+          {
+            "id": "p-30",
+            "title": "Hüsrev’in mektubundan bir fıkradır"
+          },
+          {
+            "id": "p-31",
+            "title": "Kâtip Osman’ın rüyasına ait bir fıkrasıdır"
+          },
+          {
+            "id": "p-32",
+            "title": "Karadağ’ın Bir Meyvesi"
+          },
+          {
+            "id": "p-34",
+            "title": "Birdenbire Kalbe Gelen Bir Nükte-i İ’caziyedir"
+          },
+          {
+            "id": "p-35",
+            "title": "Küçük Hüsrev Feyzi’nin Bir İstihracıdır"
+          }
+        ]
+      },
+      {
+        "id": "ch-2",
+        "title": "Birinci Şuâ",
+        "passageCount": 3,
+        "snippet": "Birinci Şuâ بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ بِهٖ نَسْتَعٖينُ İki acib suale karşı def’aten hatıra gelen garib cevaptır. Birinci Sual: Denildi ki: “Fati"
+      },
+      {
+        "id": "ch-3",
+        "title": "Sekizinci Şuâ",
+        "passageCount": 11,
+        "snippet": "Sekizinci Şuâ Üçüncü Bir Keramet-i Aleviye Bir İfade-i Meram Malûm olsun ki ben, Risale-i Nur’un kıymetini ve ehemmiyetini beyan etmekle Kur’an’ın hakikatlerini",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "İKİNCİ REMİZ"
+          },
+          {
+            "id": "p-4",
+            "title": "ÜÇÜNCÜ REMİZ"
+          },
+          {
+            "id": "p-5",
+            "title": "DÖRDÜNCÜ REMİZ"
+          },
+          {
+            "id": "p-6",
+            "title": "BEŞİNCİ REMİZ"
+          },
+          {
+            "id": "p-7",
+            "title": "ALTINCI REMİZ"
+          },
+          {
+            "id": "p-8",
+            "title": "YEDİNCİ REMİZ"
+          },
+          {
+            "id": "p-9",
+            "title": "SEKİZİNCİ REMİZ"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "On Sekizinci Lem'a",
+        "passageCount": 1,
+        "snippet": "On Sekizinci Lem’a Risale-i Nur’dan haber veren Birinci Keramet-i Aleviye Risalesi’dir. Hatt-ı Kur’an Lem’alar ve Hatt-ı Kur’an Sikke-i Tasdik-i Gaybî mecmualar",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "On Sekizinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "Yirmi Sekizinci Lem'a",
+        "passageCount": 1,
+        "snippet": "Yirmi Sekizinci Lem’a Risale-i Nur’dan haber veren İkinci Keramet-i Aleviye Risalesi’dir. Tamamı Hatt-ı Kur’an Lem’alar mecmuasında, Keramet-i Aleviye kısmı ise",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yirmi Sekizinci Lem’a"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "Sekizinci Lem'a",
+        "passageCount": 13,
+        "snippet": "Sekizinci Lem’a Gavs-ı A’zam’ın Hizbü’l-Kur’an’a dair keramet-i gaybiyesidir. (Hâşiye[1]) Şu risale içindeki imzalar ile gösterildiği gibi hizmet-i Kur’aniyedek",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Sekizinci Lem’a"
+          },
+          {
+            "id": "p-2",
+            "title": "Şâyan-ı hayret bir tefe’ül ve mühim bir ihbar-ı gaybî"
+          },
+          {
+            "id": "p-3",
+            "title": "Mühim bir ihbar-ı gaybî"
+          },
+          {
+            "id": "p-5",
+            "title": "Said Kendi Söylüyor"
+          },
+          {
+            "id": "p-7",
+            "title": "Risale-i Nur şakirdlerinin bir fıkrasıdır"
+          },
+          {
+            "id": "p-9",
+            "title": "Latîf Bir Tefe’ül"
+          }
+        ]
+      },
+      {
+        "id": "ch-7",
+        "title": "Parlak Fıkralar ve Güzel Mektuplar 2",
+        "passageCount": 54,
+        "snippet": "Risale-i Nur’dan Parlak Fıkralar ve Bir Kısım Güzel Mektuplar Aziz, sıddık kardeşlerim! Latîf, manidar ve beşaretli iki hâdiseyi beyan ediyorum: Birincisi: Meyu",
+        "subHeadings": [
+          {
+            "id": "p-7",
+            "title": "Rüya hakkında Isparta’ya gönderilen bir fıkradır"
+          },
+          {
+            "id": "p-9",
+            "title": "Isparta’ya gönderilen bir mektup"
+          },
+          {
+            "id": "p-10",
+            "title": "Risale-i Nur’un küçük ve masum şakirdleri"
+          },
+          {
+            "id": "p-11",
+            "title": "Isparta’ya gönderilen bir fıkradır"
+          },
+          {
+            "id": "p-12",
+            "title": "Latîf bir tevafuka işaret eden bir fıkradır"
+          },
+          {
+            "id": "p-13",
+            "title": "Hâfız Mustafa’nın bir fıkrasıdır"
+          },
+          {
+            "id": "p-15",
+            "title": "Hulusi Bey’in bir fıkrasıdır"
+          },
+          {
+            "id": "p-25",
+            "title": "Üstadımızın ehemmiyetli bir mektubudur"
+          },
+          {
+            "id": "p-27",
+            "title": "Salahaddin’in fıkrasından bir parçadır"
+          },
+          {
+            "id": "p-40",
+            "title": "Yirmi Sekizinci Mektup’tan Yedinci Mesele"
+          },
+          {
+            "id": "p-41",
+            "title": "Mahrem Bir Suale Cevaptır"
+          },
+          {
+            "id": "p-44",
+            "title": "Zekâi’nin bir manzumesi"
+          },
+          {
+            "id": "p-47",
+            "title": "Halil İbrahim’in manzumesidir"
+          },
+          {
+            "id": "p-48",
+            "title": "Hüve Nüktesi"
+          },
+          {
+            "id": "p-49",
+            "title": "Yirmi Dokuzuncu Mektubun Beşinci Risale olan Beşinci Kısmı"
+          },
+          {
+            "id": "p-50",
+            "title": "Na’büdü Nüktesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "Dua (Sikke-i Tasdik-i Gaybî)",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَا اَللّٰهُ يَا رَحْمٰنُ يَا رَحٖيمُ يَا فَرْدُ يَا حَىُّ يَا قَيُّومُ يَا حَكَمُ يَا عَدْلُ يَا قُدُّوسُ İsm-i a’zamın h"
+      }
+    ]
+  },
+  {
+    "id": "asa-yi-musa",
+    "title": "Asâ-yı Musa",
+    "chapterCount": 26,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Mukaddimat",
+        "passageCount": 3,
+        "snippet": "بِاسْمِهٖ سُبْحَانَهُ Bu acib asırda ehl-i iman, “Risale-i Nur”a ve ehl-i fen ve mektep muallimleri “Asâ-yı Musa”ya şiddetle muhtaç oldukları gibi hâfızlar ve h"
+      },
+      {
+        "id": "ch-2",
+        "title": "Asâ-yı Musa'dan Birinci Kısım",
+        "passageCount": 1,
+        "snippet": "Asâ-yı Musa’dan Birinci Kısım Denizli Hapsinin Bir Meyvesi Zındıka ve küfr-ü mutlaka karşı Risale-i Nur’un bir müdafaanamesidir. Ve bu hapsimizde hakiki müdafaa"
+      },
+      {
+        "id": "ch-3",
+        "title": "Birinci Mesele",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ فَلَبِثَ فِى السِّجْنِ بِضْعَ سِنٖينَ âyetinin ihbarı ve sırrıyla Yusuf aleyhisselâm mahpusların pîridir. Ve hapishane bir"
+      },
+      {
+        "id": "ch-4",
+        "title": "İkinci Mesele",
+        "passageCount": 2,
+        "snippet": "İkinci Meselenin Hülâsası Risale-i Nur’dan Gençlik Rehberi’nin güzelce izah ettiği gibi ölüm, o kadar kat’î ve zahirdir ki bugünün gecesi ve bu güzün kışı gelme",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "İkinci Meselenin Hülâsası"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "Üçüncü Mesele",
+        "passageCount": 1,
+        "snippet": "Üçüncü Mesele Gençlik Rehberi’nde izahı bulunan ibretli bir hâdisenin hülâsası şudur: Bir zaman, Eskişehir Hapishanesinin penceresinde bir Cumhuriyet Bayramı’nd"
+      },
+      {
+        "id": "ch-6",
+        "title": "Dördüncü Mesele",
+        "passageCount": 2,
+        "snippet": "Dördüncü Mesele Yine Gençlik Rehberi’nde izahı var. Bir zaman bana hizmet eden kardeşlerim tarafından sual edildi ki: “Küre-i arzı herc ü merce getiren ve İslâm"
+      },
+      {
+        "id": "ch-7",
+        "title": "Beşinci Mesele",
+        "passageCount": 1,
+        "snippet": "Beşinci Mesele Gençlik Rehberi’nde izah edildiği gibi gençlik hiç şüphe yok ki gidecek. Yaz güze ve kışa yer vermesi ve gündüz akşama ve geceye değişmesi kat’iy"
+      },
+      {
+        "id": "ch-8",
+        "title": "Altıncı Mesele",
+        "passageCount": 1,
+        "snippet": "Altıncı Mesele Risale-i Nur’un çok yerlerinde izahı ve kat’î hadsiz hüccetleri bulunan iman-ı billah rüknünün binler küllî bürhanlarından bir tek bürhana kısaca"
+      },
+      {
+        "id": "ch-9",
+        "title": "Yedinci Mesele",
+        "passageCount": 2,
+        "snippet": "Yedinci Mesele Denizli Hapsinde bir cuma gününün meyvesidir. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَمَٓا اَمْرُ السَّاعَةِ اِلَّا كَلَمْحِ الْبَصَرِ اَوْ هُوَ"
+      },
+      {
+        "id": "ch-10",
+        "title": "Sekizinci Mesele",
+        "passageCount": 1,
+        "snippet": "Sekizinci Meselenin Bir Hülâsası Yedinci’de haşri çok makamattan soracaktık. Fakat Hâlık’ımızın isimleriyle verdiği cevap o derece kuvvetli yakîn ve kanaat verd",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Sekizinci Meselenin Bir Hülâsası"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "Dokuzuncu Mesele",
+        "passageCount": 1,
+        "snippet": "Dokuzuncu Mesele بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ اٰمَنَ الرَّسُولُ بِمَٓا اُنْزِلَ اِلَيْهِ مِنْ رَبِّهٖ وَالْمُؤْمِنُونَ كُلٌّ اٰمَنَ بِاللّٰهِ وَمَلٰٓئِ"
+      },
+      {
+        "id": "ch-12",
+        "title": "Onuncu Mesele",
+        "passageCount": 4,
+        "snippet": "Onuncu Mesele Emirdağı Çiçeği Kur’an’da olan tekrarata gelen itirazlara karşı gayet kuvvetli bir cevaptır. Aziz, sıddık kardeşlerim! Gerçi bu mesele, perişan va",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Bu Onuncu Meseleye Bir Hâtime Olarak İki Hâşiyedir"
+          },
+          {
+            "id": "p-3",
+            "title": "Onuncu Mesele Münasebetiyle Hüsrev’in Üstadına Yazdığı Mektup"
+          }
+        ]
+      },
+      {
+        "id": "ch-13",
+        "title": "On Birinci Mesele",
+        "passageCount": 6,
+        "snippet": "On Birinci Mesele Meyve’nin On Birinci Mesele’sinin başı, bir meyvesi cennet ve biri saadet-i ebediye ve biri rü’yetullah olan iman şecere-i kudsiyesinin hadsiz",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-3",
+            "title": "On Birinci Mesele’nin Hâşiyesinin Bir Lâhikasıdır"
+          }
+        ]
+      },
+      {
+        "id": "ch-14",
+        "title": "Asâ-yı Musa'dan İkinci Kısım",
+        "passageCount": 1,
+        "snippet": "Asâ-yı Musa’dan İkinci Kısım Hüccetullahi’l-Bâliğa Risalesi On Bir Hüccet-i İmaniyedir Bu risaleyi Ankara Ehl-i Vukufu çok takdir ettikleri gibi; bu defa da ber"
+      },
+      {
+        "id": "ch-15",
+        "title": "Birinci Hüccet-i İmaniye",
+        "passageCount": 4,
+        "snippet": "Birinci Hüccet-i İmaniye Âyetü’l-Kübra Kâinattan hâlıkını soran bir seyyahın müşahedatıdır. بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ تُسَبِّحُ لَهُ السَّمٰوَاتُ ال",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "İşte bu manayı ifade için Birinci Makam’ın beşinci mertebesinde"
+          }
+        ]
+      },
+      {
+        "id": "ch-16",
+        "title": "İkinci Hüccet-i İmaniye",
+        "passageCount": 3,
+        "snippet": "İkinci Hüccet-i İmaniye (Otuz İkinci Söz’ün Birinci Mevkıfı) بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ لَوْ كَانَ فٖيهِمَٓا اٰلِهَةٌ اِلَّا اللّٰهُ لَفَسَدَتَا لَا",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Mevkıf’ın Küçük Bir Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-17",
+        "title": "Üçüncü Hüccet-i İmaniye",
+        "passageCount": 7,
+        "snippet": "Üçüncü Hüccet-i İmaniye",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Yirmi Üçüncü Lem’a"
+          },
+          {
+            "id": "p-3",
+            "title": "İhtar"
+          },
+          {
+            "id": "p-5",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-6",
+            "title": "Hâtime"
+          }
+        ]
+      },
+      {
+        "id": "ch-18",
+        "title": "Dördüncü Hüccet-i İmaniye",
+        "passageCount": 2,
+        "snippet": "Dördüncü Hüccet-i İmaniye",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Otuzuncu Lem’a’nın İkinci Nüktesi"
+          }
+        ]
+      },
+      {
+        "id": "ch-19",
+        "title": "Beşinci Hüccet-i İmaniye",
+        "passageCount": 3,
+        "snippet": "Beşinci Hüccet-i İmaniye İsm-i a’zamın altı nurundan üçüncü nuruna işaret eden",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Üçüncü Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-20",
+        "title": "Altıncı Hüccet-i İmaniye",
+        "passageCount": 2,
+        "snippet": "Altıncı Hüccet-i İmaniye (Onuncu Söz’ün Dokuzuncu Hakikati) Bab-ı ihya ve imatedir. İsm-i Hayy-ı Kayyum’un, Muhyî ve Mümît’in cilvesidir. Hiç mümkün müdür ki: Ö"
+      },
+      {
+        "id": "ch-21",
+        "title": "Yedinci Hüccet-i İmaniye",
+        "passageCount": 1,
+        "snippet": "Yedinci Hüccet-i İmaniye (Otuz Üçüncü Mektup’un On Yedinci Penceresi) اِنَّ فِى السَّمٰوَاتِ وَالْاَرْضِ لَاٰيَاتٍ لِلْمُؤْمِنٖينَ Zeminin yüzünü yaz zamanında"
+      },
+      {
+        "id": "ch-22",
+        "title": "Sekizinci Hüccet-i İmaniye",
+        "passageCount": 3,
+        "snippet": "Sekizinci Hüccet-i İmaniye",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Münâcat"
+          }
+        ]
+      },
+      {
+        "id": "ch-23",
+        "title": "Dokuzuncu Hüccet-i İmaniye",
+        "passageCount": 2,
+        "snippet": "Dokuzuncu Hüccet-i İmaniye (Dokuzuncu Şuâ’nın Mukaddime-i Haşriyesi) بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ فَسُبْحَانَ اللّٰهِ حٖينَ تُمْسُونَ وَحٖينَ تُصْبِحُو",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-24",
+        "title": "Onuncu Hüccet-i İmaniye",
+        "passageCount": 4,
+        "snippet": "Onuncu Hüccet-i İmaniye",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Yirminci Mektup"
+          },
+          {
+            "id": "p-3",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-4",
+            "title": "BİRİNCİ MAKAM"
+          }
+        ]
+      },
+      {
+        "id": "ch-25",
+        "title": "On Birinci Hüccet-i İmaniye",
+        "passageCount": 2,
+        "snippet": "On Birinci Hüccet-i İmaniye (Yirmi İkinci Söz’ün Birinci Makamı) بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَيَضْرِبُ اللّٰهُ الْاَمْثَالَ لِلنَّاسِ لَعَلَّهُمْ يَت"
+      },
+      {
+        "id": "ch-26",
+        "title": "Fihrist (Asâ-yı Musa)",
+        "passageCount": 25,
+        "snippet": "Fihrist Mukaddimat",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Birinci Kısım"
+          },
+          {
+            "id": "p-3",
+            "title": "Birinci Mesele"
+          },
+          {
+            "id": "p-4",
+            "title": "İkinci Meselenin Bir Hülâsası"
+          },
+          {
+            "id": "p-5",
+            "title": "Üçüncü Mesele"
+          },
+          {
+            "id": "p-6",
+            "title": "Dördüncü Mesele"
+          },
+          {
+            "id": "p-7",
+            "title": "Beşinci Mesele"
+          },
+          {
+            "id": "p-8",
+            "title": "Altıncı Mesele"
+          },
+          {
+            "id": "p-9",
+            "title": "Yedinci Mesele"
+          },
+          {
+            "id": "p-10",
+            "title": "Sekizinci Meselenin Bir Hülâsası"
+          },
+          {
+            "id": "p-11",
+            "title": "Dokuzuncu Mesele"
+          },
+          {
+            "id": "p-12",
+            "title": "Onuncu Mesele (Emirdağı Çiçeği)"
+          },
+          {
+            "id": "p-13",
+            "title": "On Birinci Mesele"
+          },
+          {
+            "id": "p-14",
+            "title": "İkinci Kısım"
+          },
+          {
+            "id": "p-15",
+            "title": "Birinci Hüccet-i İmaniye (Âyetü’l-Kübra’dan on dokuz mertebe)"
+          },
+          {
+            "id": "p-16",
+            "title": "İkinci Hüccet-i İmaniye (Otuz İkinci Söz’ün Birinci Mevkıfı)"
+          },
+          {
+            "id": "p-17",
+            "title": "Üçüncü Hüccet-i İmaniye (Tabiat Risalesi)"
+          },
+          {
+            "id": "p-18",
+            "title": "Dördüncü Hüccet-i İmaniye (İsm-i Adl Nüktesi)"
+          },
+          {
+            "id": "p-19",
+            "title": "Beşinci Hüccet-i İmaniye (İsm-i Hakem Nüktesi)"
+          },
+          {
+            "id": "p-20",
+            "title": "Altıncı Hüccet-i İmaniye (Haşir Risalesi’nden Dokuzuncu Hakikat)"
+          },
+          {
+            "id": "p-21",
+            "title": "Yedinci Hüccet-i İmaniye (On Yedinci Pencere)"
+          },
+          {
+            "id": "p-22",
+            "title": "Sekizinci Hüccet-i İmaniye (Münâcat Risalesi)"
+          },
+          {
+            "id": "p-23",
+            "title": "Dokuzuncu Hüccet-i İmaniye (Dokuzuncu Şuâ)"
+          },
+          {
+            "id": "p-24",
+            "title": "Onuncu Hüccet-i İmaniye (Yirminci Mektup’un Birinci Makamı)"
+          },
+          {
+            "id": "p-25",
+            "title": "On Birinci Hüccet-i İmaniye (Yirmi İkinci Söz’ün Birinci Makamı)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tarihce-i-hayat",
+    "title": "Tarihçe-i Hayat",
+    "chapterCount": 14,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Ön Söz",
+        "passageCount": 5,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ وَ بِهٖ نَسْتَعٖينُ Ön söz Bu ön söz, Medine-i Münevvere’de bulunan mühim bir âlim tarafından yazılmıştır. Büyük İkbal’e a"
+      },
+      {
+        "id": "ch-2",
+        "title": "Giriş",
+        "passageCount": 1,
+        "snippet": "RİSALE-İ NUR KÜLLİYATI BEDÎÜZZAMAN SAİD NURSÎ Hizmet Vakfı Diyanet İşleri Başkanlığı ASIL NÜSHA METNİ ©2016"
+      },
+      {
+        "id": "ch-3",
+        "title": "İlk Hayatı",
+        "passageCount": 29,
+        "snippet": "Birinci Kısım İlk Hayatı Bedîüzzaman Said Nursî (Rumî 1293) tarihinde Bitlis vilayetine bağlı Hizan kazasının İsparit nahiyesinin Nurs köyünde doğmuştur. Babası",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Birinci Kısım"
+          },
+          {
+            "id": "p-2",
+            "title": "O Zamanki Hayatına Kısa Bir Bakış"
+          },
+          {
+            "id": "p-4",
+            "title": "Yaşasın Şeriat-ı Ahmedî (asm)"
+          },
+          {
+            "id": "p-5",
+            "title": "Hakikat"
+          },
+          {
+            "id": "p-20",
+            "title": "On Birinci Rica"
+          },
+          {
+            "id": "p-28",
+            "title": "Ankara’daki hayatına dair Risale-i Nur’dan bir parça"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "Barla Hayatı",
+        "passageCount": 20,
+        "snippet": "İkinci Kısım Barla Hayatı Risale-i Nur’un Zuhuru Üstad Bedîüzzaman Said Nursî’nin Şarkî Anadolu’da dünyaya gelişinden itibaren geçirdiği hayat safhalarını buray",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "İkinci Kısım"
+          },
+          {
+            "id": "p-5",
+            "title": "Altıncı Mektup"
+          },
+          {
+            "id": "p-6",
+            "title": "On Üçüncü Mektup"
+          },
+          {
+            "id": "p-7",
+            "title": "Yirmi İkinci Lem’a"
+          },
+          {
+            "id": "p-8",
+            "title": "Hâtime"
+          },
+          {
+            "id": "p-9",
+            "title": "Yirmi Altıncı Lem’a’nın Altıncı Ricası"
+          },
+          {
+            "id": "p-11",
+            "title": "Yirmi Sekizinci Mektubun Yedinci Meselesi"
+          },
+          {
+            "id": "p-12",
+            "title": "Mahrem Bir Suale Cevaptır"
+          },
+          {
+            "id": "p-13",
+            "title": "Yedinci Mesele’nin Hâtimesidir"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "Eskişehir Hayatı",
+        "passageCount": 13,
+        "snippet": "Üçüncü Kısım Eskişehir Hayatı Risale-i Nur’un gittikçe inkişaf ettiğini, iman ve İslâmiyet’in kuvvetlenmeye başladığını anlayan gizli din düşmanları “Bedîüzzama",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Üçüncü Kısım"
+          },
+          {
+            "id": "p-4",
+            "title": "İddianameye Karşı İtiraznamem"
+          },
+          {
+            "id": "p-5",
+            "title": "Ceza Hâkimine Son Müdafaa"
+          },
+          {
+            "id": "p-6",
+            "title": "On Altıncı Mektup"
+          },
+          {
+            "id": "p-7",
+            "title": "BİRİNCİ NOKTA"
+          },
+          {
+            "id": "p-8",
+            "title": "İKİNCİ NOKTA"
+          },
+          {
+            "id": "p-9",
+            "title": "ÜÇÜNCÜ NOKTA"
+          },
+          {
+            "id": "p-10",
+            "title": "DÖRDÜNCÜ NOKTA"
+          },
+          {
+            "id": "p-11",
+            "title": "BEŞİNCİ NOKTA"
+          },
+          {
+            "id": "p-12",
+            "title": "On Altıncı Mektup’un Zeyli"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "Kastamonu Hayatı",
+        "passageCount": 49,
+        "snippet": "Dördüncü Kısım Kastamonu Hayatı Bedîüzzaman Said Nursî, Eskişehir hapsinden çıktıktan sonra, Kastamonu vilayetine nefyediliyor. Uzun bir müddet polis karakolund",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Dördüncü Kısım"
+          },
+          {
+            "id": "p-37",
+            "title": "Karadağ’ın Bir Meyvesi"
+          },
+          {
+            "id": "p-38",
+            "title": "Risale-i Nurun Küçük ve Masum Şakirdleri"
+          },
+          {
+            "id": "p-39",
+            "title": "Isparta’ya Gönderilen Bir Mektup"
+          },
+          {
+            "id": "p-40",
+            "title": "Isparta’ya Gönderilen Bir Fıkradır"
+          },
+          {
+            "id": "p-43",
+            "title": "Âyetü’l-Kübra Hakkında Birkaç Söz"
+          },
+          {
+            "id": "p-44",
+            "title": "Âyetü’l-Kübra"
+          },
+          {
+            "id": "p-45",
+            "title": "İşte bu manayı ifade için Birinci Makam’ın beşinci mertebesinde"
+          },
+          {
+            "id": "p-47",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-48",
+            "title": "Münâcat"
+          }
+        ]
+      },
+      {
+        "id": "ch-7",
+        "title": "Denizli Hayatı",
+        "passageCount": 40,
+        "snippet": "Beşinci Kısım Denizli Hayatı Risale-i Nur’un neşriyat ve fütuhat dairesi gittikçe genişliyor… İştiyakla Nurları okuyanlar, günden güne ziyadeleşiyor. Risale-i N",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Beşinci Kısım"
+          },
+          {
+            "id": "p-12",
+            "title": "Bu gelen kısım çok ehemmiyetlidir"
+          },
+          {
+            "id": "p-13",
+            "title": "Son Sözün Bir Mühim Parçası"
+          },
+          {
+            "id": "p-16",
+            "title": "Mühim Bir Suale Hakikatli Bir Cevaptır"
+          },
+          {
+            "id": "p-39",
+            "title": "Meyve Risalesi’nden Yedinci Mesele"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "Emirdağ Hayatı",
+        "passageCount": 45,
+        "snippet": "Altıncı Kısım Emirdağ Hayatı",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Altıncı Kısım"
+          },
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-6",
+            "title": "Üstadın Emirdağ’da Zehirlenmesi"
+          },
+          {
+            "id": "p-8",
+            "title": "Kendi Kendime Bir Hasbihaldir"
+          },
+          {
+            "id": "p-28",
+            "title": "Dâhiliye Vekiliyle Hasbihalden Bir Parçadır"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "Afyon Hayatı",
+        "passageCount": 45,
+        "snippet": "Yedinci Kısım Afyon Hayatı Bedîüzzaman’ın Tevkifi 1947 senesinin son aylarında, Afyon’dan üç sivil polis memuru, güya memleket çapında gizli bir dinî cemiyetin",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Yedinci Kısım"
+          },
+          {
+            "id": "p-5",
+            "title": "Bedîüzzaman Said Nursî’nin Afyon Mahkemesi"
+          },
+          {
+            "id": "p-6",
+            "title": "BÜYÜK MÜDAFAATINDAN PARÇALAR"
+          },
+          {
+            "id": "p-10",
+            "title": "Son Sözüm"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "Isparta Hayatı",
+        "passageCount": 37,
+        "snippet": "Sekizinci Kısım Isparta Hayatı 1950’den sonra Üstad Said Nursî, Afyon Hapishanesinden 1949’da bir eylül sabahı tahliye edildi. İki komiser arasında faytonla bir",
+        "subHeadings": [
+          {
+            "id": "p-1",
+            "title": "Sekizinci Kısım"
+          },
+          {
+            "id": "p-8",
+            "title": "Ankara’daki Nur Talebelerinin Bir Mektubu"
+          },
+          {
+            "id": "p-9",
+            "title": "Tahliller"
+          },
+          {
+            "id": "p-10",
+            "title": "Said Nur ve Talebeleri"
+          },
+          {
+            "id": "p-11",
+            "title": "Bedîüzzaman’ı Zehirlediler"
+          },
+          {
+            "id": "p-12",
+            "title": "Bedîüzzaman Said Nur"
+          },
+          {
+            "id": "p-15",
+            "title": "Demokrat Kardeşlere Tavsiye"
+          },
+          {
+            "id": "p-16",
+            "title": "Bedîüzzaman"
+          },
+          {
+            "id": "p-20",
+            "title": "Üstadın Emirdağ’a Gidişi"
+          },
+          {
+            "id": "p-23",
+            "title": "İstanbul Mahkemesi"
+          },
+          {
+            "id": "p-25",
+            "title": "Üstadın Müdafaası"
+          },
+          {
+            "id": "p-27",
+            "title": "Avukat Seniyyüddin Başak’ın Müdafaası"
+          },
+          {
+            "id": "p-28",
+            "title": "Avukat Abdurrahman Şeref Lâç’ın Müdafaası"
+          },
+          {
+            "id": "p-34",
+            "title": "Üstad Said Nursî’nin Isparta’da İkametleri"
+          },
+          {
+            "id": "p-36",
+            "title": "Isparta’daki Hayatından Muhtelif Safhalar"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "Hariç Memleketler",
+        "passageCount": 27,
+        "snippet": "Risale-i Nur ve Hariç Memleketler Risale-i Nur’un hariç memleketlerdeki fütuhatına kısa bir bakış Risale-i Nur, yirminci asrın ilim ve fen seviyesine uygun müsb",
+        "subHeadings": [
+          {
+            "id": "p-7",
+            "title": "Sabir’in diğer bir mektubu"
+          },
+          {
+            "id": "p-8",
+            "title": "Karaçi Nur talebeleri adına yazılan bir mektup"
+          }
+        ]
+      },
+      {
+        "id": "ch-12",
+        "title": "Bedîüzzaman ve Risale-i Nur",
+        "passageCount": 7,
+        "snippet": "Bedîüzzaman ve Risale-i Nur Risale-i Nur Nedir ve Nasıl Bir Tefsirdir? Kur’an’ın hakikatlerini müsbet ilim anlayışına uygun bir tarzda izah ve ispat eden Risale",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Konuşan Yalnız Hakikattir"
+          },
+          {
+            "id": "p-6",
+            "title": "Üstadın Ziyaretçilere Dair Bir Mektubu"
+          }
+        ]
+      },
+      {
+        "id": "ch-13",
+        "title": "Dua (Tarihçe-i Hayatı)",
+        "passageCount": 1,
+        "snippet": "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحٖيمِ يَا اَللّٰهُ يَا رَحْمٰنُ يَا رَحٖيمُ يَا فَرْدُ يَا حَىُّ يَا قَيُّومُ يَا حَكَمُ يَا عَدْلُ يَا قُدُّوسُ İsm-i a’zamın h"
+      },
+      {
+        "id": "ch-14",
+        "title": "İçindekiler",
+        "passageCount": 1,
+        "snippet": "ÖN SÖZ GİRİŞ İLK HAYATI BARLA HAYATI ESKİŞEHİR HAYATI KASTAMONU HAYATI DENİZLİ HAYATI EMİRDAĞ HAYATI AFYON HAYATI ISPARTA HAYATI RİSALE-İ NUR ve HARİÇ MEMLEKETL"
+      }
+    ]
+  },
+  {
+    "id": "kucuk-kitaplar",
+    "title": "Küçük Kitaplar",
+    "chapterCount": 11,
+    "chapters": [
+      {
+        "id": "ch-1",
+        "title": "Divan-ı Harb-i Örfî",
+        "passageCount": 9,
+        "snippet": "Risale-i Nur Külliyatı’ndan İki Mekteb-i Musibetin Şehadetnamesi veya DİVAN-I HARB-İ ÖRFÎ Müellifi Bedîüzzaman Said Nursî بِاسْمِهٖ سُبْحَانَهُ (Yarım asır evve",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "1327’de tabedilen"
+          },
+          {
+            "id": "p-3",
+            "title": "HÂTİME"
+          },
+          {
+            "id": "p-4",
+            "title": "Yaşasın Şeriat-ı Ahmedî (asm)"
+          },
+          {
+            "id": "p-5",
+            "title": "Hakikat"
+          },
+          {
+            "id": "p-6",
+            "title": "Sadâ-yı Hakikat"
+          },
+          {
+            "id": "p-8",
+            "title": "Hürriyete Hitap"
+          }
+        ]
+      },
+      {
+        "id": "ch-2",
+        "title": "Gençlik Rehberi",
+        "passageCount": 47,
+        "snippet": "Risale-i Nur Külliyatı’ndan GENÇLİK REHBERİ Müellifi Bedîüzzaman Said Nursî ÖN SÖZ Bu Gençlik Rehberi, yeni harfle basıldığı gibi eski harfle Isparta’da dahi te",
+        "subHeadings": [
+          {
+            "id": "p-4",
+            "title": "Birinci Söz"
+          },
+          {
+            "id": "p-6",
+            "title": "On Üçüncü Söz’ün İkinci Makamı"
+          },
+          {
+            "id": "p-10",
+            "title": "Birden İhtar Edilen Bir Mesele-i Mühimme"
+          },
+          {
+            "id": "p-17",
+            "title": "On Üçüncü Söz’ün İkinci Makamı’nın Zeyli"
+          },
+          {
+            "id": "p-18",
+            "title": "Yirmi Altıncı Lem’a’dan"
+          },
+          {
+            "id": "p-19",
+            "title": "Yedinci Rica"
+          },
+          {
+            "id": "p-20",
+            "title": "Meyve Risalesi’nden"
+          },
+          {
+            "id": "p-21",
+            "title": "Altıncı Mesele"
+          },
+          {
+            "id": "p-22",
+            "title": "Onuncu Söz’ün Mühim Bir Zeyli ve Lâhikasının Birinci Parçası"
+          },
+          {
+            "id": "p-23",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-24",
+            "title": "Hüve Nüktesi"
+          },
+          {
+            "id": "p-25",
+            "title": "On Yedinci Söz’ün İkinci Makamı([5])"
+          },
+          {
+            "id": "p-26",
+            "title": "Siyah Dutun Bir Meyvesi"
+          },
+          {
+            "id": "p-28",
+            "title": "Ahmedlerin Mektubunda Bismark’ın Beyanatı"
+          },
+          {
+            "id": "p-29",
+            "title": "Otuz İkinci Söz’ün Üçüncü Mevkıfı’ndan"
+          },
+          {
+            "id": "p-30",
+            "title": "İkinci Nokta’nın İkinci Mebhası"
+          },
+          {
+            "id": "p-31",
+            "title": "On Dördüncü Lem’a’nın İkinci Makamı"
+          },
+          {
+            "id": "p-32",
+            "title": "Yirmi Üçüncü Söz"
+          },
+          {
+            "id": "p-33",
+            "title": "Birinci Mebhas"
+          },
+          {
+            "id": "p-34",
+            "title": "Birinci Nokta"
+          },
+          {
+            "id": "p-35",
+            "title": "İkinci Nokta"
+          },
+          {
+            "id": "p-36",
+            "title": "Üçüncü Nokta"
+          },
+          {
+            "id": "p-37",
+            "title": "Dördüncü Nokta"
+          },
+          {
+            "id": "p-38",
+            "title": "Beşinci Nokta"
+          },
+          {
+            "id": "p-39",
+            "title": "İkinci Mebhas"
+          },
+          {
+            "id": "p-40",
+            "title": "Birinci Nükte"
+          },
+          {
+            "id": "p-41",
+            "title": "İkinci Nükte"
+          },
+          {
+            "id": "p-42",
+            "title": "Üçüncü Nükte"
+          },
+          {
+            "id": "p-43",
+            "title": "Dördüncü Nükte"
+          },
+          {
+            "id": "p-44",
+            "title": "Beşinci Nükte"
+          }
+        ]
+      },
+      {
+        "id": "ch-3",
+        "title": "Hanımlar Rehberi",
+        "passageCount": 35,
+        "snippet": "Risale-i Nur Külliyatı’ndan HANIMLAR REHBERİ Müellifi Bedîüzzaman Said Nursî بِسْمِ اللّٰهِ الرّحْمٰنِ الرّحٖيمِ Ehl-i İman Âhiret Hemşirelerim Olan Kadınlar Ta",
+        "subHeadings": [
+          {
+            "id": "p-3",
+            "title": "Genç Nurcu Kızlara Ait Mektuba Ek"
+          },
+          {
+            "id": "p-4",
+            "title": "Gayet Ehemmiyetli Bir Hakikate Gayet Kısa Bir İşaret"
+          },
+          {
+            "id": "p-7",
+            "title": "Birinci Rica"
+          },
+          {
+            "id": "p-8",
+            "title": "İkinci Rica"
+          },
+          {
+            "id": "p-9",
+            "title": "Üçüncü Rica"
+          },
+          {
+            "id": "p-10",
+            "title": "Dördüncü Rica"
+          },
+          {
+            "id": "p-11",
+            "title": "Beşinci Rica"
+          },
+          {
+            "id": "p-12",
+            "title": "Altıncı Rica"
+          },
+          {
+            "id": "p-13",
+            "title": "Yedinci Rica"
+          },
+          {
+            "id": "p-14",
+            "title": "Yirmi Dördüncü Lem’a"
+          },
+          {
+            "id": "p-16",
+            "title": "Yedinci Mektup"
+          },
+          {
+            "id": "p-18",
+            "title": "Otuz İkinci Söz’ün Üçüncü Mevkıfı’ndan"
+          },
+          {
+            "id": "p-19",
+            "title": "İkinci Nokta’nın İkinci Mebhası"
+          },
+          {
+            "id": "p-20",
+            "title": "On Yedinci Mektup"
+          },
+          {
+            "id": "p-22",
+            "title": "Emirdağı’nın Manidar Bir Hatırası"
+          },
+          {
+            "id": "p-24",
+            "title": "On İkinci Nota"
+          },
+          {
+            "id": "p-30",
+            "title": "Nurcuların Kasidesi (*[9])"
+          },
+          {
+            "id": "p-31",
+            "title": "Fihrist"
+          },
+          {
+            "id": "p-32",
+            "title": "Yirmi Dördüncü Lem’a (Tesettür Hakkında)"
+          },
+          {
+            "id": "p-34",
+            "title": "Otuz İkinci Söz’den İkinci Nokta’nın İkinci Mebhası"
+          },
+          {
+            "id": "p-35",
+            "title": "On Yedinci Mektup (Çocuk Taziyenamesi)"
+          }
+        ]
+      },
+      {
+        "id": "ch-4",
+        "title": "Hutbe-i Şamiye",
+        "passageCount": 36,
+        "snippet": "Risale-i Nur Külliyatı’ndan HUTBE-İ ŞAMİYE Müellifi Bedîüzzaman Said Nursî Bu Hutbe-i Şamiye eseri, Üstad Bedîüzzaman Said Nursî Hazretlerinin otuz beş yaşında",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Arabî Hutbe-i Şamiye’nin Mukaddimesidir"
+          },
+          {
+            "id": "p-4",
+            "title": "Arabî Hutbe-i Şamiye Eserinin Tercümesi"
+          },
+          {
+            "id": "p-5",
+            "title": "Arabî Hutbe-i Şamiye’nin Zeyli’nin Kısa Bir Tercümesi"
+          },
+          {
+            "id": "p-8",
+            "title": "HUTBE-İ ŞAMİYE’NİN ZEYLİNİN ZEYLİ"
+          },
+          {
+            "id": "p-9",
+            "title": "Yaşasın Şeriat-ı Ahmedî (asm)"
+          },
+          {
+            "id": "p-10",
+            "title": "İhtar-ı Mahsus"
+          },
+          {
+            "id": "p-11",
+            "title": "Hakikat"
+          },
+          {
+            "id": "p-12",
+            "title": "Sadâ-yı Hakikat"
+          },
+          {
+            "id": "p-14",
+            "title": "Reddü’l-Evham"
+          },
+          {
+            "id": "p-16",
+            "title": "HUTBE-İ ŞAMİYE’NİN BİRİNCİ ZEYLİNİN ZEYLİNDEN SON PARÇADIR"
+          },
+          {
+            "id": "p-17",
+            "title": "Asakire Hitap"
+          },
+          {
+            "id": "p-18",
+            "title": "Cemiyetlere İhtar-ı Mühim"
+          },
+          {
+            "id": "p-19",
+            "title": "Hakikat Çekirdekleri"
+          },
+          {
+            "id": "p-20",
+            "title": "Hutbe-i Şamiye’nin İkinci Zeyli’nin İkinci Kısmı"
+          },
+          {
+            "id": "p-26",
+            "title": "Gıybetin Derece-i Şenaati"
+          }
+        ]
+      },
+      {
+        "id": "ch-5",
+        "title": "İşarat",
+        "passageCount": 18,
+        "snippet": "İşarat Müellifi: Bedîüzzaman Said Nursî",
+        "subHeadings": [
+          {
+            "id": "p-6",
+            "title": "Misleyn Telakki Edilen Zıddeyn"
+          },
+          {
+            "id": "p-7",
+            "title": "Nefis-perestlerin Nazar-ı Dikkatine"
+          },
+          {
+            "id": "p-8",
+            "title": "Lezzet-perestlerin Nazar-ı Dikkatine"
+          },
+          {
+            "id": "p-9",
+            "title": "Evlenmeli"
+          },
+          {
+            "id": "p-16",
+            "title": "Zulmet-i Münevvere"
+          }
+        ]
+      },
+      {
+        "id": "ch-6",
+        "title": "Konferans",
+        "passageCount": 10,
+        "snippet": "Risale-i Nur hakkında verilen bir KONFERANS Teşrin-i sânî 1950 Ankara Üniversitesi Aradığımı Buldum Ben, kırk senedir âlem-i İslâm’da aradığımı Türkiye’de buldu",
+        "subHeadings": [
+          {
+            "id": "p-7",
+            "title": "Onuncu Mesele Münasebetiyle Hüsrev’in Üstadına Yazdığı Mektuptur"
+          }
+        ]
+      },
+      {
+        "id": "ch-7",
+        "title": "Münazarat",
+        "passageCount": 11,
+        "snippet": "Risale-i Nur Külliyatı’ndan MÜNAZARAT Müellifi Bedîüzzaman Said Nursî Azametli bahtsız bir kıtanın, şanlı tâli’siz bir devletin, değerli sahipsiz bir kavmin reç",
+        "subHeadings": [
+          {
+            "id": "p-7",
+            "title": "Hulusi Bey’in Fıkraları"
+          }
+        ]
+      },
+      {
+        "id": "ch-8",
+        "title": "Nur Çeşmesi",
+        "passageCount": 28,
+        "snippet": "Risale-i Nur Külliyatı’ndan Asâ-yı Musa’dan akan bir NUR ÇEŞMESİ Müellifi: Bedîüzzaman Said Nursî Tamirci Atom Bombasından Bir Numune Nur talebeleri tarafından",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Altıncı Mesele"
+          },
+          {
+            "id": "p-3",
+            "title": "Yedinci Mesele"
+          },
+          {
+            "id": "p-4",
+            "title": "Sekizinci Meselenin Bir Hülâsası"
+          },
+          {
+            "id": "p-5",
+            "title": "Münâcat Risalesi"
+          },
+          {
+            "id": "p-6",
+            "title": "On Birinci Hüccet-i İmaniye"
+          },
+          {
+            "id": "p-7",
+            "title": "Üçüncü Hüccet-i İmaniye"
+          },
+          {
+            "id": "p-8",
+            "title": "İhtar"
+          },
+          {
+            "id": "p-9",
+            "title": "Üçüncü Kelime"
+          },
+          {
+            "id": "p-10",
+            "title": "Otuz İkinci Söz’ün Birinci Mevkıfı"
+          },
+          {
+            "id": "p-16",
+            "title": "Mukaddime"
+          },
+          {
+            "id": "p-21",
+            "title": "Asliye Ceza Mahkemesi Yüksek Makamına"
+          },
+          {
+            "id": "p-22",
+            "title": "Bir Zeyl"
+          },
+          {
+            "id": "p-23",
+            "title": "Zeyl"
+          },
+          {
+            "id": "p-24",
+            "title": "Üçüncü Şuâ (Münâcat) 50"
+          },
+          {
+            "id": "p-25",
+            "title": "Yirmi İkinci Söz’ün Birinci Makamı 82"
+          },
+          {
+            "id": "p-26",
+            "title": "Otuz İkinci Söz’ün Birinci Mevkıfı 136"
+          },
+          {
+            "id": "p-27",
+            "title": "Otuzuncu Lem’a’nın Beşinci Nüktesi’nden Bazı Parçalar 160"
+          },
+          {
+            "id": "p-28",
+            "title": "Yirmi İkinci Söz’ün İkinci Makamı’ndan Bazı Parçalar 177"
+          }
+        ]
+      },
+      {
+        "id": "ch-9",
+        "title": "Nur'un İlk Kapısı",
+        "passageCount": 6,
+        "snippet": "Risale-i Nur Külliyatı’ndan NUR’UN İLK KAPISI Müellifi Bedîüzzaman Said Nursî (Bu risalenin felsefeye vurduğu tokat, beşere zararlı ve dine zıt olan felsefe kıs",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "Mukaddime"
+          }
+        ]
+      },
+      {
+        "id": "ch-10",
+        "title": "Sünuhat",
+        "passageCount": 29,
+        "snippet": "İfade-i meram Bazı âyâtı düşünürken bazı nükteler kalbime hutur ederek nota suretinde kaydettim. Elfazca zengin değilim, israfı da (sevmem), teşrifatçı elfazı (",
+        "subHeadings": [
+          {
+            "id": "p-15",
+            "title": "RÜYADA BİR HİTABE"
+          },
+          {
+            "id": "p-17",
+            "title": "BİRKAÇ VECİZELER"
+          },
+          {
+            "id": "p-28",
+            "title": "Bundan yedi sene evvel bir risaleme yazdığım bir zeyldir"
+          }
+        ]
+      },
+      {
+        "id": "ch-11",
+        "title": "Tulûat",
+        "passageCount": 10,
+        "snippet": "Tulûat Müellifi: Bedîüzzaman Said Nursî",
+        "subHeadings": [
+          {
+            "id": "p-2",
+            "title": "İFADE"
+          },
+          {
+            "id": "p-6",
+            "title": "Zulmün Şedit Bir Nev’i"
+          },
+          {
+            "id": "p-7",
+            "title": "Müstahak Bir Ceza"
+          },
+          {
+            "id": "p-9",
+            "title": "Hadsî Bir Hakikat"
+          }
+        ]
+      }
+    ]
+  }
+]
