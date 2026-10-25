@@ -35,3 +35,19 @@ export interface ChapterContent {
 }
 
 export type ThemeMode = 'sepia' | 'light' | 'dark' | 'night';
+
+export interface TrackedBookInfo {
+  bookId: string;
+  bookTitle: string;
+  chapterId: string;
+  chapterTitle: string;
+  chapterIndex: number;
+  totalChapters: number;
+  progressPercent?: number;
+}
+
+export interface DailyReadingStats {
+  date: string; // YYYY-MM-DD
+  minutes: number;
+  chaptersCompleted: string[];
+}

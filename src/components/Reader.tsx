@@ -30,6 +30,9 @@ interface ReaderProps {
   targetPassageId?: string;
   hasActiveMutalaaSession?: boolean;
   activeMutalaaConcept?: string;
+  originBookTitle?: string;
+  originChapterTitle?: string;
+  onReturnToOrigin?: () => void;
   onBack: () => void;
   onThemeChange: (theme: ThemeMode) => void;
   onFontSizeChange: (delta: number) => void;
@@ -211,6 +214,9 @@ export const Reader: React.FC<ReaderProps> = ({
   targetPassageId,
   hasActiveMutalaaSession,
   activeMutalaaConcept,
+  originBookTitle,
+  originChapterTitle,
+  onReturnToOrigin,
   onBack,
   onThemeChange,
   onFontSizeChange,
@@ -243,6 +249,43 @@ export const Reader: React.FC<ReaderProps> = ({
   const [quoteToast, setQuoteToast] = useState<string | null>(null);
   const lastScrollYRef = useRef(0);
   const onProgressChangeRef = useRef(onProgressChange);
+
+  // Günlük Okuma Süresi Sayacı (Dakika başı aktif okumayı kaydeder)
+  useEffect(() => {
+    const todayKey = new Date().toISOString().slice(0, 10);
+    const timer = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        try {
+          const raw = localStorage.getItem(`nur_daily_${todayKey}`);
+          const data = raw ? JSON.parse(raw) : { date: todayKey, minutes: 0, chaptersCompleted: [] };
+          data.minutes = (data.minutes || 0) + 1;
+          localStorage.setItem(`nur_daily_${todayKey}`, JSON.stringify(data));
+        } catch {
+          // ignore
+        }
+      }
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Bahis %80'den fazla okunduysa bugünün tamamlanan bahislerine ekle
+  useEffect(() => {
+    if (scrollProgress >= 80) {
+      const todayKey = new Date().toISOString().slice(0, 10);
+      try {
+        const raw = localStorage.getItem(`nur_daily_${todayKey}`);
+        const data = raw ? JSON.parse(raw) : { date: todayKey, minutes: 0, chaptersCompleted: [] };
+        const key = `${book.id}/${chapter.id}`;
+        if (!data.chaptersCompleted) data.chaptersCompleted = [];
+        if (!data.chaptersCompleted.includes(key)) {
+          data.chaptersCompleted.push(key);
+          localStorage.setItem(`nur_daily_${todayKey}`, JSON.stringify(data));
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }, [scrollProgress, book.id, chapter.id]);
 
   useEffect(() => {
     onProgressChangeRef.current = onProgressChange;
@@ -762,19 +805,33 @@ export const Reader: React.FC<ReaderProps> = ({
           </div>
         </div>
 
-        {/* Tek Geri Dönüş Butonu: Çapraz İzah Listesine ve Diğer Kitaplara Dön */}
-        {hasActiveMutalaaSession && onReopenMutalaa && (
-          <div className="max-w-4xl mx-auto mt-2 pt-2 border-t border-amber-500/25">
-            <button
-              onClick={onReopenMutalaa}
-              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-sm transition-transform active:scale-98"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate">
-                Çapraz İzah Listesine Dön
-                {activeMutalaaConcept ? ` ("${activeMutalaaConcept}" • Diğer Kitaplara Bak)` : ''}
-              </span>
-            </button>
+        {/* Çapraz İzah ile başka kitaba geçildiyse: Asıl Bahse ve Çapraz İzah Listesine Dönüş Çubukları */}
+        {(hasActiveMutalaaSession || (originBookTitle && onReturnToOrigin)) && (
+          <div className="max-w-4xl mx-auto mt-2 pt-2 border-t border-amber-500/25 space-y-1.5">
+            {originBookTitle && originChapterTitle && onReturnToOrigin && (
+              <button
+                onClick={onReturnToOrigin}
+                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-semibold shadow-sm transition-transform active:scale-98"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">
+                  ↩ Asıl Okuduğun Bahse Dön ({originBookTitle} • {originChapterTitle})
+                </span>
+              </button>
+            )}
+
+            {hasActiveMutalaaSession && onReopenMutalaa && (
+              <button
+                onClick={onReopenMutalaa}
+                className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl border border-amber-600/40 bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-200 text-xs font-semibold transition-colors"
+              >
+                <GitFork className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">
+                  Çapraz İzah Listesini Aç
+                  {activeMutalaaConcept ? ` ("${activeMutalaaConcept}")` : ''}
+                </span>
+              </button>
+            )}
           </div>
         )}
       </header>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import type { BookMeta } from '../types';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import type { BookMeta, TrackedBookInfo } from '../types';
 import { BOOK_PRIORITY } from '../utils/searchUtils';
 import {
   ChevronRight,
@@ -9,6 +9,7 @@ import {
   RefreshCw,
   Smartphone,
   Share2,
+  Clock,
   X,
   ListTree
 } from 'lucide-react';
@@ -105,15 +106,255 @@ const DAILY_VECIZELER: VecizeItem[] = [
     chapterId: 'ch-13',
     chapterTitle: 'On Üçüncü Söz',
   },
+  {
+    quote: 'Kâinatta en yüksek hakikat imandır, imandan sonra namazdır.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-21',
+    chapterTitle: 'Yirmi Birinci Söz',
+  },
+  {
+    quote: 'Helâl dairesi geniştir, keyfe kâfi gelir. Harama girmeye hiç lüzum yoktur.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-6',
+    chapterTitle: 'Altıncı Söz',
+  },
+  {
+    quote: 'Dünya madem fânidir; değmiyor alâka-i kalbe.',
+    bookId: 'lem-alar',
+    bookTitle: "Lem'alar",
+    chapterId: 'ch-17',
+    chapterTitle: "Onyedinci Lem'a",
+  },
+  {
+    quote: 'İlim odur ki kalbe nur, ruha inşirah versin.',
+    bookId: 'mesnevi-i-nuriye',
+    bookTitle: 'Mesnevî-i Nuriye',
+    chapterId: 'ch-2',
+    chapterTitle: 'Katre',
+  },
+  {
+    quote: 'Sultân-ı kâinat birdir, her şeyin anahtarı O’nun yanında, her şeyin dizgini O’nun elindedir.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-20',
+    chapterTitle: 'Yirminci Mektup',
+  },
+  {
+    quote: 'Zaman gösterdi ki: Cennet ucuz değil, cehennem dahi lüzumsuz değil.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-22',
+    chapterTitle: 'Yirmi İkinci Mektup',
+  },
+  {
+    quote: 'Hastalık bir define-i uhreviyedir, pek kıymettar bir hediye-i Rabbaniyedir.',
+    bookId: 'lem-alar',
+    bookTitle: "Lem'alar",
+    chapterId: 'ch-25',
+    chapterTitle: "Yirmi Beşinci Lem'a",
+  },
+  {
+    quote: 'Göz bir hassedir ki ruh bu âlemi o pencere ile seyreder.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-6',
+    chapterTitle: 'Altıncı Söz',
+  },
+  {
+    quote: 'Tevhid ve vahdette cemal-i İlâhî ve kemal-i Rabbânî tezahür eder.',
+    bookId: 'sualar',
+    bookTitle: 'Şualar',
+    chapterId: 'ch-2',
+    chapterTitle: 'İkinci Şua',
+  },
+  {
+    quote: 'İman, insanı insan eder; belki insanı sultan eder.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-23',
+    chapterTitle: 'Yirmi Üçüncü Söz',
+  },
+  {
+    quote: 'Cenâb-ı Hakk’ı bulan her şeyi bulur; O’nu bulmayan hiçbir şey bulamaz.',
+    bookId: 'asa-yi-musa',
+    bookTitle: 'Asa-yı Musa',
+    chapterId: 'ch-1',
+    chapterTitle: 'Birinci Kısım',
+  },
+  {
+    quote: 'Her bir günahta küfre gidecek bir yol vardır.',
+    bookId: 'lem-alar',
+    bookTitle: "Lem'alar",
+    chapterId: 'ch-2',
+    chapterTitle: "İkinci Lem'a",
+  },
+  {
+    quote: 'Ahirette seni kurtaracak bir eserin olmadığı takdirde, fâni dünyada bıraktığın eserlere de kıymet verme.',
+    bookId: 'mesnevi-i-nuriye',
+    bookTitle: 'Mesnevî-i Nuriye',
+    chapterId: 'ch-3',
+    chapterTitle: 'Habbe',
+  },
+  {
+    quote: 'Hayat bir faaliyet ve harekettir; şevk ise onun matiyyesidir.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-34',
+    chapterTitle: 'Hakikat Çekirdekleri',
+  },
+  {
+    quote: 'Kadir-i Zülcelal her şeye lâyık bir vücut ve münasip bir suret giydirmiştir.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-22',
+    chapterTitle: 'Yirmi İkinci Söz',
+  },
+  {
+    quote: 'Muhabbet, şu kâinatın bir sebeb-i vücududur; hem şu kâinatın rabıtasıdır.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-24',
+    chapterTitle: 'Yirmi Dördüncü Söz',
+  },
+  {
+    quote: 'İhlası kazanmak ve muhafaza etmek en büyük bir esastır.',
+    bookId: 'lem-alar',
+    bookTitle: "Lem'alar",
+    chapterId: 'ch-20',
+    chapterTitle: "Yirminci Lem'a",
+  },
+  {
+    quote: 'Namaz kılmak ve büyük günahları işlememek, ne derece hakiki bir vazife-i insaniye olduğu aşikârdır.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-4',
+    chapterTitle: 'Dördüncü Söz',
+  },
+  {
+    quote: 'Şükür, nimeti ziyadeleştirir ve gafleti dağıtır.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-28',
+    chapterTitle: 'Yirmi Sekizinci Mektup',
+  },
+  {
+    quote: 'Bâki bir hakikat, fâni şeylere bina edilmez.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-34',
+    chapterTitle: 'Hakikat Çekirdekleri',
+  },
+  {
+    quote: 'Lezzet-i hizmet-i imaniye her zahmete tefevvuk eder.',
+    bookId: 'sualar',
+    bookTitle: 'Şualar',
+    chapterId: 'ch-14',
+    chapterTitle: 'On Dördüncü Şua',
+  },
+  {
+    quote: 'Her hakiki hasenat gibi cesaretin dahi menbaı imandır, ubudiyettir.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-3',
+    chapterTitle: 'Üçüncü Söz',
+  },
+  {
+    quote: 'Akıl bir alettir; eğer Cenâb-ı Hakk’a satılsa pek kıymettar bir anahtar olur.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-6',
+    chapterTitle: 'Altıncı Söz',
+  },
+  {
+    quote: 'Ömür sermayesi pek azdır; lüzumlu işler pek çoktur.',
+    bookId: 'tarihce-i-hayat',
+    bookTitle: 'Tarihçe-i Hayat',
+    chapterId: 'ch-1',
+    chapterTitle: 'İlk Hayatı',
+  },
+  {
+    quote: 'Kaderin her şeyi güzeldir; şer gibi görünen şeylerin altında dahi hayırlar gizlidir.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-26',
+    chapterTitle: 'Yirmi Altıncı Söz',
+  },
+  {
+    quote: 'Hırs, sebeb-i haybettir ve illet-i zilletdir; kanaat ise izzet ve berekettir.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-22',
+    chapterTitle: 'Yirmi İkinci Mektup',
+  },
+  {
+    quote: 'Kur’an bütün asırlara hitap eden ezeli bir hutbedir.',
+    bookId: 'sozler',
+    bookTitle: 'Sözler',
+    chapterId: 'ch-25',
+    chapterTitle: 'Yirmi Beşinci Söz',
+  },
+  {
+    quote: 'Merhamet-i İlâhiyeden ziyade merhamet edilmez.',
+    bookId: 'lem-alar',
+    bookTitle: "Lem'alar",
+    chapterId: 'ch-13',
+    chapterTitle: "On Üçüncü Lem'a",
+  },
+  {
+    quote: 'Hak namına, sırf lillâh için yapılan zerre miskal amel kaybolmaz.',
+    bookId: 'barla-lahikasi',
+    bookTitle: 'Barla Lâhikası',
+    chapterId: 'ch-1',
+    chapterTitle: 'Mektuplar',
+  },
+  {
+    quote: 'Tevazu, tekebbür edene karşı bir tecellî-i izzettir.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-34',
+    chapterTitle: 'Hakikat Çekirdekleri',
+  },
+  {
+    quote: 'Kâinat bir kitâb-ı kebîrdir; her bir harfi bir kelime, her bir kelimesi bir kitaptır.',
+    bookId: 'mesnevi-i-nuriye',
+    bookTitle: 'Mesnevî-i Nuriye',
+    chapterId: 'ch-8',
+    chapterTitle: 'Nokta',
+  },
+  {
+    quote: 'İnne me’al-usri yüsrâ sırrıyla, her meşakkatin arkasında bir kolaylık ve saadet vardır.',
+    bookId: 'sualar',
+    bookTitle: 'Şualar',
+    chapterId: 'ch-13',
+    chapterTitle: 'On Üçüncü Şua',
+  },
+  {
+    quote: 'Mü’minin mü’mine en büyük yardımı dua iledir.',
+    bookId: 'mektubat',
+    bookTitle: 'Mektubat',
+    chapterId: 'ch-23',
+    chapterTitle: 'Yirmi Üçüncü Mektup',
+  },
+  {
+    quote: 'Biz acele ettik kışta geldik; sizler cennet-âsâ bir baharda geleceksiniz.',
+    bookId: 'tarihce-i-hayat',
+    bookTitle: 'Tarihçe-i Hayat',
+    chapterId: 'ch-3',
+    chapterTitle: 'Münazarat',
+  },
 ];
 
 interface BookListProps {
   books: BookMeta[];
   selectedBook: BookMeta | null;
   lastRead?: LastReadInfo | null;
+  trackedBook?: TrackedBookInfo | null;
   onSelectBook: (book: BookMeta) => void;
   onSelectChapter: (chapterId: string, passageId?: string) => void;
   onResumeLastRead?: (info: LastReadInfo) => void;
+  onSetTrackedBook?: (info: TrackedBookInfo) => void;
   onOpenSearch: () => void;
 }
 
@@ -121,18 +362,65 @@ export const BookList: React.FC<BookListProps> = ({
   books,
   selectedBook,
   lastRead,
+  trackedBook,
   onSelectBook,
   onSelectChapter,
   onResumeLastRead,
+  onSetTrackedBook,
   onOpenSearch,
 }) => {
+  // Her açılışta taze rastgele bir vecize seçer (asla hep aynı vecize kalmaz)
   const [vecizeIndex, setVecizeIndex] = useState<number>(() => {
-    const now = new Date();
-    const dayOfYear = Math.floor(
-      (now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000
-    );
-    return dayOfYear % DAILY_VECIZELER.length;
+    return Math.floor(Math.random() * DAILY_VECIZELER.length);
   });
+
+  // Vecize kutusunu gizleme tercihi
+  const [hideVecize, setHideVecize] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('nur_hide_vecize') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  // Bugün yapılan okuma istatistiği (dakika ve tamamlanan bahis)
+  const [todayStats, setTodayStats] = useState<{ minutes: number; chaptersCount: number }>(() => {
+    try {
+      const todayKey = new Date().toISOString().slice(0, 10);
+      const raw = localStorage.getItem(`nur_daily_${todayKey}`);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return {
+          minutes: parsed.minutes || 0,
+          chaptersCount: (parsed.chaptersCompleted || []).length,
+        };
+      }
+    } catch {
+      // ignore
+    }
+    return { minutes: 0, chaptersCount: 0 };
+  });
+
+  // Sayfa odaklandığında bugünkü okuma dakikasını tazele
+  useEffect(() => {
+    const refreshStats = () => {
+      const todayKey = new Date().toISOString().slice(0, 10);
+      try {
+        const raw = localStorage.getItem(`nur_daily_${todayKey}`);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          setTodayStats({
+            minutes: parsed.minutes || 0,
+            chaptersCount: (parsed.chaptersCompleted || []).length,
+          });
+        }
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener('focus', refreshStats);
+    return () => window.removeEventListener('focus', refreshStats);
+  }, []);
 
   // Hangi bahsin alt başlıklarının (1. Makam, 2. Makam, Hâtime vb.) açık olduğu
   const [expandedChapterId, setExpandedChapterId] = useState<string | null>(null);
@@ -352,6 +640,41 @@ export const BookList: React.FC<BookListProps> = ({
 
   const currentVecize = DAILY_VECIZELER[vecizeIndex] || DAILY_VECIZELER[0];
 
+  // Esas Okuma / Hatim Takibi (Kullanıcının belirlediği veya son okuduğu kitap)
+  const activeTracked: TrackedBookInfo | null = useMemo(() => {
+    if (trackedBook) return trackedBook;
+    if (lastRead) {
+      const b = books.find((x) => x.id === lastRead.bookId);
+      const chIdx = b ? b.chapters.findIndex((c) => c.id === lastRead.chapterId) : 0;
+      return {
+        bookId: lastRead.bookId,
+        bookTitle: lastRead.bookTitle,
+        chapterId: lastRead.chapterId,
+        chapterTitle: lastRead.chapterTitle,
+        chapterIndex: chIdx >= 0 ? chIdx + 1 : 1,
+        totalChapters: b ? b.chapters.length : 1,
+        progressPercent: lastRead.progressPercent,
+      };
+    }
+    if (books.length > 0) {
+      const b = books.find((x) => x.id.includes('sozler')) || books[0];
+      return {
+        bookId: b.id,
+        bookTitle: b.title,
+        chapterId: b.chapters[0]?.id || 'ch-1',
+        chapterTitle: b.chapters[0]?.title || '',
+        chapterIndex: 1,
+        totalChapters: b.chapters.length,
+        progressPercent: 0,
+      };
+    }
+    return null;
+  }, [trackedBook, lastRead, books]);
+
+  const trackedPct = activeTracked && activeTracked.totalChapters > 0
+    ? Math.min(100, Math.round((activeTracked.chapterIndex / activeTracked.totalChapters) * 100))
+    : 0;
+
   const visibleBooks = books
     .filter((b) => b.id !== 'kucuk-kitaplar')
     .sort((a, b) => (BOOK_PRIORITY[a.id] || 99) - (BOOK_PRIORITY[b.id] || 99));
@@ -474,69 +797,165 @@ export const BookList: React.FC<BookListProps> = ({
             </div>
           )}
 
-          {lastRead && onResumeLastRead && (
-            <button
-              onClick={() => onResumeLastRead(lastRead)}
-              className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl border border-amber-500/40 bg-amber-50/90 dark:bg-amber-950/30 hover:bg-amber-100/90 dark:hover:bg-amber-900/40 text-amber-950 dark:text-amber-200 shadow-xs transition-all text-left group"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <BookmarkCheck className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
-                <div className="truncate text-xs sm:text-sm font-serif">
-                  <span className="font-bold">Kaldığın Yer:</span> {lastRead.bookTitle} • {lastRead.chapterTitle}
-                  {typeof lastRead.progressPercent === 'number' && lastRead.progressPercent > 0 ? (
-                    <span className="ml-1.5 font-mono text-[11px] text-amber-800 dark:text-amber-400">
-                      (%{lastRead.progressPercent})
+          {/* GÜNLÜK OKUMA TAKİBİ & HATİM DEFTERİ KARTI */}
+          {activeTracked && (
+            <div className="p-4 sm:p-5 rounded-2xl border border-amber-700/30 dark:border-amber-500/25 bg-[#fbf0d9]/85 dark:bg-stone-900/90 text-left shadow-xs space-y-3">
+              {/* Üst Satır: Takip Edilen Kitap ve Günlük Süre */}
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-900/10 dark:border-stone-800 pb-2.5">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-xl bg-amber-600/15 text-amber-800 dark:text-amber-300">
+                    <BookmarkCheck className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 font-serif block">
+                      Esas Okuma / Hatim Takibi
                     </span>
-                  ) : null}
+                    <span className="font-serif font-bold text-sm sm:text-base text-stone-900 dark:text-stone-100">
+                      {activeTracked.bookTitle}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Günlük Okuma Sayacı */}
+                <div className="flex items-center gap-1.5 text-xs font-serif bg-white/70 dark:bg-stone-800/80 px-2.5 py-1 rounded-xl border border-amber-900/10 dark:border-stone-700">
+                  <Clock className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
+                  <span className="text-stone-700 dark:text-stone-300">
+                    Bugün: <strong className="text-amber-900 dark:text-amber-300">{todayStats.minutes} dk</strong>
+                    {todayStats.chaptersCount > 0 ? ` · ${todayStats.chaptersCount} bahis` : ''}
+                  </span>
                 </div>
               </div>
-              <span className="text-xs font-bold text-amber-700 dark:text-amber-300 shrink-0 ml-2 group-hover:translate-x-0.5 transition-transform">
-                Devam Et →
-              </span>
-            </button>
-          )}
 
-          {/* Günün Vecizesi Kartı (Yıldız/Gemini ikonu olmadan sade klasik başlık) */}
-          <div className="p-4 sm:p-5 rounded-2xl border border-amber-700/20 dark:border-amber-500/20 bg-[#fbf0d9]/75 dark:bg-stone-900/90 text-left shadow-xs">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800 dark:text-amber-400 font-serif">
-                Günün Vecizesi
-              </span>
+              {/* İlerleme Çubuğu */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-xs font-serif text-stone-600 dark:text-stone-400">
+                  <span className="truncate pr-2">
+                    Kalınan Bahis: <strong className="text-stone-900 dark:text-stone-100">{activeTracked.chapterTitle}</strong>
+                  </span>
+                  <span className="font-mono text-[11px] font-bold text-amber-800 dark:text-amber-400 shrink-0">
+                    {activeTracked.chapterIndex} / {activeTracked.totalChapters} Bahis (%{trackedPct})
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-amber-900/10 dark:bg-stone-800 overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-amber-600 to-amber-500 rounded-full transition-all duration-300"
+                    style={{ width: `${trackedPct}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Devam Et Butonu */}
               <button
                 onClick={() =>
-                  setVecizeIndex((prev) => (prev + 1) % DAILY_VECIZELER.length)
+                  onResumeLastRead?.({
+                    bookId: activeTracked.bookId,
+                    bookTitle: activeTracked.bookTitle,
+                    chapterId: activeTracked.chapterId,
+                    chapterTitle: activeTracked.chapterTitle,
+                    progressPercent: activeTracked.progressPercent,
+                  })
                 }
-                className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-amber-700 dark:text-stone-400 dark:hover:text-amber-300 transition-colors"
-                title="Başka bir vecize göster"
+                className="w-full flex items-center justify-between py-2.5 px-4 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-serif font-semibold text-xs sm:text-sm shadow-xs transition-transform active:scale-98"
               >
-                <RefreshCw className="w-3 h-3" />
-                <span>Değiştir</span>
+                <span>Kaldığın Yerden Devam Et ({activeTracked.chapterTitle})</span>
+                <span>→</span>
               </button>
-            </div>
-            <p className="font-serif italic text-sm sm:text-base text-stone-800 dark:text-stone-200 leading-relaxed mb-2.5">
-              “{currentVecize.quote}”
-            </p>
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-serif font-semibold text-amber-900 dark:text-amber-300">
-                — {currentVecize.bookTitle} • {currentVecize.chapterTitle}
-              </span>
-              {onResumeLastRead && (
-                <button
-                  onClick={() =>
-                    onResumeLastRead({
-                      bookId: currentVecize.bookId,
-                      bookTitle: currentVecize.bookTitle,
-                      chapterId: currentVecize.chapterId,
-                      chapterTitle: currentVecize.chapterTitle,
-                    })
-                  }
-                  className="font-bold text-amber-700 dark:text-amber-400 hover:underline"
-                >
-                  Bahse Git →
-                </button>
+
+              {/* Son Göz Atılan Bahis (Eğer takip edilen kitaptan farklıysa) */}
+              {lastRead && lastRead.chapterId !== activeTracked.chapterId && (
+                <div className="pt-2 border-t border-amber-900/10 dark:border-stone-800 flex items-center justify-between text-xs font-serif text-stone-600 dark:text-stone-400">
+                  <span className="truncate">
+                    Son Göz Atılan: <strong className="text-stone-800 dark:text-stone-200">{lastRead.bookTitle} • {lastRead.chapterTitle}</strong>
+                    {typeof lastRead.progressPercent === 'number' && lastRead.progressPercent > 0
+                      ? ` (%${lastRead.progressPercent})`
+                      : ''}
+                  </span>
+                  <button
+                    onClick={() => onResumeLastRead?.(lastRead)}
+                    className="text-amber-700 dark:text-amber-400 font-bold hover:underline shrink-0 ml-2"
+                  >
+                    Oraya Git →
+                  </button>
+                </div>
               )}
             </div>
-          </div>
+          )}
+
+          {/* GÜNÜN VECİZESİ KARTI (45+ Zengin Havuz & İsteğe Göre Gizlenebilir) */}
+          {!hideVecize ? (
+            <div className="p-4 sm:p-5 rounded-2xl border border-amber-700/20 dark:border-amber-500/20 bg-[#fbf0d9]/60 dark:bg-stone-900/80 text-left shadow-xs space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800 dark:text-amber-400 font-serif">
+                  Günün Vecizesi
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() =>
+                      setVecizeIndex((prev) => (prev + 1) % DAILY_VECIZELER.length)
+                    }
+                    className="inline-flex items-center gap-1 text-[11px] text-stone-500 hover:text-amber-700 dark:text-stone-400 dark:hover:text-amber-300 transition-colors"
+                    title="Başka bir vecize göster"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>Değiştir</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setHideVecize(true);
+                      try {
+                        localStorage.setItem('nur_hide_vecize', 'true');
+                      } catch {
+                        // ignore
+                      }
+                    }}
+                    className="text-[11px] text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors px-1"
+                    title="Vecize kutusunu gizle"
+                  >
+                    Gizle ✕
+                  </button>
+                </div>
+              </div>
+              <p className="font-serif italic text-sm sm:text-base text-stone-800 dark:text-stone-200 leading-relaxed">
+                “{currentVecize.quote}”
+              </p>
+              <div className="flex items-center justify-between text-xs pt-1">
+                <span className="font-serif font-semibold text-amber-900 dark:text-amber-300">
+                  — {currentVecize.bookTitle} • {currentVecize.chapterTitle}
+                </span>
+                {onResumeLastRead && (
+                  <button
+                    onClick={() =>
+                      onResumeLastRead({
+                        bookId: currentVecize.bookId,
+                        bookTitle: currentVecize.bookTitle,
+                        chapterId: currentVecize.chapterId,
+                        chapterTitle: currentVecize.chapterTitle,
+                      })
+                    }
+                    className="font-bold text-amber-700 dark:text-amber-400 hover:underline"
+                  >
+                    Bahse Git →
+                  </button>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="text-right">
+              <button
+                onClick={() => {
+                  setHideVecize(false);
+                  try {
+                    localStorage.removeItem('nur_hide_vecize');
+                  } catch {
+                    // ignore
+                  }
+                }}
+                className="text-[11px] font-serif text-stone-400 hover:text-amber-700 dark:hover:text-amber-400 underline transition-colors"
+              >
+                Günün Vecizesini Göster
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -567,9 +986,34 @@ export const BookList: React.FC<BookListProps> = ({
               </div>
 
               {isSelected && (
-                <div className="mt-4 pt-3 border-t border-amber-900/20 dark:border-stone-700 space-y-1.5">
-                  <div className="text-xs font-bold text-amber-900 dark:text-amber-400 uppercase tracking-wider mb-2">
-                    Bölümler / Bahisler:
+                <div className="mt-4 pt-3 border-t border-amber-900/20 dark:border-stone-700 space-y-2">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-xs font-bold text-amber-900 dark:text-amber-400 uppercase tracking-wider">
+                      Bölümler / Bahisler:
+                    </span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSetTrackedBook?.({
+                          bookId: book.id,
+                          bookTitle: book.title,
+                          chapterId: visibleChapters[0]?.id || 'ch-1',
+                          chapterTitle: visibleChapters[0]?.title || '',
+                          chapterIndex: 1,
+                          totalChapters: visibleChapters.length,
+                          progressPercent: 0,
+                        });
+                      }}
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-serif font-semibold flex items-center gap-1 transition-colors ${
+                        activeTracked?.bookId === book.id
+                          ? 'bg-amber-700 text-white shadow-2xs'
+                          : 'bg-white/80 dark:bg-stone-800 text-amber-900 dark:text-amber-300 hover:bg-amber-600 hover:text-white border border-amber-900/10'
+                      }`}
+                      title="Bu kitabı esas hatim/okuma takibine al"
+                    >
+                      <BookmarkCheck className="w-3 h-3" />
+                      <span>{activeTracked?.bookId === book.id ? 'Takip Edilen Kitap ✓' : 'Bu Kitabı Takip Et'}</span>
+                    </button>
                   </div>
                   <div className="max-h-80 overflow-y-auto pr-1 space-y-1.5">
                     {visibleChapters.map((ch, idx) => {

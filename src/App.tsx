@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import type { BookMeta, ChapterContent, ThemeMode, Passage } from './types';
+import type { BookMeta, ChapterContent, ThemeMode, Passage, TrackedBookInfo } from './types';
 import { BookList, type LastReadInfo } from './components/BookList';
 import { Reader } from './components/Reader';
 import { SpeedReaderModal } from './components/SpeedReaderModal';
@@ -52,6 +52,29 @@ export function App() {
     return null;
   });
 
+  // Esas Okuma / Hatim Takibi (Takip Edilen Kitap)
+  const [trackedBook, setTrackedBook] = useState<TrackedBookInfo | null>(() => {
+    try {
+      const raw = localStorage.getItem('nur_tracked_book');
+      if (raw) {
+        const parsed = JSON.parse(raw) as TrackedBookInfo;
+        if (parsed?.bookId && parsed?.chapterId) return parsed;
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  });
+
+  const handleSetTrackedBook = (info: TrackedBookInfo) => {
+    setTrackedBook(info);
+    try {
+      localStorage.setItem('nur_tracked_book', JSON.stringify(info));
+    } catch {
+      // ignore
+    }
+  };
+
   const [speedReaderOpen, setSpeedReaderOpen] = useState(false);
   const [speedReaderInitialText, setSpeedReaderInitialText] = useState<string | undefined>(undefined);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -91,9 +114,18 @@ export function App() {
     }
   }, [fontSize]);
 
-  // Tarayıcı / Telefon "Geri" (Back) tuşuna basıldığında Çapraz İzah listesinden gelindiyse aynı listeyi tekrar aç, değilse URL hash durumuna göre bahis veya ana sayfaya dön
+  // Tarayıcı / Telefon "Geri" (Back) tuşuna basıldığında: Çapraz İzah açıksa kapat, değilse URL hash durumuna göre dön
   useEffect(() => {
     const handlePopState = () => {
+      // Eğer Çapraz İzah çekmecesi açıksa sadece çekmeceyi kapat ve sayfada kal
+      if (mutalaaState.isOpen) {
+        setMutalaaState((prev) => ({
+          ...prev,
+          isOpen: false,
+        }));
+        return;
+      }
+
       if (mutalaaState.passage && !mutalaaState.isOpen) {
         setMutalaaState((prev) => ({
           ...prev,
@@ -226,6 +258,45 @@ export function App() {
       } catch {
         // ignore storage errors
       }
+
+      // Takip edilen kitap henüz yoksa veya açılan kitap takip edilen kitapsa güncelle
+      setTrackedBook((prev) => {
+        const chapterIdx = book.chapters.findIndex((c) => c.id === data.id);
+        const total = book.chapters.length;
+        if (!prev) {
+          const newTracked: TrackedBookInfo = {
+            bookId: book.id,
+            bookTitle: book.title,
+            chapterId: data.id,
+            chapterTitle: data.title,
+            chapterIndex: chapterIdx >= 0 ? chapterIdx + 1 : 1,
+            totalChapters: total,
+            progressPercent: savedPct,
+          };
+          try {
+            localStorage.setItem('nur_tracked_book', JSON.stringify(newTracked));
+          } catch {
+            // ignore
+          }
+          return newTracked;
+        }
+        if (prev.bookId === book.id) {
+          const updated: TrackedBookInfo = {
+            ...prev,
+            chapterId: data.id,
+            chapterTitle: data.title,
+            chapterIndex: chapterIdx >= 0 ? chapterIdx + 1 : prev.chapterIndex,
+            progressPercent: savedPct,
+          };
+          try {
+            localStorage.setItem('nur_tracked_book', JSON.stringify(updated));
+          } catch {
+            // ignore
+          }
+          return updated;
+        }
+        return prev;
+      });
 
       if (!options?.skipHistoryPush) {
         try {
@@ -378,6 +449,32 @@ export function App() {
             targetPassageId={targetPassageId}
             hasActiveMutalaaSession={Boolean(mutalaaState.passage)}
             activeMutalaaConcept={mutalaaState.activeConcept}
+            originBookTitle={
+              mutalaaState.originBook &&
+              mutalaaState.originChapter &&
+              (mutalaaState.originBook.id !== selectedBook.id || mutalaaState.originChapter.id !== currentChapter.id)
+                ? mutalaaState.originBook.title
+                : undefined
+            }
+            originChapterTitle={
+              mutalaaState.originBook &&
+              mutalaaState.originChapter &&
+              (mutalaaState.originBook.id !== selectedBook.id || mutalaaState.originChapter.id !== currentChapter.id)
+                ? mutalaaState.originChapter.title
+                : undefined
+            }
+            onReturnToOrigin={() => {
+              if (mutalaaState.originBook && mutalaaState.originChapter) {
+                const origBook = mutalaaState.originBook;
+                const origChapterId = mutalaaState.originChapter.id;
+                const origScroll = mutalaaState.originScrollY || 0;
+                void fetchChapterContent(origBook, origChapterId, { keepMutalaa: true }).then(() => {
+                  setTimeout(() => {
+                    window.scrollTo({ top: origScroll, behavior: 'smooth' });
+                  }, 120);
+                });
+              }
+            }}
             onBack={() => {
               setCurrentChapter(null);
               setHighlightQuery('');
@@ -400,7 +497,12 @@ export function App() {
               setSpeedReaderOpen(true);
             }}
             onOpenSearch={() => setSearchOpen(true)}
-            onOpenMutalaa={(passage, snippet) =>
+            onOpenMutalaa={(passage, snippet) => {
+              try {
+                window.history.pushState({ mutalaaDrawerOpen: true }, '');
+              } catch {
+                // ignore
+              }
               setMutalaaState({
                 isOpen: true,
                 passage,
@@ -408,14 +510,19 @@ export function App() {
                 originBook: selectedBook,
                 originChapter: currentChapter,
                 originScrollY: window.scrollY,
-              })
-            }
-            onReopenMutalaa={() =>
+              });
+            }}
+            onReopenMutalaa={() => {
+              try {
+                window.history.pushState({ mutalaaDrawerOpen: true }, '');
+              } catch {
+                // ignore
+              }
               setMutalaaState((prev) => ({
                 ...prev,
                 isOpen: true,
-              }))
-            }
+              }));
+            }}
             onNavigateToBookChapter={handleNavigateToBookChapter}
             onProgressChange={(pct) => {
               setLastRead((prev) => {
@@ -465,6 +572,20 @@ export function App() {
             currentBookId={selectedBook.id}
             currentChapterId={currentChapter.id}
             currentPassageId={targetPassageId}
+            originBookTitle={mutalaaState.originBook?.title}
+            originChapterTitle={mutalaaState.originChapter?.title}
+            onReturnToOrigin={() => {
+              if (mutalaaState.originBook && mutalaaState.originChapter) {
+                const origBook = mutalaaState.originBook;
+                const origChapterId = mutalaaState.originChapter.id;
+                const origScroll = mutalaaState.originScrollY || 0;
+                void fetchChapterContent(origBook, origChapterId, { keepMutalaa: true }).then(() => {
+                  setTimeout(() => {
+                    window.scrollTo({ top: origScroll, behavior: 'smooth' });
+                  }, 120);
+                });
+              }
+            }}
             currentChapterFirstPassage={
               currentChapter.passages && currentChapter.passages.length > 0
                 ? currentChapter.passages[0]
@@ -499,9 +620,11 @@ export function App() {
             books={books}
             selectedBook={selectedBook}
             lastRead={lastRead}
+            trackedBook={trackedBook}
             onSelectBook={handleSelectBook}
             onSelectChapter={handleSelectChapter}
             onResumeLastRead={(info) => handleNavigateToBookChapter(info.bookId, info.chapterId)}
+            onSetTrackedBook={handleSetTrackedBook}
             onOpenSearch={() => setSearchOpen(true)}
           />
 

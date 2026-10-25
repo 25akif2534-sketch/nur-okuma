@@ -29,6 +29,9 @@ interface MutalaaDrawerProps {
   currentChapterId?: string;
   currentPassageId?: string;
   currentChapterFirstPassage?: Passage | null;
+  originBookTitle?: string;
+  originChapterTitle?: string;
+  onReturnToOrigin?: () => void;
   onSwitchPassage?: (passage: Passage) => void;
   onActiveConceptChange?: (concept: string) => void;
   onNavigateToPassage?: (
@@ -49,6 +52,9 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
   currentChapterId,
   currentPassageId,
   currentChapterFirstPassage,
+  originBookTitle,
+  originChapterTitle,
+  onReturnToOrigin,
   onSwitchPassage,
   onActiveConceptChange,
   onNavigateToPassage,
@@ -61,6 +67,16 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
   const [customQuery, setCustomQuery] = useState<string>('');
   const [exactWord, setExactWord] = useState<boolean>(false);
   const [visitedKeys, setVisitedKeys] = useState<Set<string>>(new Set());
+
+  // Escape tuşuna basıldığında çekmeceyi kapat
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   const lastSourceKeyRef = useRef<string>('');
   const onActiveConceptChangeRef = useRef(onActiveConceptChange);
@@ -172,21 +188,26 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
       : 'bg-white text-stone-900 border-stone-200';
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs animate-in fade-in duration-200">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs animate-in fade-in duration-200"
+    >
       <div
         className={`w-full max-w-xl h-full shadow-2xl border-l flex flex-col overflow-hidden ${drawerBg}`}
       >
         {/* Üst Başlık */}
-        <div className="p-4 sm:p-5 border-b border-black/10 dark:border-white/10 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2.5 flex-1 min-w-0">
-            <div className="p-2 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 shrink-0">
-              <GitFork className="w-5 h-5" />
+        <div className="p-3.5 sm:p-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className="p-1.5 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 shrink-0">
+              <GitFork className="w-4 h-4" />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[11px] uppercase tracking-wider font-semibold opacity-60 truncate">
+              <div className="text-[10px] uppercase tracking-wider font-semibold opacity-60 truncate">
                 Çapraz İzah • Külliyat İçi Atıflar
               </div>
-              <h3 className="font-serif font-bold text-sm sm:text-base truncate">
+              <h3 className="font-serif font-bold text-xs sm:text-sm truncate">
                 {passage.title}
               </h3>
             </div>
@@ -207,13 +228,32 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
             )}
             <button
               onClick={onClose}
-              className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-100 transition-colors shrink-0"
-              title="Kapat"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold text-xs transition-colors shrink-0 shadow-xs"
+              title="Okuduğun metne geri dön"
             >
-              <X className="w-5 h-5" />
+              <X className="w-3.5 h-3.5" />
+              <span>Kapat</span>
             </button>
           </div>
         </div>
+
+        {/* Başka bahse geçildiyse: Asıl ilk seçimin yapıldığı bahse geri dönüş çubuğu */}
+        {originBookTitle && originChapterTitle && onReturnToOrigin && isViewingDifferentChapter && (
+          <div className="px-4 py-2 bg-amber-600/15 border-b border-amber-600/30 flex items-center justify-between gap-2 text-xs">
+            <span className="truncate text-amber-950 dark:text-amber-200 font-serif">
+              İlk seçtiğin yer: <strong>{originBookTitle} • {originChapterTitle}</strong>
+            </span>
+            <button
+              onClick={() => {
+                onClose();
+                onReturnToOrigin();
+              }}
+              className="px-2.5 py-1 rounded-lg bg-amber-700 hover:bg-amber-800 text-white font-semibold shrink-0 text-[11px]"
+            >
+              Asıl Bahse Dön ↩
+            </button>
+          </div>
+        )}
 
         {/* Seçilen Cümle / İbare Kutusu */}
         {selectedTextSnippet && (
@@ -405,6 +445,20 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
               </div>
             </>
           )}
+        </div>
+
+        {/* Alt Sabit Kapat ve Okumaya Dön Butonu (Mobil Telefonlar İçin) */}
+        <div className="p-3 sm:p-4 border-t border-black/10 dark:border-white/10 bg-stone-50 dark:bg-stone-900/90 flex items-center justify-between gap-2 shrink-0">
+          <div className="text-xs opacity-75 font-serif truncate">
+            {matches.length > 0 ? `${matches.length} Külliyat atfı bulundu` : 'Çapraz İzah'}
+          </div>
+          <button
+            onClick={onClose}
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold text-xs sm:text-sm shadow-md transition-colors shrink-0"
+          >
+            <X className="w-4 h-4" />
+            <span>Kapat • Okumaya Dön</span>
+          </button>
         </div>
       </div>
     </div>
