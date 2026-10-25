@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nur-okuma-v3';
+const CACHE_NAME = 'nur-okuma-v4';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -30,6 +30,7 @@ self.addEventListener('fetch', (event) => {
     request.mode === 'navigate' ||
     url.pathname.endsWith('/') ||
     url.pathname.endsWith('/index.html') ||
+    url.pathname.endsWith('/manifest.json') ||
     url.pathname.endsWith('/books-index.json');
 
   if (isAppShellOrIndex) {

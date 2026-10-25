@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import type { BookMeta } from '../types';
 import { BOOK_PRIORITY } from '../utils/searchUtils';
 import {
-  BookOpen,
   ChevronRight,
   ChevronDown,
   Search,
   BookmarkCheck,
   RefreshCw,
-  Download,
-  CheckCircle2,
   Smartphone,
   X,
   ListTree
@@ -139,16 +136,32 @@ export const BookList: React.FC<BookListProps> = ({
   // Hangi bahsin alt başlıklarının (1. Makam, 2. Makam, Hâtime vb.) açık olduğu
   const [expandedChapterId, setExpandedChapterId] = useState<string | null>(null);
 
-  // Çevrimdışı (İnternetsiz) Tüm Külliyatı İndirme Durumu
+  // Çevrimdışı (İnternetsiz) Tüm Külliyatı Otomatik İndirme Durumu
   const [offlineReady, setOfflineReady] = useState<boolean>(() => {
     try {
-      return localStorage.getItem('nur_offline_ready_v3') === 'true';
+      return localStorage.getItem('nur_offline_ready_v4') === 'true';
     } catch {
       return false;
     }
   });
   const [downloadingOffline, setDownloadingOffline] = useState(false);
   const [offlineProgress, setOfflineProgress] = useState(0);
+
+  // Uygulama telefona kuruldu mu veya kullanıcı kurulum kutusunu gizledi mi?
+  const [isAppInstalled, setIsAppInstalled] = useState<boolean>(() => {
+    try {
+      const standaloneMedia =
+        typeof window !== 'undefined' &&
+        window.matchMedia('(display-mode: standalone)').matches;
+      const iosStandalone =
+        typeof window !== 'undefined' &&
+        (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
+      const savedInstalled = localStorage.getItem('nur_app_installed') === 'true';
+      return Boolean(standaloneMedia || iosStandalone || savedInstalled);
+    } catch {
+      return false;
+    }
+  });
 
   // Telefona Uygulama Olarak Kurma (PWA) Rehberi
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
@@ -159,90 +172,138 @@ export const BookList: React.FC<BookListProps> = ({
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
     };
+    const installedHandler = () => {
+      setIsAppInstalled(true);
+      setShowInstallGuide(false);
+      try {
+        localStorage.setItem('nur_app_installed', 'true');
+      } catch {
+        // ignore
+      }
+    };
     window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    window.addEventListener('appinstalled', installedHandler);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener('appinstalled', installedHandler);
+    };
   }, []);
+
+  const markAppInstalledAndHideButton = () => {
+    setIsAppInstalled(true);
+    setShowInstallGuide(false);
+    try {
+      localStorage.setItem('nur_app_installed', 'true');
+    } catch {
+      // ignore
+    }
+  };
 
   const handleInstallAppClick = async () => {
     if (deferredPrompt) {
       await deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
       setDeferredPrompt(null);
+      if (choice.outcome === 'accepted') {
+        markAppInstalledAndHideButton();
+      }
     } else {
       setShowInstallGuide(true);
     }
   };
 
-  const handleDownloadAllForOffline = async () => {
-    if (downloadingOffline) return;
-    setDownloadingOffline(true);
-    setOfflineProgress(1);
+  // İlk açılışta Külliyat henüz cihaza kaydedilmediyse ikinci bir düğmeye gerek kalmadan arka planda otomatik indir
+  useEffect(() => {
+    if (offlineReady || downloadingOffline || books.length === 0) return;
 
-    try {
-      const cache = await caches.open('nur-okuma-v3');
-      const assetUrls: string[] = [];
-      document
-        .querySelectorAll<HTMLScriptElement | HTMLLinkElement>(
-          'script[src], link[rel="stylesheet"][href]'
-        )
-        .forEach((el) => {
-          const rawUrl =
-            el instanceof HTMLScriptElement ? el.src : el.href;
-          if (rawUrl) assetUrls.push(rawUrl);
-        });
+    let cancelled = false;
+    const autoCacheKulliyat = async () => {
+      setDownloadingOffline(true);
+      setOfflineProgress(1);
 
-      const urlsToCache: string[] = [
-        './',
-        './index.html',
-        './manifest.json',
-        './favicon.svg',
-        './kulliyat/books-index.json',
-        './kulliyat/search-index.json',
-        ...assetUrls,
-      ];
+      try {
+        const cache = await caches.open('nur-okuma-v4');
+        const assetUrls: string[] = [];
+        document
+          .querySelectorAll<HTMLScriptElement | HTMLLinkElement>(
+            'script[src], link[rel="stylesheet"][href]'
+          )
+          .forEach((el) => {
+            const rawUrl =
+              el instanceof HTMLScriptElement ? el.src : el.href;
+            if (rawUrl) assetUrls.push(rawUrl);
+          });
 
-      for (const b of books) {
-        if (b.id === 'kucuk-kitaplar') continue;
-        for (const ch of b.chapters) {
-          urlsToCache.push(`./kulliyat/${b.id}/${ch.id}.json`);
+        const urlsToCache: string[] = [
+          './',
+          './index.html',
+          './manifest.json',
+          './favicon.svg',
+          './favicon.png',
+          './icon-192.png',
+          './icon-512.png',
+          './apple-touch-icon.png',
+          './kulliyat/books-index.json',
+          './kulliyat/search-index.json',
+          ...assetUrls,
+        ];
+
+        for (const b of books) {
+          if (b.id === 'kucuk-kitaplar') continue;
+          for (const ch of b.chapters) {
+            urlsToCache.push(`./kulliyat/${b.id}/${ch.id}.json`);
+          }
+        }
+
+        let completed = 0;
+        const total = urlsToCache.length;
+        const batchSize = 8;
+
+        for (let i = 0; i < total; i += batchSize) {
+          if (cancelled) return;
+          const batch = urlsToCache.slice(i, i + batchSize);
+          await Promise.all(
+            batch.map(async (url) => {
+              try {
+                const res = await fetch(url);
+                if (res.ok) {
+                  await cache.put(url, res.clone());
+                }
+              } catch {
+                // ignore individual error
+              } finally {
+                completed++;
+              }
+            })
+          );
+          if (!cancelled) {
+            setOfflineProgress(Math.min(99, Math.round((completed / total) * 100)));
+          }
+        }
+
+        if (!cancelled) {
+          setOfflineProgress(100);
+          setOfflineReady(true);
+          try {
+            localStorage.setItem('nur_offline_ready_v4', 'true');
+          } catch {
+            // ignore
+          }
+        }
+      } catch {
+        // ignore cache error
+      } finally {
+        if (!cancelled) {
+          setDownloadingOffline(false);
         }
       }
+    };
 
-      let completed = 0;
-      const total = urlsToCache.length;
-      const batchSize = 8;
-
-      for (let i = 0; i < total; i += batchSize) {
-        const batch = urlsToCache.slice(i, i + batchSize);
-        await Promise.all(
-          batch.map(async (url) => {
-            try {
-              const res = await fetch(url);
-              if (res.ok) {
-                await cache.put(url, res.clone());
-              }
-            } catch {
-              // ignore individual error
-            } finally {
-              completed++;
-            }
-          })
-        );
-        setOfflineProgress(Math.min(99, Math.round((completed / total) * 100)));
-      }
-
-      setOfflineProgress(100);
-      setOfflineReady(true);
-      try {
-        localStorage.setItem('nur_offline_ready_v3', 'true');
-      } catch {
-        // ignore
-      }
-    } catch {
-      // ignore cache error
-    } finally {
-      setDownloadingOffline(false);
-    }
-  };
+    autoCacheKulliyat();
+    return () => {
+      cancelled = true;
+    };
+  }, [books, offlineReady, downloadingOffline]);
 
   const currentVecize = DAILY_VECIZELER[vecizeIndex] || DAILY_VECIZELER[0];
 
@@ -291,19 +352,31 @@ export const BookList: React.FC<BookListProps> = ({
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => setShowInstallGuide(false)}
-              className="w-full py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold text-xs sm:text-sm"
-            >
-              Anlaşıldı
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                onClick={markAppInstalledAndHideButton}
+                className="flex-1 py-2.5 px-3 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-semibold text-xs sm:text-sm"
+              >
+                Ana Ekrana Ekledim (Bu Kutuyu Gizle)
+              </button>
+              <button
+                onClick={() => setShowInstallGuide(false)}
+                className="py-2.5 px-4 rounded-xl border border-amber-900/20 dark:border-stone-700 hover:bg-black/5 dark:hover:bg-white/5 font-semibold text-xs sm:text-sm"
+              >
+                Kapat
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center p-3 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 rounded-2xl mb-4">
-          <BookOpen className="w-8 h-8" />
+        <div className="inline-flex items-center justify-center mb-4">
+          <img
+            src="./icon-192.png"
+            alt="Risale-i Nur"
+            className="w-16 h-16 rounded-2xl shadow-md border border-amber-700/30 object-cover bg-black"
+          />
         </div>
         <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 dark:text-stone-100 mb-2">
           Risale-i Nur Külliyatı
@@ -327,44 +400,34 @@ export const BookList: React.FC<BookListProps> = ({
             </kbd>
           </button>
 
-          {/* Uygulama Kurulum ve %100 Çevrimdışı İndirme Düğmeleri */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <button
-              onClick={handleInstallAppClick}
-              className="flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-2xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 hover:border-amber-600 text-stone-800 dark:text-stone-200 text-xs font-serif font-semibold transition-colors"
-            >
-              <Smartphone className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
-              <span>Telefona Uygulama Olarak Ekle</span>
-            </button>
+          {/* Tek Düğme: Uygulama henüz telefona kurulmadıysa görünür, kurulduktan sonra tamamen kaybolur */}
+          {!isAppInstalled && (
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={handleInstallAppClick}
+                className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-2xl border border-amber-600/40 bg-amber-50/80 dark:bg-stone-900 hover:bg-amber-100/80 text-amber-950 dark:text-amber-300 text-xs font-serif font-semibold transition-colors"
+              >
+                <Smartphone className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
+                <span>Telefona Uygulama Olarak Ekle</span>
+              </button>
+              <button
+                onClick={markAppInstalledAndHideButton}
+                className="p-2.5 rounded-2xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 dark:text-stone-400 transition-colors"
+                title="Bu düğmeyi bir daha gösterme"
+                aria-label="Kapat"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
 
-            <button
-              onClick={handleDownloadAllForOffline}
-              disabled={downloadingOffline}
-              className={`flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-2xl border text-xs font-serif font-semibold transition-colors ${
-                offlineReady
-                  ? 'border-emerald-600/40 bg-emerald-50/80 dark:bg-emerald-950/30 text-emerald-900 dark:text-emerald-300'
-                  : 'border-amber-600/40 bg-amber-50/80 dark:bg-stone-900 hover:bg-amber-100/80 text-amber-950 dark:text-amber-300'
-              }`}
-              title="Tüm kitapları ve Çapraz İzah dizinini internetsiz kullanım için cihaza kaydeder"
-            >
-              {offlineReady ? (
-                <>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>Çevrimdışı Hazır (Tüm Külliyat İndirildi)</span>
-                </>
-              ) : downloadingOffline ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin text-amber-700 dark:text-amber-400 shrink-0" />
-                  <span>Cihaza Kaydediliyor... %{offlineProgress}</span>
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
-                  <span>Tüm Külliyatı Cihaza Kaydet (İnternetsiz)</span>
-                </>
-              )}
-            </button>
-          </div>
+          {/* Külliyat ilk kez arka planda cihaza kaydedilirken görünür; %100 tamamlandığında tamamen kaybolur */}
+          {downloadingOffline && !offlineReady && (
+            <div className="flex items-center justify-center gap-2 px-3.5 py-2 rounded-2xl border border-amber-600/30 bg-amber-50/60 dark:bg-stone-900/80 text-amber-900 dark:text-amber-300 text-xs font-serif">
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-700 dark:text-amber-400 shrink-0" />
+              <span>Külliyat internetsiz kullanım için cihaza kaydediliyor... %{offlineProgress}</span>
+            </div>
+          )}
 
           {lastRead && onResumeLastRead && (
             <button
