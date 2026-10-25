@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import type { ChapterContent, ThemeMode, BookMeta, Passage } from '../types';
-import { renderHighlightedText, CROSS_BOOK_REDIRECTS } from '../utils/searchUtils';
+import { CROSS_BOOK_REDIRECTS } from '../utils/searchUtils';
+import { renderRichText } from '../utils/textFormatters';
 import {
   ArrowLeft,
   Sun,
@@ -19,7 +20,9 @@ import {
   Menu,
   ListTree,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Bookmark,
+  X
 } from 'lucide-react';
 
 interface ReaderProps {
@@ -248,7 +251,28 @@ export const Reader: React.FC<ReaderProps> = ({
   });
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [quoteToast, setQuoteToast] = useState<string | null>(null);
+  const [activeFootnote, setActiveFootnote] = useState<{ num: string; text: string } | null>(null);
   const onProgressChangeRef = useRef(onProgressChange);
+
+  // Bu bölümdeki tüm hâşiyeleri (dipnotları) haritalandır
+  const footnotesMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    (chapter.passages || []).forEach((p) => {
+      const lines = p.text.split(/\r?\n/);
+      lines.forEach((line) => {
+        const m = line.match(/^\[(\d+)\]\s*H[aâ]şiye:\s*(.+)$/i);
+        if (m) {
+          map[m[1]] = m[2].trim();
+        } else {
+          const singleM = line.match(/^H[aâ]şiye:\s*(.+)$/i);
+          if (singleM && !map['1']) {
+            map['1'] = singleM[1].trim();
+          }
+        }
+      });
+    });
+    return map;
+  }, [chapter.passages]);
 
   // Günlük Okuma Süresi Sayacı (Dakika başı aktif okumayı kaydeder)
   useEffect(() => {
@@ -866,14 +890,6 @@ export const Reader: React.FC<ReaderProps> = ({
                       psg.shortTitle !== chapter.title &&
                       para === psg.shortTitle;
 
-                    const renderedContent = highlightQuery
-                      ? renderHighlightedText(
-                          para,
-                          highlightQuery,
-                          !targetPassageId || psg.id === targetPassageId
-                        )
-                      : para;
-
                     if (isSubHeading) {
                       return (
                         <h3
@@ -881,8 +897,37 @@ export const Reader: React.FC<ReaderProps> = ({
                           className="font-bold text-amber-800 dark:text-amber-300 pt-6 pb-2 text-center indent-0 tracking-wide"
                           style={{ fontSize: `${Math.round(fontSize * 1.15)}px` }}
                         >
-                          {renderedContent}
+                          {renderRichText(para, {
+                            highlightQuery,
+                            withScrollTarget: !targetPassageId || psg.id === targetPassageId,
+                          })}
                         </h3>
+                      );
+                    }
+
+                    // Hâşiye (Dipnot) tanımı paragrafı: [1] Hâşiye: ...
+                    const fnDefMatch = para.match(/^\[(\d+)\]\s*H[aâ]şiye:\s*(.+)$/i);
+                    if (fnDefMatch) {
+                      return (
+                        <aside
+                          key={i}
+                          className="my-4 p-4 rounded-2xl bg-amber-500/10 dark:bg-amber-400/10 border-l-4 border-amber-600 dark:border-amber-400 text-stone-900 dark:text-stone-100 shadow-xs indent-0"
+                        >
+                          <div className="flex items-center gap-2 font-bold font-serif text-xs uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-1.5">
+                            <Bookmark className="w-3.5 h-3.5" />
+                            <span>Hâşiye [{fnDefMatch[1]}]</span>
+                          </div>
+                          <p className="font-serif text-sm sm:text-base leading-relaxed text-justify opacity-95">
+                            {renderRichText(fnDefMatch[2], {
+                              highlightQuery,
+                              withScrollTarget: !targetPassageId || psg.id === targetPassageId,
+                              onOpenFootnote: (num) => {
+                                const noteText = footnotesMap[num] || fnDefMatch[2];
+                                setActiveFootnote({ num, text: noteText });
+                              },
+                            })}
+                          </p>
+                        </aside>
                       );
                     }
 
@@ -897,14 +942,24 @@ export const Reader: React.FC<ReaderProps> = ({
                             lineHeight: 2.35,
                           }}
                         >
-                          {renderedContent}
+                          {renderRichText(para, {
+                            highlightQuery,
+                            withScrollTarget: !targetPassageId || psg.id === targetPassageId,
+                          })}
                         </p>
                       );
                     }
 
                     return (
                       <p key={i} className="indent-6 sm:indent-8 tracking-normal">
-                        {renderedContent}
+                        {renderRichText(para, {
+                          highlightQuery,
+                          withScrollTarget: !targetPassageId || psg.id === targetPassageId,
+                          onOpenFootnote: (num) => {
+                            const noteText = footnotesMap[num] || 'Bu hâşiyenin metni sayfa sonunda bulunmaktadır.';
+                            setActiveFootnote({ num, text: noteText });
+                          },
+                        })}
                       </p>
                     );
                   })}
@@ -987,6 +1042,56 @@ export const Reader: React.FC<ReaderProps> = ({
         >
           <ChevronUp className="w-5 h-5" />
         </button>
+      )}
+
+      {/* Hâşiye (Dipnot) Tıklama Açılır Kartı */}
+      {activeFootnote && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => setActiveFootnote(null)}
+        >
+          <div
+            className={`w-full max-w-xl rounded-3xl shadow-2xl border p-5 sm:p-6 space-y-4 max-h-[85vh] flex flex-col ${
+              theme === 'sepia'
+                ? 'bg-[#fbf0d9] text-[#433422] border-amber-800/30'
+                : theme === 'night'
+                ? 'bg-[#181410] text-[#dfd2c0] border-amber-500/30'
+                : theme === 'dark'
+                ? 'bg-zinc-900 text-zinc-100 border-zinc-700'
+                : 'bg-white text-stone-900 border-stone-200'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-3">
+              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold font-serif text-base sm:text-lg">
+                <Bookmark className="w-4 h-4 text-amber-600" />
+                <span>Hâşiye [{activeFootnote.num}]</span>
+              </div>
+              <button
+                onClick={() => setActiveFootnote(null)}
+                className="p-1.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                title="Kapat"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto pr-1 font-serif text-sm sm:text-base leading-relaxed text-justify space-y-3">
+              {renderRichText(activeFootnote.text, { highlightQuery })}
+            </div>
+
+            <div className="pt-2 flex justify-end border-t border-black/5 dark:border-white/5">
+              <button
+                onClick={() => setActiveFootnote(null)}
+                className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-semibold shadow-xs transition-all"
+              >
+                Kapat ve Okumaya Dön
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
