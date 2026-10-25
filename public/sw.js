@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nur-okuma-v2';
+const CACHE_NAME = 'nur-okuma-v3';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -26,7 +26,32 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Okunan bahisleri (ch-*.json) ve yazı tiplerini çevrimdışı okuma için önbelleğe al (Stale-While-Revalidate)
+  const isAppShellOrIndex =
+    request.mode === 'navigate' ||
+    url.pathname.endsWith('/') ||
+    url.pathname.endsWith('/index.html') ||
+    url.pathname.endsWith('/books-index.json');
+
+  if (isAppShellOrIndex) {
+    // Ana sayfa ve kitap fihristi için: İnternet varsa günceli al ve önbelleğe yaz, internet yoksa önbellekten aç
+    event.respondWith(
+      caches.open(CACHE_NAME).then(async (cache) => {
+        try {
+          const response = await fetch(request);
+          if (response && response.status === 200) {
+            cache.put(request, response.clone());
+          }
+          return response;
+        } catch {
+          const cached = await cache.match(request);
+          return cached || (await cache.match('./index.html'));
+        }
+      })
+    );
+    return;
+  }
+
+  // Okunan bahisler (ch-*.json), arama dizini (search-index.json) ve yazı tipleri için: Önbellek öncelikli + arka planda güncelle
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cached = await cache.match(request);

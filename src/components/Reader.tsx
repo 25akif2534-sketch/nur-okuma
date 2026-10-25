@@ -5,11 +5,9 @@ import {
   ArrowLeft,
   Sun,
   Moon,
-  Sparkles,
   ChevronLeft,
   ChevronRight,
   BookMarked,
-  Type,
   Gauge,
   Search,
   GitFork,
@@ -17,7 +15,10 @@ import {
   Minus,
   Plus,
   Share2,
-  Clock
+  Clock,
+  Menu,
+  ListTree,
+  ChevronDown
 } from 'lucide-react';
 
 interface ReaderProps {
@@ -51,24 +52,14 @@ function isArabicOnlyLine(line: string): boolean {
   return ARABIC_CHAR_REGEX.test(line) && !LATIN_LETTER_REGEX.test(line);
 }
 
-const TezhipDivider: React.FC<{ compact?: boolean }> = ({ compact = false }) => (
+const TezhipDivider: React.FC = () => (
   <div
-    className={`flex items-center justify-center gap-3 select-none opacity-65 text-amber-700 dark:text-amber-400 ${
-      compact ? 'my-3' : 'my-7 py-1'
-    }`}
+    className="flex items-center justify-center gap-3 select-none opacity-55 text-amber-800 dark:text-amber-400 my-7 py-1"
     aria-hidden="true"
   >
-    <span className="h-px w-12 sm:w-20 bg-gradient-to-r from-transparent via-amber-700/50 dark:via-amber-400/50 to-amber-700/80 dark:to-amber-400/80" />
-    <svg
-      viewBox="0 0 64 24"
-      className={compact ? 'w-11 h-4 fill-current' : 'w-14 h-5 fill-current'}
-    >
-      <path d="M32 2 L37 9 L45 7 L40 12 L45 17 L37 15 L32 22 L27 15 L19 17 L24 12 L19 7 L27 9 Z" opacity="0.85" />
-      <circle cx="10" cy="12" r="2" opacity="0.65" />
-      <circle cx="54" cy="12" r="2" opacity="0.65" />
-      <circle cx="32" cy="12" r="2.2" className="fill-[#fbf0d9] dark:fill-[#1c1917]" />
-    </svg>
-    <span className="h-px w-12 sm:w-20 bg-gradient-to-l from-transparent via-amber-700/50 dark:via-amber-400/50 to-amber-700/80 dark:to-amber-400/80" />
+    <span className="h-px w-14 sm:w-24 bg-gradient-to-r from-transparent to-amber-700/70 dark:to-amber-400/70" />
+    <span className="w-2 h-2 rounded-full border border-amber-700 dark:border-amber-400" />
+    <span className="h-px w-14 sm:w-24 bg-gradient-to-l from-transparent to-amber-700/70 dark:to-amber-400/70" />
   </div>
 );
 
@@ -330,6 +321,25 @@ export const Reader: React.FC<ReaderProps> = ({
     [book.title, chapter.passages, chapter.rawContent, chapter.title]
   );
 
+  // Bu bahsin içindeki alt başlıklar (1. Makam, 2. Makam, Hâtime vb.)
+  const chapterSubHeadings = useMemo(() => {
+    const list: Array<{ id: string; title: string }> = [];
+    const seen = new Set<string>();
+    for (const p of passages) {
+      if (
+        p.shortTitle &&
+        p.shortTitle !== chapter.title &&
+        p.shortTitle.toLocaleLowerCase('tr-TR') !==
+          chapter.title.toLocaleLowerCase('tr-TR') &&
+        !seen.has(p.shortTitle)
+      ) {
+        seen.add(p.shortTitle);
+        list.push({ id: p.id, title: p.shortTitle });
+      }
+    }
+    return list;
+  }, [passages, chapter.title]);
+
   // Bahsin toplam kelime sayısı ve tahmini okuma süresi (180 kelime/dk)
   const totalMinutes = useMemo(() => {
     const wordCount = passages.reduce(
@@ -532,13 +542,13 @@ export const Reader: React.FC<ReaderProps> = ({
         </div>
       )}
 
-      {/* Sadeleştirilmiş Üst Çubuk (Aşağı kaydırınca Odak Modu için yumuşakça gizlenir, yukarı kaydırınca geri gelir) */}
+      {/* Ultra Sade Üst Çubuk: Solda Geri, Ortada Tam Başlık, Sağda Tek "Menü" Düğmesi */}
       <header
         className={`sticky top-0 z-30 w-full backdrop-blur-md border-b px-3 sm:px-4 py-2 transition-all duration-300 ${getHeaderBgClass()} ${
           headerHidden ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
         }`}
       >
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
           <button
             onClick={onBack}
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-xs sm:text-sm font-medium transition-colors shrink-0"
@@ -548,158 +558,207 @@ export const Reader: React.FC<ReaderProps> = ({
             <span className="hidden sm:inline">Kitaplar</span>
           </button>
 
-          <div className="text-center truncate flex-1 min-w-0 px-1">
-            <div className="flex items-center justify-center gap-1.5 text-[11px] opacity-75 font-serif truncate">
-              <span className="truncate">{book.title}</span>
-              <span>•</span>
-              <span className="inline-flex items-center gap-0.5 font-mono text-[10px] text-amber-800 dark:text-amber-400 shrink-0">
-                %{scrollProgress} · <Clock className="w-2.5 h-2.5 inline" /> ≈{remainingMinutes} dk
-              </span>
+          {/* Ortada Kesilmeyen Geniş Başlık (Alt başlık varsa tıklayınca menüyü açar) */}
+          <button
+            onClick={() => setAppearanceMenuOpen((prev) => !prev)}
+            className="text-center truncate flex-1 min-w-0 px-2 py-0.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            title="Alt başlıkları ve okuma araçlarını görmek için dokunun"
+          >
+            <div className="text-[11px] opacity-75 font-serif truncate">
+              {book.title}
             </div>
-            <div className="text-xs sm:text-sm font-serif font-bold truncate">{chapter.title}</div>
-          </div>
+            <div className="text-xs sm:text-sm font-serif font-bold truncate flex items-center justify-center gap-1">
+              <span className="truncate">{chapter.title}</span>
+              {chapterSubHeadings.length > 0 && (
+                <ChevronDown className="w-3.5 h-3.5 opacity-60 shrink-0" />
+              )}
+            </div>
+          </button>
 
-          <div className="flex items-center gap-1.5 shrink-0">
-            {/* Külliyat İçi Arama Butonu */}
+          {/* Sağda Tek "Menü" Düğmesi (Buton kalabalığına son verir) */}
+          <div id="appearance-menu-container" className="relative shrink-0">
             <button
-              onClick={onOpenSearch}
-              className="p-2 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-amber-700 dark:text-amber-400"
-              title="Külliyat'ta Ara"
-              aria-label="Külliyat'ta Ara"
+              onClick={() => setAppearanceMenuOpen((prev) => !prev)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-colors ${
+                appearanceMenuOpen
+                  ? 'border-amber-600 bg-amber-500/20 text-amber-900 dark:text-amber-300'
+                  : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
+              }`}
+              title="Okuma Araçları, Alt Başlıklar ve Görünüm Menüsü"
+              aria-label="Menü"
             >
-              <Search className="w-4 h-4" />
+              <Menu className="w-4 h-4" />
+              <span>Menü</span>
             </button>
 
-            {/* Çapraz İzah Butonu */}
-            <button
-              onClick={() => {
-                if (hasActiveMutalaaSession && onReopenMutalaa) {
-                  onReopenMutalaa();
-                } else if (passages.length > 0) {
-                  onOpenMutalaa(passages[0]);
-                }
-              }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-amber-600/40 bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 text-xs font-semibold transition-transform active:scale-95"
-              title="Çapraz İzah Penceresini Aç"
-            >
-              <GitFork className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Çapraz İzah</span>
-            </button>
-
-            {/* Hızlı Okuma Butonu */}
-            <button
-              onClick={() => onOpenSpeedReader()}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs transition-transform active:scale-95"
-              title="Bu Bahsi Hızlı Okuma Motoruyla Oku"
-            >
-              <Gauge className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Hızlı Oku</span>
-            </button>
-
-            {/* Tek "Aa" Görünüm & Tema Menüsü Düğmesi */}
-            <div id="appearance-menu-container" className="relative">
-              <button
-                onClick={() => setAppearanceMenuOpen((prev) => !prev)}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border text-xs font-semibold transition-colors ${
-                  appearanceMenuOpen
-                    ? 'border-amber-600 bg-amber-500/20 text-amber-900 dark:text-amber-300'
-                    : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
-                }`}
-                title="Yazı Boyutu ve Tema Ayarları"
-                aria-label="Görünüm Ayarları"
+            {appearanceMenuOpen && (
+              <div
+                className={`absolute right-0 mt-2 w-72 sm:w-80 rounded-2xl shadow-2xl border p-4 z-50 space-y-4 max-h-[82vh] overflow-y-auto ${getMenuPopoverClass()}`}
               >
-                <Type className="w-3.5 h-3.5" />
-                <span className="font-serif">Aa</span>
-              </button>
-
-              {appearanceMenuOpen && (
-                <div
-                  className={`absolute right-0 mt-2 w-64 rounded-2xl shadow-2xl border p-4 z-50 space-y-4 ${getMenuPopoverClass()}`}
-                >
-                  {/* Yazı Boyutu Ayarı */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider opacity-70">
-                      <span>Yazı Boyutu</span>
-                      <span className="font-mono">{fontSize} px</span>
-                    </div>
-                    <div className="flex items-center justify-between gap-2">
-                      <button
-                        onClick={() => onFontSizeChange(-1)}
-                        className="flex-1 py-2 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-1 text-xs font-bold"
-                        title="Yazıyı Küçült"
-                      >
-                        <Minus className="w-3.5 h-3.5" />
-                        <span>Küçült</span>
-                      </button>
-                      <button
-                        onClick={() => onFontSizeChange(1)}
-                        className="flex-1 py-2 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-1 text-xs font-bold"
-                        title="Yazıyı Büyüt"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>Büyüt</span>
-                      </button>
-                    </div>
+                {/* 1. Okuma Araçları (Hızlı Oku, Çapraz İzah, Külliyat'ta Ara) */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider opacity-70">
+                    <span>Okuma Araçları</span>
+                    <span className="inline-flex items-center gap-1 font-mono text-[10px]">
+                      %{scrollProgress} · <Clock className="w-2.5 h-2.5 inline" /> ≈{remainingMinutes} dk
+                    </span>
                   </div>
+                  <div className="grid grid-cols-1 gap-1.5">
+                    <button
+                      onClick={() => {
+                        setAppearanceMenuOpen(false);
+                        onOpenSpeedReader();
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs transition-colors"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Gauge className="w-4 h-4" />
+                        <span>Bu Bahsi Hızlı Oku</span>
+                      </span>
+                      <ChevronRight className="w-4 h-4 opacity-80" />
+                    </button>
 
-                  {/* Tema Seçici (4 Tema: Sepya, Açık, Koyu, Gece Sepyası) */}
-                  <div className="space-y-2 pt-2 border-t border-black/10 dark:border-white/10">
-                    <div className="text-[11px] font-bold uppercase tracking-wider opacity-70">
-                      Okuma Teması
-                    </div>
-                    <div className="grid grid-cols-2 gap-1.5 text-xs font-medium">
+                    <div className="grid grid-cols-2 gap-1.5">
                       <button
-                        onClick={() => onThemeChange('sepia')}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
-                          theme === 'sepia'
-                            ? 'border-amber-600 bg-amber-500/20 font-bold ring-1 ring-amber-600'
-                            : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
-                        }`}
+                        onClick={() => {
+                          setAppearanceMenuOpen(false);
+                          if (hasActiveMutalaaSession && onReopenMutalaa) {
+                            onReopenMutalaa();
+                          } else if (passages.length > 0) {
+                            onOpenMutalaa(passages[0]);
+                          }
+                        }}
+                        className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl border border-amber-600/40 bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-300 text-xs font-semibold transition-colors"
                       >
-                        <BookMarked className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
-                        <span>Sepya</span>
+                        <GitFork className="w-3.5 h-3.5 shrink-0" />
+                        <span>Çapraz İzah</span>
                       </button>
 
                       <button
-                        onClick={() => onThemeChange('light')}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
-                          theme === 'light'
-                            ? 'border-amber-600 bg-amber-500/20 font-bold ring-1 ring-amber-600'
-                            : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
-                        }`}
+                        onClick={() => {
+                          setAppearanceMenuOpen(false);
+                          onOpenSearch();
+                        }}
+                        className="flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-xs font-semibold transition-colors"
                       >
-                        <Sun className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                        <span>Açık</span>
-                      </button>
-
-                      <button
-                        onClick={() => onThemeChange('dark')}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
-                          theme === 'dark'
-                            ? 'border-amber-500 bg-amber-500/20 font-bold ring-1 ring-amber-500'
-                            : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
-                        }`}
-                      >
-                        <Moon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                        <span>Koyu</span>
-                      </button>
-
-                      <button
-                        onClick={() => onThemeChange('night')}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
-                          theme === 'night'
-                            ? 'border-amber-500 bg-amber-500/20 font-bold ring-1 ring-amber-500'
-                            : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
-                        }`}
-                      >
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                        <span>Gece Sepyası</span>
+                        <Search className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
+                        <span>Külliyat'ta Ara</span>
                       </button>
                     </div>
                   </div>
                 </div>
-              )}
-            </div>
+
+                {/* 2. Bu Bahsin Alt Başlıkları (1. Makam, 2. Makam, Hâtime vb.) */}
+                {chapterSubHeadings.length > 0 && (
+                  <div className="space-y-1.5 pt-2 border-t border-black/10 dark:border-white/10">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider opacity-70">
+                      <ListTree className="w-3.5 h-3.5" />
+                      <span>Bu Bahsin Alt Başlıkları ({chapterSubHeadings.length})</span>
+                    </div>
+                    <div className="max-h-40 overflow-y-auto space-y-1 pr-1">
+                      {chapterSubHeadings.map((sub) => (
+                        <button
+                          key={sub.id}
+                          onClick={() => {
+                            setAppearanceMenuOpen(false);
+                            const el = document.getElementById(sub.id);
+                            if (el) {
+                              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                          }}
+                          className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-serif hover:bg-amber-600 hover:text-white transition-colors flex items-center justify-between"
+                        >
+                          <span className="truncate">• {sub.title}</span>
+                          <ChevronRight className="w-3.5 h-3.5 opacity-60 shrink-0" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. Yazı Boyutu Ayarı */}
+                <div className="space-y-2 pt-2 border-t border-black/10 dark:border-white/10">
+                  <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider opacity-70">
+                    <span>Yazı Boyutu</span>
+                    <span className="font-mono">{fontSize} px</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <button
+                      onClick={() => onFontSizeChange(-1)}
+                      className="flex-1 py-2 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-1 text-xs font-bold"
+                      title="Yazıyı Küçült"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                      <span>Küçült</span>
+                    </button>
+                    <button
+                      onClick={() => onFontSizeChange(1)}
+                      className="flex-1 py-2 rounded-xl border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center gap-1 text-xs font-bold"
+                      title="Yazıyı Büyüt"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Büyüt</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 4. Tema Seçici (4 Tema: Sepya, Açık, Koyu, Gece Sepyası — Yıldız/Gemini ikonu kaldırıldı) */}
+                <div className="space-y-2 pt-2 border-t border-black/10 dark:border-white/10">
+                  <div className="text-[11px] font-bold uppercase tracking-wider opacity-70">
+                    Okuma Teması
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5 text-xs font-medium">
+                    <button
+                      onClick={() => onThemeChange('sepia')}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
+                        theme === 'sepia'
+                          ? 'border-amber-600 bg-amber-500/20 font-bold ring-1 ring-amber-600'
+                          : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      <BookMarked className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400 shrink-0" />
+                      <span>Sepya</span>
+                    </button>
+
+                    <button
+                      onClick={() => onThemeChange('light')}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
+                        theme === 'light'
+                          ? 'border-amber-600 bg-amber-500/20 font-bold ring-1 ring-amber-600'
+                          : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      <Sun className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <span>Açık</span>
+                    </button>
+
+                    <button
+                      onClick={() => onThemeChange('dark')}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
+                        theme === 'dark'
+                          ? 'border-amber-500 bg-amber-500/20 font-bold ring-1 ring-amber-500'
+                          : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      <Moon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                      <span>Koyu</span>
+                    </button>
+
+                    <button
+                      onClick={() => onThemeChange('night')}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all ${
+                        theme === 'night'
+                          ? 'border-amber-500 bg-amber-500/20 font-bold ring-1 ring-amber-500'
+                          : 'border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      <Moon className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <span>Gece Sepyası</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -722,8 +781,7 @@ export const Reader: React.FC<ReaderProps> = ({
 
       {/* Main Reading Canvas */}
       <main className="flex-1 max-w-3xl mx-auto w-full px-5 py-10 sm:py-16">
-        <div className="text-center mb-12 pb-6 border-b border-amber-900/15 dark:border-amber-400/15">
-          <TezhipDivider compact />
+        <div className="text-center mb-10 pb-6 border-b border-amber-900/15 dark:border-amber-400/15">
           <span className="text-xs uppercase tracking-widest opacity-65 font-serif">
             {book.title}
           </span>
@@ -777,7 +835,7 @@ export const Reader: React.FC<ReaderProps> = ({
                           className="font-bold text-amber-800 dark:text-amber-300 pt-6 pb-2 text-center indent-0 tracking-wide"
                           style={{ fontSize: `${Math.round(fontSize * 1.15)}px` }}
                         >
-                          ✦ {renderedContent} ✦
+                          {renderedContent}
                         </h3>
                       );
                     }
@@ -787,7 +845,7 @@ export const Reader: React.FC<ReaderProps> = ({
                         <p
                           key={i}
                           dir="rtl"
-                          className="font-arabic text-center indent-0 my-5 py-3 px-4 rounded-2xl bg-amber-600/5 border border-amber-700/15 dark:border-amber-400/15 text-amber-950 dark:text-amber-200 tracking-normal"
+                          className="font-arabic text-center indent-0 my-4 py-1.5 px-2 text-amber-950 dark:text-amber-200 tracking-normal"
                           style={{
                             fontSize: `${Math.round(fontSize * 1.32)}px`,
                             lineHeight: 2.1,

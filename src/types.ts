@@ -5,11 +5,17 @@ export interface Passage {
   text: string;
 }
 
+export interface SubHeadingMeta {
+  id: string;
+  title: string;
+}
+
 export interface ChapterMeta {
   id: string;
   title: string;
   passageCount?: number;
   snippet: string;
+  subHeadings?: SubHeadingMeta[];
 }
 
 export interface BookMeta {

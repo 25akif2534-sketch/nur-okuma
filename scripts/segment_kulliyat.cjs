@@ -40,7 +40,26 @@ const BOOK_TITLES = {
 };
 
 // Yalnızca gerçek müstakil alt başlıkları yakalar; iki nokta (:), nokta (.), soru işareti (?) içeren cümleleri veya "Üçüncüsü" gibi ek almış kelimeleri başlık saymaz.
-const HEADING_REGEX = /^(?:(?:Birinci|İkinci|Üçüncü|Dördüncü|Beşinci|Altıncı|Yedinci|Sekizinci|Dokuzuncu|Onuncu|On Birinci|On İkinci|On Üçüncü|On Dördüncü|On Beşinci|On Altıncı|On Yedinci|On Sekizinci|On Dokuzuncu|Yirminci|Yirmi Birinci|Yirmi İkinci|Yirmi Üçüncü|Yirmi Dördüncü|Yirmi Beşinci|Yirmi Altıncı|Yirmi Yedinci|Yirmi Sekizinci|Yirmi Dokuzuncu|Otuzuncu|Otuz Birinci|Otuz İkinci|Otuz Üçüncü)\s+(?:Söz|Mektup|Lem'a|Lem’a|Şuâ|Şua|Mesele|Nükte|İşaret|Hakikat|Makam|Mebhas|Fasıl|Nokta|Remiz|Suret|Lâtife|Deva|Rica|Zeyl|Mukaddime|Mukaddeme|Hatve|Basamak|Pencere|Kısım|Bab|Bâb|Hüccet-i İmaniye|Nota|Şube|Meziyet|Sebep|Desise|Hâtime|Hatime)|El-Hâsıl|Hâtime|Hatime|Mukaddeme|Mukaddime|Tenbih|İhtar|Zeyl|Tetimme|Münâcat)(?![a-zA-ZğüşıöçĞÜŞİÖÇâîûāīūÂÎÛĀĪŪ’'])/i;
+const HEADING_REGEX = /^(?:(?:birinci|ikinci|üçüncü|dördüncü|beşinci|altıncı|yedinci|sekizinci|dokuzuncu|onuncu|on birinci|on ikinci|on üçüncü|on dördüncü|on beşinci|on altıncı|on yedinci|on sekizinci|on dokuzuncu|yirminci|yirmi birinci|yirmi ikinci|yirmi üçüncü|yirmi dördüncü|yirmi beşinci|yirmi altıncı|yirmi yedinci|yirmi sekizinci|yirmi dokuzuncu|otuzuncu|otuz birinci|otuz ikinci|otuz üçüncü)\s+(?:söz|mektup|lem'a|lem’a|şuâ|şua|mesele|nükte|işaret|hakikat|makam|mebhas|fasıl|nokta|remiz|suret|lâtife|latife|deva|rica|zeyl|mukaddime|mukaddeme|hatve|basamak|pencere|kısım|bab|bâb|hüccet-i imaniye|nota|şube|meziyet|sebep|desise|şule|mevkıf|maksat|parça|risale|vecize|kelime|hâtime|hatime)|el-hâsıl|elhasıl|hâtime|hatime|mukaddeme|mukaddime|tenbih|ihtar|zeyl|tetimme|münâcat|tenevvür|tefekkür)(?![a-zA-ZğüşıöçĞÜŞİÖÇâîûāīūÂÎÛĀĪŪ’'])/i;
+
+const COMPOUND_HEADING_REGEX = /(?:birinci|ikinci|üçüncü|dördüncü|beşinci|altıncı|yedinci|sekizinci|dokuzuncu|onuncu|küçük|mühim)\s+(?:makamı?|zeyli?|parçası|mebhası|nüktesi|kısmı|meselesi|hâtimesi|hatimesi|şulesi|mevkıfı|risalesi)|müdafaasıdır$|lâyihasıdır$|zeyldir$|hülâsası$/i;
+
+function isTrueSubHeading(trimmed, rightAfterStars = false) {
+  if (!trimmed || trimmed.length > 68) return false;
+  // Cümle sonu veya açıklama noktalama işaretleri ya da Arapça harf varsa müstakil alt başlık değildir
+  if (/[:.?!,;“”"\u0600-\u06FF]/.test(trimmed)) return false;
+  if (/^[[(]/.test(trimmed)) return false;
+
+  const trLower = trimmed.toLocaleLowerCase('tr-TR');
+  if (HEADING_REGEX.test(trLower)) return true;
+  if (COMPOUND_HEADING_REGEX.test(trLower)) return true;
+
+  // '***' ayracından hemen sonra gelen kısa ve noktalamasız satır (örn. "Lemaat", "Sebep sırf zahirîdir", "Hüve Nüktesi")
+  if (rightAfterStars && trimmed.length >= 4 && trimmed.length <= 55) {
+    return true;
+  }
+  return false;
+}
 
 const LAHIKA_CHAPTER_TITLES = {
   'barla-lahikasi': {
@@ -141,13 +160,6 @@ function cleanChapterTitle(bookId, chId, rawTitle) {
   return t;
 }
 
-function isTrueSubHeading(trimmed) {
-  if (!trimmed || trimmed.length > 55) return false;
-  // Cümle sonu veya açıklama noktalama işaretleri varsa müstakil alt başlık değildir
-  if (/[:.?!,;“”"]/.test(trimmed)) return false;
-  return HEADING_REGEX.test(trimmed);
-}
-
 const indexPath = path.join(targetPublic, 'books-index.json');
 const existingIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'));
 
@@ -180,6 +192,7 @@ for (const book of existingIndex) {
     let currentSubHeading = '';
     let currentPassageLines = [];
     let subIndex = 1;
+    let justSawStars = false;
 
     const flushPassage = () => {
       const hasRealContent = currentPassageLines.some(
@@ -227,14 +240,24 @@ for (const book of existingIndex) {
       if (trimmed === '***') {
         flushPassage();
         currentSubHeading = '';
+        justSawStars = true;
         // '***' ayracını metin içinde koru ki hiçbir satır kaybolmasın ve tekrar çalıştırıldığında 100% kayıpsız olsun
         currentPassageLines.push('***');
-      } else if (isTrueSubHeading(trimmed)) {
-        flushPassage();
+      } else if (trimmed.length > 0 && isTrueSubHeading(trimmed, justSawStars)) {
+        const hasOtherContent = currentPassageLines.some(
+          (l) => l.trim().length > 0 && l.trim() !== '***'
+        );
+        if (hasOtherContent) {
+          flushPassage();
+        }
         currentSubHeading = trimmed;
+        justSawStars = false;
         // Başlık satırını metinden SİLME; metnin ilk satırı olarak yerinde bırak!
         currentPassageLines.push(trimmed);
       } else {
+        if (trimmed.length > 0) {
+          justSawStars = false;
+        }
         currentPassageLines.push(line);
       }
     }
@@ -261,11 +284,26 @@ for (const book of existingIndex) {
       .replace(/\s+/g, ' ')
       .trim();
 
+    const subHeadings = [];
+    const seenSubTitles = new Set();
+    for (const p of passages) {
+      if (
+        p.shortTitle &&
+        p.shortTitle !== chapterTitle &&
+        p.shortTitle.toLocaleLowerCase('tr-TR') !== chapterTitle.toLocaleLowerCase('tr-TR') &&
+        !seenSubTitles.has(p.shortTitle)
+      ) {
+        seenSubTitles.add(p.shortTitle);
+        subHeadings.push({ id: p.id, title: p.shortTitle });
+      }
+    }
+
     newChapters.push({
       id: chMeta.id,
       title: chapterTitle,
       passageCount: passages.length,
       snippet: firstCleanText.substring(0, 160).trim(),
+      subHeadings: subHeadings.length > 0 ? subHeadings : undefined,
     });
   }
 
