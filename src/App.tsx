@@ -567,9 +567,57 @@ export function App() {
           <SpeedReaderModal
             key={`${selectedBook.id}-${currentChapter.id}-${speedReaderInitialText || ''}`}
             isOpen={speedReaderOpen}
-            onClose={() => {
+            onClose={(progressPercent, snippet) => {
               setSpeedReaderOpen(false);
               setSpeedReaderInitialText(undefined);
+
+              if (typeof progressPercent === 'number' && progressPercent > 0) {
+                const roundedPct = Math.min(100, Math.round(progressPercent));
+                const scrollKey = `nur_scroll_${selectedBook.id}_${currentChapter.id}`;
+                try {
+                  localStorage.setItem(scrollKey, String(roundedPct));
+                } catch {
+                  // ignore
+                }
+
+                // Ana okuma sayfasını okunan noktaya senkronize kaydır
+                setTimeout(() => {
+                  let scrolled = false;
+                  if (snippet && snippet.trim().length > 10) {
+                    const cleanWords = snippet.trim().split(/\s+/).filter((w) => w.length > 2);
+                    const queryWord = cleanWords[0];
+                    if (queryWord) {
+                      const paragraphs = document.querySelectorAll('main article p');
+                      for (const p of Array.from(paragraphs)) {
+                        if (p.textContent && p.textContent.includes(queryWord)) {
+                          p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          scrolled = true;
+                          break;
+                        }
+                      }
+                    }
+                  }
+
+                  if (!scrolled) {
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    if (docHeight > 50) {
+                      const targetY = Math.round((roundedPct / 100) * docHeight);
+                      window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    }
+                  }
+                }, 100);
+
+                setLastRead((prev) => {
+                  if (!prev) return prev;
+                  const updated = { ...prev, progressPercent: roundedPct };
+                  try {
+                    localStorage.setItem('nur_last_read', JSON.stringify(updated));
+                  } catch {
+                    // ignore
+                  }
+                  return updated;
+                });
+              }
             }}
             title={currentChapter.title}
             bookTitle={selectedBook.title}

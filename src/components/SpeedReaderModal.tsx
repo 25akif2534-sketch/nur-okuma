@@ -8,13 +8,14 @@ import {
   X,
   Gauge,
   Sliders,
-  Eye
+  Eye,
+  BookOpen
 } from 'lucide-react';
 import type { ThemeMode } from '../types';
 
 interface SpeedReaderModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (progressPercent?: number, snippet?: string) => void;
   title: string;
   bookTitle: string;
   content: string;
@@ -216,6 +217,15 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
     };
   }, [isPlaying, words, currentIndex, chunkSize, getWordDelay]);
 
+  const handleCloseWithSync = useCallback(() => {
+    setIsPlaying(false);
+    const validWords = words;
+    const currentSafe = Math.min(currentIndex, Math.max(0, validWords.length - 1));
+    const pct = validWords.length > 0 ? ((currentSafe + 1) / validWords.length) * 100 : 0;
+    const snippet = validWords.slice(Math.max(0, currentSafe - 1), Math.min(validWords.length, currentSafe + 4)).join(' ');
+    onClose(pct, snippet);
+  }, [words, currentIndex, onClose]);
+
   // Keyboard navigation
   useEffect(() => {
     if (!isOpen) return;
@@ -237,13 +247,13 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
         e.preventDefault();
         setWpm((w) => Math.max(100, w - 25));
       } else if (e.code === 'Escape') {
-        onClose();
+        handleCloseWithSync();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, words.length, onClose]);
+  }, [isOpen, words.length, handleCloseWithSync]);
 
   if (!isOpen) return null;
 
@@ -299,16 +309,23 @@ export const SpeedReaderModal: React.FC<SpeedReaderModalProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              setIsPlaying(false);
-              onClose();
-            }}
-            className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-            title="Kapat"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCloseWithSync}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-xs transition-colors"
+              title="Kaldığınız yeri ana okuma sayfasına kaydeder ve kapatır"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Buradan Devam Et</span>
+            </button>
+            <button
+              onClick={handleCloseWithSync}
+              className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              title="Kapat ve Kaldığım Yere Dön"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* RSVP Canvas Stage */}

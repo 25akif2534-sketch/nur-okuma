@@ -18,7 +18,8 @@ import {
   Clock,
   Menu,
   ListTree,
-  ChevronDown
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 interface ReaderProps {
@@ -245,9 +246,8 @@ export const Reader: React.FC<ReaderProps> = ({
     }
     return 0;
   });
-  const [headerHidden, setHeaderHidden] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [quoteToast, setQuoteToast] = useState<string | null>(null);
-  const lastScrollYRef = useRef(0);
   const onProgressChangeRef = useRef(onProgressChange);
 
   // Günlük Okuma Süresi Sayacı (Dakika başı aktif okumayı kaydeder)
@@ -397,7 +397,7 @@ export const Reader: React.FC<ReaderProps> = ({
     Math.ceil(totalMinutes * (1 - scrollProgress / 100))
   );
 
-  // Odak Modu (aşağı kaydırınca üst çubuğu gizle, yukarı kaydırınca göster) + İlerleme Çizgisi + Kaydırma Hafızası
+  // Sabit Üst Çubuk + İlerleme Çizgisi + Başa Dön Butonu + Kaydırma Hafızası
   useEffect(() => {
     const scrollKey = `nur_scroll_${book.id}_${chapter.id}`;
 
@@ -411,16 +411,7 @@ export const Reader: React.FC<ReaderProps> = ({
           : 100;
 
       setScrollProgress(pct);
-
-      const delta = currentY - lastScrollYRef.current;
-      if (currentY < 90) {
-        setHeaderHidden(false);
-      } else if (delta > 12 && !appearanceMenuOpen) {
-        setHeaderHidden(true);
-      } else if (delta < -10) {
-        setHeaderHidden(false);
-      }
-      lastScrollYRef.current = currentY;
+      setShowScrollTop(currentY > 280);
 
       try {
         localStorage.setItem(scrollKey, String(pct));
@@ -432,7 +423,7 @@ export const Reader: React.FC<ReaderProps> = ({
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [book.id, chapter.id, appearanceMenuOpen]);
+  }, [book.id, chapter.id]);
 
   // Bahis ilk açıldığında (arama vurgusu yoksa) kaydedilmiş yüzdeden devam et
   useEffect(() => {
@@ -585,11 +576,9 @@ export const Reader: React.FC<ReaderProps> = ({
         </div>
       )}
 
-      {/* Ultra Sade Üst Çubuk: Solda Geri, Ortada Tam Başlık, Sağda Tek "Menü" Düğmesi */}
+      {/* Ultra Sade Sabit Üst Çubuk: Solda Geri, Ortada Tam Başlık, Sağda Tek "Menü" Düğmesi */}
       <header
-        className={`sticky top-0 z-30 w-full backdrop-blur-md border-b px-3 sm:px-4 py-2 transition-all duration-300 ${getHeaderBgClass()} ${
-          headerHidden ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
-        }`}
+        className={`sticky top-0 z-30 w-full backdrop-blur-md border-b px-3 sm:px-4 py-2 transition-colors duration-200 shadow-xs ${getHeaderBgClass()}`}
       >
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
           <button
@@ -902,10 +891,10 @@ export const Reader: React.FC<ReaderProps> = ({
                         <p
                           key={i}
                           dir="rtl"
-                          className="font-arabic text-center indent-0 my-4 py-1.5 px-2 text-amber-950 dark:text-amber-200 tracking-normal"
+                          className="font-arabic text-center indent-0 my-5 py-3 px-4 rounded-2xl bg-black/[0.025] dark:bg-white/[0.025] text-amber-950 dark:text-amber-100 tracking-wide select-text border border-amber-900/10 dark:border-amber-400/10 shadow-xs"
                           style={{
-                            fontSize: `${Math.round(fontSize * 1.32)}px`,
-                            lineHeight: 2.1,
+                            fontSize: `${Math.max(22, Math.round(fontSize * 1.38))}px`,
+                            lineHeight: 2.35,
                           }}
                         >
                           {renderedContent}
@@ -987,6 +976,18 @@ export const Reader: React.FC<ReaderProps> = ({
           </button>
         </div>
       </main>
+
+      {/* Sayfa Ortasındayken / Aşağıdayken Sayfa Başına Hızlı Dönüş Düğmesi */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-6 right-5 z-40 p-3 rounded-full shadow-2xl bg-amber-600 hover:bg-amber-700 active:scale-90 text-white transition-all duration-200 border border-amber-400/40 flex items-center justify-center opacity-90 hover:opacity-100"
+          title="Sayfa Başına Dön (Menü ve Geri)"
+          aria-label="Başa Dön"
+        >
+          <ChevronUp className="w-5 h-5" />
+        </button>
+      )}
     </div>
   );
 };
