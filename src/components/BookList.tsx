@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { BookMeta } from '../types';
 import { BOOK_PRIORITY } from '../utils/searchUtils';
 import {
@@ -8,6 +8,7 @@ import {
   BookmarkCheck,
   RefreshCw,
   Smartphone,
+  Share2,
   X,
   ListTree
 } from 'lucide-react';
@@ -139,13 +140,14 @@ export const BookList: React.FC<BookListProps> = ({
   // Çevrimdışı (İnternetsiz) Tüm Külliyatı Otomatik İndirme Durumu
   const [offlineReady, setOfflineReady] = useState<boolean>(() => {
     try {
-      return localStorage.getItem('nur_offline_ready_v4') === 'true';
+      return localStorage.getItem('nur_offline_ready_v5') === 'true';
     } catch {
       return false;
     }
   });
   const [downloadingOffline, setDownloadingOffline] = useState(false);
   const [offlineProgress, setOfflineProgress] = useState(0);
+  const autoCacheStartedRef = useRef(false);
 
   // Uygulama telefona kuruldu mu veya kullanıcı kurulum kutusunu gizledi mi?
   const [isAppInstalled, setIsAppInstalled] = useState<boolean>(() => {
@@ -213,13 +215,30 @@ export const BookList: React.FC<BookListProps> = ({
   };
 
   // İlk açılışta Külliyat henüz cihaza kaydedilmediyse ikinci bir düğmeye gerek kalmadan arka planda otomatik indir
+  const isMountedRef = useRef(true);
   useEffect(() => {
-    if (offlineReady || downloadingOffline || books.length === 0) return;
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
-    let cancelled = false;
+  useEffect(() => {
+    if (
+      offlineReady ||
+      autoCacheStartedRef.current ||
+      books.length === 0 ||
+      typeof caches === 'undefined'
+    ) {
+      return;
+    }
+    autoCacheStartedRef.current = true;
+
     const autoCacheKulliyat = async () => {
-      setDownloadingOffline(true);
-      setOfflineProgress(1);
+      if (isMountedRef.current) {
+        setDownloadingOffline(true);
+        setOfflineProgress(2);
+      }
 
       try {
         const cache = await caches.open('nur-okuma-v4');
@@ -244,7 +263,6 @@ export const BookList: React.FC<BookListProps> = ({
           './icon-512.png',
           './apple-touch-icon.png',
           './kulliyat/books-index.json',
-          './kulliyat/search-index.json',
           ...assetUrls,
         ];
 
@@ -254,56 +272,83 @@ export const BookList: React.FC<BookListProps> = ({
             urlsToCache.push(`./kulliyat/${b.id}/${ch.id}.json`);
           }
         }
+        urlsToCache.push('./kulliyat/search-index.json');
 
         let completed = 0;
         const total = urlsToCache.length;
-        const batchSize = 8;
+        const batchSize = 15;
+
+        const fetchWithTimeout = async (url: string) => {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 10000);
+          try {
+            const res = await fetch(url, { signal: controller.signal });
+            if (res.ok) {
+              await cache.put(url, res.clone());
+            }
+          } catch {
+            // Tekil ağ hatasını yoksay, akışı durdurma
+          } finally {
+            clearTimeout(timer);
+            completed++;
+          }
+        };
 
         for (let i = 0; i < total; i += batchSize) {
-          if (cancelled) return;
           const batch = urlsToCache.slice(i, i + batchSize);
-          await Promise.all(
-            batch.map(async (url) => {
-              try {
-                const res = await fetch(url);
-                if (res.ok) {
-                  await cache.put(url, res.clone());
-                }
-              } catch {
-                // ignore individual error
-              } finally {
-                completed++;
-              }
-            })
-          );
-          if (!cancelled) {
-            setOfflineProgress(Math.min(99, Math.round((completed / total) * 100)));
+          await Promise.all(batch.map((u) => fetchWithTimeout(u)));
+          if (isMountedRef.current) {
+            setOfflineProgress(
+              Math.min(99, Math.max(2, Math.round((completed / total) * 100)))
+            );
           }
         }
 
-        if (!cancelled) {
+        try {
+          localStorage.setItem('nur_offline_ready_v5', 'true');
+        } catch {
+          // ignore
+        }
+        if (isMountedRef.current) {
           setOfflineProgress(100);
           setOfflineReady(true);
-          try {
-            localStorage.setItem('nur_offline_ready_v4', 'true');
-          } catch {
-            // ignore
-          }
         }
       } catch {
         // ignore cache error
       } finally {
-        if (!cancelled) {
+        if (isMountedRef.current) {
           setDownloadingOffline(false);
         }
       }
     };
 
     autoCacheKulliyat();
-    return () => {
-      cancelled = true;
+  }, [books, offlineReady]);
+
+  const [shareCopied, setShareCopied] = useState(false);
+  const handleShareApp = async () => {
+    const shareUrl = 'https://25akif2534-sketch.github.io/nur-okuma/';
+    const shareData = {
+      title: 'Risale-i Nur Külliyatı — Okuma & Çapraz İzah',
+      text: 'Diyanet nüshası esas alınarak hazırlanmış, Hızlı Okuma ve Çapraz İzah destekli reklamsız Risale-i Nur okuma programı:',
+      url: shareUrl,
     };
-  }, [books, offlineReady, downloadingOffline]);
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch {
+        // Kullanıcı kapattıysa kopyalamaya düş
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2500);
+    } catch {
+      // ignore
+    }
+  };
 
   const currentVecize = DAILY_VECIZELER[vecizeIndex] || DAILY_VECIZELER[0];
 
@@ -602,14 +647,25 @@ export const BookList: React.FC<BookListProps> = ({
         })}
       </div>
 
-      {/* Ana Sayfa Altı Hâtime / Dua Satırı (Gemini ikonu olmadan sade çizgi ile) */}
-      <footer className="mt-14 pt-6 border-t border-stone-200/80 dark:border-stone-800/80 text-center">
-        <div className="text-amber-700/50 dark:text-amber-400/40 text-xs mb-2 select-none font-serif tracking-widest">
+      {/* Ana Sayfa Altı Hâtime / Dua Satırı ve Paylaşım Düğmesi */}
+      <footer className="mt-14 pt-6 border-t border-stone-200/80 dark:border-stone-800/80 text-center space-y-3">
+        <div className="text-amber-700/50 dark:text-amber-400/40 text-xs select-none font-serif tracking-widest">
           — • —
         </div>
         <p className="font-serif italic text-xs sm:text-sm text-stone-500 dark:text-stone-400 max-w-lg mx-auto leading-relaxed">
           İman ve Kur'ân hizmetine küçük bir vesile olması niyetiyle hazırlanmıştır. Emeği geçenleri hayır duanızda unutmayınız.
         </p>
+        <div className="pt-1">
+          <button
+            onClick={handleShareApp}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-300/80 dark:border-stone-700 text-xs font-serif text-stone-600 dark:text-stone-300 hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300 transition-colors"
+          >
+            <Share2 className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+            <span>
+              {shareCopied ? 'Uygulama Bağlantısı Kopyalandı ✓' : 'Uygulamayı Paylaş'}
+            </span>
+          </button>
+        </div>
       </footer>
     </div>
   );

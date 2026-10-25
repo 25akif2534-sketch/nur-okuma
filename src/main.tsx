@@ -5,10 +5,19 @@ import App from './App.tsx'
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {
-      // ignore service worker registration errors
-    })
-  })
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then((reg) => {
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            reg.update().catch(() => {});
+          }
+        });
+      })
+      .catch(() => {
+        // ignore service worker registration errors
+      });
+  });
 }
 
 createRoot(document.getElementById('root')!).render(
