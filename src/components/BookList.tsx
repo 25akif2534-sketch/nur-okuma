@@ -1099,7 +1099,7 @@ export const BookList: React.FC<BookListProps> = ({
         <p className="font-serif italic text-xs sm:text-sm text-stone-500 dark:text-stone-400 max-w-lg mx-auto leading-relaxed">
           İman ve Kur'ân hizmetine küçük bir vesile olması niyetiyle hazırlanmıştır. Emeği geçenleri hayır duanızda unutmayınız.
         </p>
-        <div className="pt-1">
+        <div className="pt-1 flex flex-wrap items-center justify-center gap-2">
           <button
             onClick={handleShareApp}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-300/80 dark:border-stone-700 text-xs font-serif text-stone-600 dark:text-stone-300 hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300 transition-colors"
@@ -1108,6 +1108,30 @@ export const BookList: React.FC<BookListProps> = ({
             <span>
               {shareCopied ? 'Uygulama Bağlantısı Kopyalandı ✓' : 'Uygulamayı Paylaş'}
             </span>
+          </button>
+
+          <button
+            onClick={() => {
+              if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+                navigator.serviceWorker
+                  .getRegistration()
+                  .then((reg) => {
+                    if (reg) {
+                      reg.update().then(() => window.location.reload());
+                    } else {
+                      window.location.reload();
+                    }
+                  })
+                  .catch(() => window.location.reload());
+              } else {
+                window.location.reload();
+              }
+            }}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-300/80 dark:border-stone-700 text-xs font-serif text-stone-600 dark:text-stone-300 hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300 transition-colors"
+            title="En son sürümü denetle ve sayfayı tazele"
+          >
+            <RefreshCw className="w-3 h-3 text-amber-700 dark:text-amber-400" />
+            <span>Sürümü Yenile</span>
           </button>
         </div>
       </footer>

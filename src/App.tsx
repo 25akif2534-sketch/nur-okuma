@@ -39,6 +39,14 @@ export function App() {
     return 19;
   });
 
+  // Yeni PWA sürümü hazır olduğunda üstte güncelleme bildirimi göster
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+  useEffect(() => {
+    const handleUpdate = () => setUpdateAvailable(true);
+    window.addEventListener('nur_update_ready', handleUpdate);
+    return () => window.removeEventListener('nur_update_ready', handleUpdate);
+  }, []);
+
   const [lastRead, setLastRead] = useState<LastReadInfo | null>(() => {
     try {
       const raw = localStorage.getItem('nur_last_read');
@@ -427,6 +435,22 @@ export function App() {
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>{books.length === 0 ? 'Tekrar Dene' : 'Kapat'}</span>
+          </button>
+        </div>
+      )}
+
+      {/* Yeni Güncelleme / Sürüm Bildirimi */}
+      {updateAvailable && (
+        <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 max-w-md w-[94vw] p-3 rounded-2xl bg-amber-700 text-white shadow-2xl flex items-center justify-between gap-2.5 text-xs sm:text-sm font-serif border border-amber-500/50">
+          <div className="flex items-center gap-2 min-w-0">
+            <RotateCcw className="w-4 h-4 animate-spin shrink-0" />
+            <span className="truncate">Yeni sürüm ve özellikler hazır!</span>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-3 py-1.5 rounded-xl bg-white text-amber-900 font-bold hover:bg-amber-100 transition-colors shrink-0 text-xs"
+          >
+            Yenile ve Gör ↻
           </button>
         </div>
       )}
