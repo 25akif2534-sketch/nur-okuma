@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nur-okuma-v7';
+const CACHE_NAME = 'nur-okuma-v8';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
