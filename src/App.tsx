@@ -101,10 +101,21 @@ export function App() {
     originBook?: BookMeta | null;
     originChapter?: ChapterContent | null;
     originScrollY?: number;
+    isViewingReference?: boolean;
   }>({
     isOpen: false,
     passage: null,
+    isViewingReference: false,
   });
+
+  const mutalaaStateRef = useRef(mutalaaState);
+  mutalaaStateRef.current = mutalaaState;
+
+  const selectedBookRef = useRef(selectedBook);
+  selectedBookRef.current = selectedBook;
+
+  const currentChapterRef = useRef(currentChapter);
+  currentChapterRef.current = currentChapter;
 
   useEffect(() => {
     try {
@@ -122,46 +133,7 @@ export function App() {
     }
   }, [fontSize]);
 
-  // Tarayıcı / Telefon "Geri" (Back) tuşuna basıldığında: Çapraz İzah açıksa kapat, değilse URL hash durumuna göre dön
-  useEffect(() => {
-    const handlePopState = () => {
-      // Eğer Çapraz İzah çekmecesi açıksa sadece çekmeceyi kapat ve sayfada kal
-      if (mutalaaState.isOpen) {
-        setMutalaaState((prev) => ({
-          ...prev,
-          isOpen: false,
-        }));
-        return;
-      }
 
-      if (mutalaaState.passage && !mutalaaState.isOpen) {
-        setMutalaaState((prev) => ({
-          ...prev,
-          isOpen: true,
-        }));
-        return;
-      }
-
-      const rawHash = window.location.hash.replace(/^#/, '');
-      if (!rawHash) {
-        setCurrentChapter(null);
-        setHighlightQuery('');
-        setTargetPassageId(undefined);
-        return;
-      }
-
-      const [bookId, chapterId] = rawHash.split('/');
-      if (bookId && chapterId && books.length > 0) {
-        const targetBook = books.find((b) => b.id === bookId);
-        if (targetBook && (currentChapter?.id !== chapterId || selectedBook?.id !== bookId)) {
-          void fetchChapterContent(targetBook, chapterId, { skipHistoryPush: true });
-        }
-      }
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mutalaaState.passage, mutalaaState.isOpen, books, currentChapter?.id, selectedBook?.id]);
 
   const loadBooksIndex = useCallback(() => {
     fetch('./kulliyat/books-index.json')
@@ -230,7 +202,7 @@ export function App() {
     setHighlightQuery(options?.searchQuery || '');
     setTargetPassageId(options?.passageId);
     if (!options?.keepMutalaa) {
-      setMutalaaState({ isOpen: false, passage: null });
+      setMutalaaState({ isOpen: false, passage: null, isViewingReference: false });
     }
 
     try {
@@ -344,6 +316,88 @@ export function App() {
     }
   };
 
+  // Çapraz İzah veya atıf modundan asıl okunan kitaba ve satıra geri dönme
+  const handleReturnToOrigin = useCallback(
+    (reopenDrawer = true) => {
+      const state = mutalaaStateRef.current;
+      if (!state.originBook || !state.originChapter) {
+        setMutalaaState((prev) => ({ ...prev, isViewingReference: false }));
+        return;
+      }
+
+      const origBook = state.originBook;
+      const origChapterId = state.originChapter.id;
+      const origScroll = state.originScrollY || 0;
+
+      const finalize = () => {
+        setTargetPassageId(undefined);
+        setHighlightQuery('');
+        setTimeout(() => {
+          window.scrollTo({ top: origScroll, behavior: 'smooth' });
+        }, 80);
+        setMutalaaState((prev) => ({
+          ...prev,
+          isOpen: reopenDrawer,
+          isViewingReference: false,
+          ...(reopenDrawer ? {} : { passage: null }),
+        }));
+      };
+
+      if (selectedBookRef.current?.id === origBook.id && currentChapterRef.current?.id === origChapterId) {
+        finalize();
+      } else {
+        void fetchChapterContent(origBook, origChapterId, { keepMutalaa: true, skipHistoryPush: true }).then(() => {
+          finalize();
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // Tarayıcı / Telefon "Geri" (Back) tuşuna basıldığında:
+  // 1) Eğer kullanıcı bir Çapraz İzah atfını inceliyorsa (aynı bahis veya başka kitap fark etmez): asıl okuma yerine dönüp listeyi aç
+  // 2) Eğer Çapraz İzah çekmecesi açıksa sadece çekmeceyi kapat ve sayfada kal
+  // 3) Değilse normal sayfa geri navigasyonu uygula
+  useEffect(() => {
+    const handlePopState = () => {
+      const state = mutalaaStateRef.current;
+
+      // 1. Bir atıfı incelerken geri basıldıysa: asıl kitaptaki yerine dön ve Çapraz İzah listesini aç
+      if (state.isViewingReference) {
+        handleReturnToOrigin(true);
+        return;
+      }
+
+      // 2. Çekmece açıkken geri basıldıysa: sadece çekmeceyi kapat ve metinde kal
+      if (state.isOpen) {
+        setMutalaaState((prev) => ({
+          ...prev,
+          isOpen: false,
+        }));
+        return;
+      }
+
+      const rawHash = window.location.hash.replace(/^#/, '');
+      if (!rawHash) {
+        setCurrentChapter(null);
+        setHighlightQuery('');
+        setTargetPassageId(undefined);
+        return;
+      }
+
+      const [bookId, chapterId] = rawHash.split('/');
+      if (bookId && chapterId && books.length > 0) {
+        const targetBook = books.find((b) => b.id === bookId);
+        if (targetBook && (currentChapterRef.current?.id !== chapterId || selectedBookRef.current?.id !== bookId)) {
+          void fetchChapterContent(targetBook, chapterId, { skipHistoryPush: true });
+        }
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [books, handleReturnToOrigin]);
+
   const handleSelectChapter = async (chapterId: string, passageId?: string) => {
     if (!selectedBook) return;
     await fetchChapterContent(selectedBook, chapterId, { passageId });
@@ -379,10 +433,37 @@ export function App() {
     searchQuery?: string
   ) => {
     try {
-      window.history.pushState({ fromMutalaa: true }, '');
+      window.history.pushState({ viewingMutalaaRef: true }, '');
     } catch {
       // ignore history errors
     }
+
+    if (selectedBookRef.current?.id === bookId && currentChapterRef.current?.id === chapterId) {
+      // Aynı bahis içerisindeyse yeniden yüklemeye gerek yok: doğrudan o cümleye kaydır
+      setTargetPassageId(passageId);
+      setHighlightQuery(searchQuery || '');
+      setMutalaaState((prev) => ({
+        ...prev,
+        isOpen: false,
+        isViewingReference: true,
+      }));
+      setTimeout(() => {
+        const passageEl = document.getElementById(passageId);
+        const markEl = passageEl?.querySelector('[data-search-highlight="true"]') as HTMLElement | null;
+        if (markEl) {
+          markEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (passageEl) {
+          passageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+      return;
+    }
+
+    setMutalaaState((prev) => ({
+      ...prev,
+      isOpen: false,
+      isViewingReference: true,
+    }));
     await handleSelectSearchResult(bookId, chapterId, passageId, searchQuery, true);
   };
 
@@ -473,30 +554,24 @@ export function App() {
             targetPassageId={targetPassageId}
             hasActiveMutalaaSession={Boolean(mutalaaState.passage)}
             activeMutalaaConcept={mutalaaState.activeConcept}
-            originBookTitle={
-              mutalaaState.originBook &&
-              mutalaaState.originChapter &&
-              (mutalaaState.originBook.id !== selectedBook.id || mutalaaState.originChapter.id !== currentChapter.id)
-                ? mutalaaState.originBook.title
-                : undefined
-            }
-            originChapterTitle={
-              mutalaaState.originBook &&
-              mutalaaState.originChapter &&
-              (mutalaaState.originBook.id !== selectedBook.id || mutalaaState.originChapter.id !== currentChapter.id)
-                ? mutalaaState.originChapter.title
-                : undefined
-            }
+            isViewingReference={mutalaaState.isViewingReference}
+            originBookTitle={mutalaaState.originBook?.title}
+            originChapterTitle={mutalaaState.originChapter?.title}
             onReturnToOrigin={() => {
-              if (mutalaaState.originBook && mutalaaState.originChapter) {
-                const origBook = mutalaaState.originBook;
-                const origChapterId = mutalaaState.originChapter.id;
-                const origScroll = mutalaaState.originScrollY || 0;
-                void fetchChapterContent(origBook, origChapterId, { keepMutalaa: true }).then(() => {
-                  setTimeout(() => {
-                    window.scrollTo({ top: origScroll, behavior: 'smooth' });
-                  }, 120);
-                });
+              if (window.history.state?.viewingMutalaaRef) {
+                window.history.back();
+              } else {
+                handleReturnToOrigin(true);
+              }
+            }}
+            onCloseMutalaaSession={() => {
+              if (window.history.state?.viewingMutalaaRef) {
+                window.history.back();
+                setTimeout(() => {
+                  handleReturnToOrigin(false);
+                }, 50);
+              } else {
+                handleReturnToOrigin(false);
               }
             }}
             onBack={() => {
@@ -646,18 +721,7 @@ export function App() {
             currentPassageId={targetPassageId}
             originBookTitle={mutalaaState.originBook?.title}
             originChapterTitle={mutalaaState.originChapter?.title}
-            onReturnToOrigin={() => {
-              if (mutalaaState.originBook && mutalaaState.originChapter) {
-                const origBook = mutalaaState.originBook;
-                const origChapterId = mutalaaState.originChapter.id;
-                const origScroll = mutalaaState.originScrollY || 0;
-                void fetchChapterContent(origBook, origChapterId, { keepMutalaa: true }).then(() => {
-                  setTimeout(() => {
-                    window.scrollTo({ top: origScroll, behavior: 'smooth' });
-                  }, 120);
-                });
-              }
-            }}
+            onReturnToOrigin={() => handleReturnToOrigin(true)}
             currentChapterFirstPassage={
               currentChapter.passages && currentChapter.passages.length > 0
                 ? currentChapter.passages[0]

@@ -73,8 +73,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
   // Real-time flexible & deduplicated search
   const results = useMemo(() => {
-    return searchKulliyatPassages(data, query, {
-      bookFilter: selectedBookFilter,
+    let targetData = data;
+    if (selectedBookFilter === 'lahikalar') {
+      targetData = data.filter((d) => d.bookId.includes('lahika'));
+    } else if (selectedBookFilter !== 'all') {
+      targetData = data.filter((d) => d.bookId === selectedBookFilter);
+    }
+
+    return searchKulliyatPassages(targetData, query, {
+      bookFilter: 'all',
       exactWord,
       maxResults: 100,
     });
@@ -83,8 +90,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-10 sm:pt-16 p-3 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-start justify-center pt-10 sm:pt-16 p-3 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden"
+      >
         {/* Search Input Bar */}
         <div className="p-4 sm:p-5 border-b border-stone-200 dark:border-stone-800 flex items-center gap-3">
           <Search className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
@@ -93,7 +106,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Külliyat'ta kelime, kavram veya başlık ara... (Örn: daire-i vücut, medarı şüphe, haşir)"
+            placeholder="Külliyat'ta ara... (Örn: haşir, ihlas)"
             className="w-full bg-transparent text-stone-900 dark:text-stone-100 placeholder-stone-400 text-base sm:text-lg outline-none font-serif"
           />
 
@@ -126,7 +139,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         </div>
 
         {/* Filter Pills */}
-        <div className="px-4 py-2 border-b border-stone-100 dark:border-stone-800 flex items-center gap-1.5 overflow-x-auto text-xs bg-stone-50/50 dark:bg-stone-950/20 scrollbar-none">
+        <div
+          onWheel={(e) => {
+            if (e.deltaY !== 0) {
+              e.currentTarget.scrollLeft += e.deltaY;
+            }
+          }}
+          className="px-4 py-2 border-b border-stone-100 dark:border-stone-800 flex items-center gap-1.5 overflow-x-auto text-xs bg-stone-50/50 dark:bg-stone-950/20 scroll-smooth"
+        >
           <button
             onClick={() => setSelectedBookFilter('all')}
             className={`px-3 py-1.5 rounded-full font-medium transition-colors shrink-0 ${
@@ -136,6 +156,16 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             }`}
           >
             Tüm Külliyat
+          </button>
+          <button
+            onClick={() => setSelectedBookFilter('lahikalar')}
+            className={`px-3 py-1.5 rounded-full font-medium transition-colors shrink-0 ${
+              selectedBookFilter === 'lahikalar'
+                ? 'bg-amber-600 text-white shadow-xs'
+                : 'bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700 hover:border-amber-400'
+            }`}
+          >
+            Lâhikalar (Tümü)
           </button>
           {bookList.map((b) => (
             <button

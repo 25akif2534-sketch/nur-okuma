@@ -239,9 +239,9 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
 
         {/* Başka bahse geçildiyse: Asıl ilk seçimin yapıldığı bahse geri dönüş çubuğu */}
         {originBookTitle && originChapterTitle && onReturnToOrigin && isViewingDifferentChapter && (
-          <div className="px-4 py-2 bg-amber-600/15 border-b border-amber-600/30 flex items-center justify-between gap-2 text-xs">
+          <div className="px-4 py-1.5 bg-amber-600/15 border-b border-amber-600/30 flex items-center justify-between gap-2 text-xs">
             <span className="truncate text-amber-950 dark:text-amber-200 font-serif">
-              İlk seçtiğin yer: <strong>{originBookTitle} • {originChapterTitle}</strong>
+              İlk seçilen: <strong>{originBookTitle} • {originChapterTitle}</strong>
             </span>
             <button
               onClick={() => {
@@ -255,72 +255,31 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
           </div>
         )}
 
-        {/* Seçilen Cümle / İbare Kutusu */}
-        {selectedTextSnippet && (
-          <div className="px-5 py-2.5 bg-amber-100 dark:bg-amber-950/60 border-b border-amber-300 dark:border-amber-800 text-xs font-serif italic text-stone-950 dark:text-amber-100 line-clamp-3">
-            <span className="font-sans font-bold not-italic mr-1.5 text-[11px] uppercase tracking-wider text-amber-900 dark:text-amber-300">
-              Seçilen İbare:
-            </span>
-            "{selectedTextSnippet}"
-          </div>
-        )}
-
-        {/* İbare / Terkip / Kelime Seçici ve Arama */}
-        <div className="p-4 border-b border-black/10 dark:border-white/10 bg-stone-50 dark:bg-stone-950/40 space-y-3">
-          {concepts.length > 0 && (
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400">
-                  {selectedTextSnippet
-                    ? 'Seçilen İbare, Terkip ve Kelimeler:'
-                    : 'Bu Bahisteki Terkipler (Tıklayıp Ara):'}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setExactWord((prev) => !prev)}
-                  className={`px-2 py-0.5 rounded-md text-[11px] font-semibold border transition-colors ${
-                    exactWord
-                      ? 'bg-amber-600 text-white border-amber-700'
-                      : 'bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-700'
-                  }`}
-                  title="Açık olduğunda kelimenin ek almış hallerini değil yalnızca tam eşleşmesini listeler"
-                >
-                  {exactWord ? '✓ Tam Kelime' : 'Tam Kelime'}
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {concepts.map((concept) => {
-                  const isSelected = activeConcept === concept;
-                  return (
-                    <button
-                      key={concept}
-                      onClick={() => handleSelectConcept(concept)}
-                      className={`px-3 py-1 rounded-lg text-xs font-serif font-semibold transition-all border max-w-full truncate ${
-                        isSelected
-                          ? 'bg-amber-600 text-white border-amber-700 shadow-xs scale-[1.01]'
-                          : 'bg-stone-200/90 text-stone-900 border-stone-300 hover:bg-amber-100 dark:bg-stone-800 dark:text-stone-100 dark:border-stone-700'
-                      }`}
-                    >
-                      {concept}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* İsteğe Bağlı Kelime/Terkip/Cümle Arama Kutusu */}
-          <form onSubmit={handleCustomSearchSubmit} className="flex items-center gap-2">
+        {/* Sadeleştirilmiş Arama ve Terkip Çubuğu */}
+        <div className="p-3 border-b border-black/10 dark:border-white/10 bg-stone-50 dark:bg-stone-950/40 space-y-2">
+          <form onSubmit={handleCustomSearchSubmit} className="flex items-center gap-1.5">
             <div className="relative flex-1">
               <Search className="w-3.5 h-3.5 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={customQuery}
                 onChange={(e) => setCustomQuery(e.target.value)}
-                placeholder="Kelime, terkip veya cümle yazın (örn: daire-i vücut)..."
+                placeholder="Külliyat'ta aranacak kelime veya terkip..."
                 className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-xs outline-none focus:border-amber-600"
               />
             </div>
+            <button
+              type="button"
+              onClick={() => setExactWord((prev) => !prev)}
+              className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition-colors shrink-0 ${
+                exactWord
+                  ? 'bg-amber-600 text-white border-amber-700'
+                  : 'bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-300 border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-700'
+              }`}
+              title="Açık olduğunda ek almış halleri değil yalnızca tam kelimeyi arar"
+            >
+              {exactWord ? '✓ Tam Kelime' : 'Tam Kelime'}
+            </button>
             <button
               type="submit"
               className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shrink-0 transition-colors"
@@ -328,6 +287,31 @@ export const MutalaaDrawer: React.FC<MutalaaDrawerProps> = ({
               Ara
             </button>
           </form>
+
+          {/* İbare içinden çıkan diğer alternatif terkipler (sadece 1'den fazla ise gösterilir) */}
+          {concepts.length > 1 && (
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 pt-0.5 scrollbar-none text-xs">
+              <span className="text-[10px] font-semibold uppercase opacity-60 shrink-0">
+                Terkipler:
+              </span>
+              {concepts.map((concept) => {
+                const isSelected = activeConcept === concept;
+                return (
+                  <button
+                    key={concept}
+                    onClick={() => handleSelectConcept(concept)}
+                    className={`px-2.5 py-0.5 rounded-lg text-xs font-serif transition-colors shrink-0 border ${
+                      isSelected
+                        ? 'bg-amber-600 text-white border-amber-700 font-bold'
+                        : 'bg-white dark:bg-stone-800 border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-100'
+                    }`}
+                  >
+                    {concept}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Sonuç Listesi: Külliyat'ta Geçtiği Cümleler */}

@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Data & local scripts
+Risale-i-Nur-Diyanet-master/
+lugat_tb.sql
+quran_pages.json
+scripts/

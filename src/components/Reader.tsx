@@ -20,10 +20,16 @@ import {
   Menu,
   ListTree,
   ChevronDown,
-  ChevronUp,
   Bookmark,
+  BookOpen,
   X
 } from 'lucide-react';
+import { LugatModal } from './LugatModal';
+import {
+  searchLugat,
+  cleanPunctuation,
+  type LugatSearchResult,
+} from '../services/lugatService';
 
 interface ReaderProps {
   book: BookMeta;
@@ -36,7 +42,9 @@ interface ReaderProps {
   activeMutalaaConcept?: string;
   originBookTitle?: string;
   originChapterTitle?: string;
+  isViewingReference?: boolean;
   onReturnToOrigin?: () => void;
+  onCloseMutalaaSession?: () => void;
   onBack: () => void;
   onThemeChange: (theme: ThemeMode) => void;
   onFontSizeChange: (delta: number) => void;
@@ -209,6 +217,41 @@ async function generateAndShareQuoteCard(
   return 'Alıntı kartı görsel olarak indirildi';
 }
 
+function getWordAtPoint(x: number, y: number): string | null {
+  let range: Range | null = null;
+  const doc = document as any;
+  if (doc.caretPositionFromPoint) {
+    const pos = doc.caretPositionFromPoint(x, y);
+    if (pos && pos.offsetNode && pos.offsetNode.nodeType === Node.TEXT_NODE) {
+      range = document.createRange();
+      range.setStart(pos.offsetNode, pos.offset);
+      range.collapse(true);
+    }
+  } else if (doc.caretRangeFromPoint) {
+    range = doc.caretRangeFromPoint(x, y);
+  }
+
+  if (range && range.startContainer && range.startContainer.nodeType === Node.TEXT_NODE) {
+    const textNode = range.startContainer as Text;
+    const text = textNode.textContent || '';
+    const offset = range.startOffset;
+
+    // offset öncesi ve sonrası kelime karakterlerini tara
+    let start = offset;
+    while (start > 0 && !/[\s"'“‘(\[<{«.,:;!?»}>*]/.test(text[start - 1])) {
+      start--;
+    }
+    let end = offset;
+    while (end < text.length && !/[\s"'”’)\],:;.!?»}>*]/.test(text[end])) {
+      end++;
+    }
+
+    const word = text.slice(start, end).trim();
+    if (word.length >= 2) return word;
+  }
+  return null;
+}
+
 export const Reader: React.FC<ReaderProps> = ({
   book,
   chapter,
@@ -220,7 +263,9 @@ export const Reader: React.FC<ReaderProps> = ({
   activeMutalaaConcept,
   originBookTitle,
   originChapterTitle,
+  isViewingReference,
   onReturnToOrigin,
+  onCloseMutalaaSession,
   onBack,
   onThemeChange,
   onFontSizeChange,
@@ -249,7 +294,6 @@ export const Reader: React.FC<ReaderProps> = ({
     }
     return 0;
   });
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [quoteToast, setQuoteToast] = useState<string | null>(null);
   const [activeFootnote, setActiveFootnote] = useState<{ num: string; text: string } | null>(null);
   const onProgressChangeRef = useRef(onProgressChange);
@@ -329,6 +373,78 @@ export const Reader: React.FC<ReaderProps> = ({
     selectedText: '',
     passage: null,
   });
+
+  // Lügat Pop-up Kartı Durumu
+  const [lugatModalState, setLugatModalState] = useState<{
+    isOpen: boolean;
+    searchedWord: string;
+    result: LugatSearchResult | null;
+  }>({
+    isOpen: false,
+    searchedWord: '',
+    result: null,
+  });
+
+  const longPressTimerRef = useRef<any>(null);
+  const touchStartPosRef = useRef<{ x: number; y: number } | null>(null);
+  const pointerMovedRef = useRef<boolean>(false);
+  const longPressTriggeredRef = useRef<boolean>(false);
+
+  const openLugat = async (word: string) => {
+    const cleaned = cleanPunctuation(word);
+    if (!cleaned) return;
+    const res = await searchLugat(cleaned);
+    setLugatModalState({
+      isOpen: true,
+      searchedWord: cleaned,
+      result: res,
+    });
+  };
+
+  const handlePointerDown = (clientX: number, clientY: number) => {
+    touchStartPosRef.current = { x: clientX, y: clientY };
+    pointerMovedRef.current = false;
+    longPressTriggeredRef.current = false;
+
+    if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
+
+    longPressTimerRef.current = setTimeout(async () => {
+      const word = getWordAtPoint(clientX, clientY) || window.getSelection()?.toString().trim();
+      if (word && word.length >= 2) {
+        longPressTriggeredRef.current = true;
+        if (typeof navigator !== 'undefined' && (navigator as any).vibrate) {
+          try {
+            (navigator as any).vibrate(30);
+          } catch {
+            // ignore
+          }
+        }
+        openLugat(word);
+      }
+    }, 450);
+  };
+
+  const handlePointerMove = (clientX: number, clientY: number) => {
+    if (!touchStartPosRef.current) return;
+    const dist = Math.hypot(
+      clientX - touchStartPosRef.current.x,
+      clientY - touchStartPosRef.current.y
+    );
+    if (dist > 8) {
+      pointerMovedRef.current = true;
+      if (longPressTimerRef.current) {
+        clearTimeout(longPressTimerRef.current);
+        longPressTimerRef.current = null;
+      }
+    }
+  };
+
+  const handlePointerUp = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
 
   const getThemeClass = () => {
     switch (theme) {
@@ -435,7 +551,6 @@ export const Reader: React.FC<ReaderProps> = ({
           : 100;
 
       setScrollProgress(pct);
-      setShowScrollTop(currentY > 280);
 
       try {
         localStorage.setItem(scrollKey, String(pct));
@@ -498,18 +613,30 @@ export const Reader: React.FC<ReaderProps> = ({
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (!target.closest('#selection-popup')) {
+      if (!target.closest('#selection-popup') && !target.closest('[role="dialog"]')) {
         const sel = window.getSelection();
         if (!sel || sel.isCollapsed) {
           setSelectionMenu((prev) => ({ ...prev, visible: false }));
         }
       }
-      if (!target.closest('#appearance-menu-container')) {
+      if (!target.closest('#appearance-menu-container') && !target.closest('article')) {
         setAppearanceMenuOpen(false);
       }
     };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setAppearanceMenuOpen(false);
+        setSelectionMenu((prev) => ({ ...prev, visible: false }));
+      }
+    };
+
     window.addEventListener('mousedown', handleClickOutside);
-    return () => window.removeEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   // Arama sonucundan gelindiyse doğrudan renkli kelimenin olduğu cümleye kaydır
@@ -545,12 +672,25 @@ export const Reader: React.FC<ReaderProps> = ({
         </div>
       )}
 
-      {/* Metin Seçim Çubuğu — Çapraz İzah, Buradan Hızlı Oku ve Alıntı Kartı */}
+      {/* Metin Seçim Çubuğu — Lügat, Çapraz İzah, Buradan Hızlı Oku ve Alıntı Kartı */}
       {selectionMenu.visible && selectionMenu.passage && (
         <div
           id="selection-popup"
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-wrap items-center justify-center gap-1.5 p-1.5 bg-stone-900 text-white rounded-2xl shadow-2xl border border-amber-500/50 text-xs sm:text-sm max-w-[95vw]"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-60 flex flex-wrap items-center justify-center gap-1.5 p-1.5 bg-stone-900 text-white rounded-2xl shadow-2xl border border-amber-500/50 text-xs sm:text-sm max-w-[95vw]"
         >
+          <button
+            onClick={() => {
+              const textToSearch = selectionMenu.selectedText;
+              setSelectionMenu((prev) => ({ ...prev, visible: false }));
+              openLugat(textToSearch);
+            }}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 border border-amber-400/40 transition-colors font-semibold text-white shrink-0 shadow-xs"
+            title="Seçilen kelimenin lügat anlamına bak"
+          >
+            <BookOpen className="w-4 h-4 text-amber-200 shrink-0" />
+            <span>Lügat</span>
+          </button>
+
           <button
             onClick={() => {
               if (selectionMenu.passage) {
@@ -597,12 +737,24 @@ export const Reader: React.FC<ReaderProps> = ({
             <Share2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
             <span>Alıntı Kartı</span>
           </button>
+
+          <button
+            onClick={() => {
+              setSelectionMenu((prev) => ({ ...prev, visible: false }));
+              window.getSelection()?.removeAllRanges();
+            }}
+            className="p-2 rounded-xl bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-400 hover:text-white transition-colors shrink-0 ml-0.5"
+            title="Seçimi Kapat (Esc)"
+            aria-label="Kapat"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 
       {/* Ultra Sade Sabit Üst Çubuk: Solda Geri, Ortada Tam Başlık, Sağda Tek "Menü" Düğmesi */}
       <header
-        className={`sticky top-0 z-30 w-full backdrop-blur-md border-b px-3 sm:px-4 py-2 transition-colors duration-200 shadow-xs ${getHeaderBgClass()}`}
+        className={`fixed top-0 left-0 right-0 z-30 w-full backdrop-blur-md border-b px-3 sm:px-4 py-2 transition-colors duration-200 shadow-xs ${getHeaderBgClass()}`}
       >
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
           <button
@@ -648,10 +800,31 @@ export const Reader: React.FC<ReaderProps> = ({
             </button>
 
             {appearanceMenuOpen && (
-              <div
-                className={`absolute right-0 mt-2 w-72 sm:w-80 rounded-2xl shadow-2xl border p-4 z-50 space-y-4 max-h-[82vh] overflow-y-auto ${getMenuPopoverClass()}`}
-              >
-                {/* 1. Okuma Araçları (Hızlı Oku, Çapraz İzah, Külliyat'ta Ara) */}
+              <>
+                {/* Dışarı tıklandığında menüyü kapatan görünmez perde */}
+                <div
+                  className="fixed inset-0 z-40 bg-black/10"
+                  onClick={() => setAppearanceMenuOpen(false)}
+                />
+                <div
+                  className={`absolute right-0 mt-2 w-72 sm:w-80 rounded-2xl shadow-2xl border p-4 z-50 space-y-4 max-h-[82vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-150 ${getMenuPopoverClass()}`}
+                >
+                  {/* Menü Başlığı ve Kapatma Butonu */}
+                  <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2.5">
+                    <span className="font-serif font-bold text-sm tracking-wide text-amber-900 dark:text-amber-300">
+                      Okuma Menüsü
+                    </span>
+                    <button
+                      onClick={() => setAppearanceMenuOpen(false)}
+                      className="p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 opacity-70 hover:opacity-100 transition-colors"
+                      title="Menüyü Kapat (Esc)"
+                      aria-label="Kapat"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* 1. Okuma Araçları (Hızlı Oku, Çapraz İzah, Külliyat'ta Ara) */}
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider opacity-70">
                     <span>Okuma Araçları</span>
@@ -814,35 +987,33 @@ export const Reader: React.FC<ReaderProps> = ({
                   </div>
                 </div>
               </div>
-            )}
+            </>
+          )}
           </div>
         </div>
 
-        {/* Çapraz İzah ile başka kitaba geçildiyse: Asıl Bahse ve Çapraz İzah Listesine Dönüş Çubukları */}
-        {(hasActiveMutalaaSession || (originBookTitle && onReturnToOrigin)) && (
-          <div className="max-w-4xl mx-auto mt-2 pt-2 border-t border-amber-500/25 space-y-1.5">
-            {originBookTitle && originChapterTitle && onReturnToOrigin && (
-              <button
-                onClick={onReturnToOrigin}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-semibold shadow-sm transition-transform active:scale-98"
-              >
-                <ArrowLeft className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">
-                  ↩ Asıl Okuduğun Bahse Dön ({originBookTitle} • {originChapterTitle})
-                </span>
-              </button>
-            )}
+        {/* Çapraz İzah ile bir atfa gidildiyse: Listeye Dönüş ve Mütalaayı Bitir Çubuğu */}
+        {isViewingReference && (
+          <div className="max-w-4xl mx-auto mt-2 pt-2 border-t border-amber-500/25 flex items-center gap-2">
+            <button
+              onClick={onReturnToOrigin}
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-semibold shadow-xs transition-colors"
+              title="Çapraz İzah arama listesine geri dön"
+            >
+              <GitFork className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">
+                ↩ Çapraz İzah Listesine Dön ({activeMutalaaConcept ? `"${activeMutalaaConcept}"` : originBookTitle ? `${originBookTitle}${originChapterTitle ? ` • ${originChapterTitle}` : ''}` : 'Atıf'})
+              </span>
+            </button>
 
-            {hasActiveMutalaaSession && onReopenMutalaa && (
+            {onCloseMutalaaSession && (
               <button
-                onClick={onReopenMutalaa}
-                className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl border border-amber-600/40 bg-amber-500/15 hover:bg-amber-500/25 text-amber-900 dark:text-amber-200 text-xs font-semibold transition-colors"
+                onClick={onCloseMutalaaSession}
+                className="px-3 py-2 rounded-xl border border-amber-700/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-900 dark:text-amber-200 text-xs font-semibold shrink-0 transition-colors"
+                title="Mütalaayı bitir ve asıl kitaptaki okuma yerine dön"
               >
-                <GitFork className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">
-                  Çapraz İzah Listesini Aç
-                  {activeMutalaaConcept ? ` ("${activeMutalaaConcept}")` : ''}
-                </span>
+                <X className="w-3.5 h-3.5 inline mr-1" />
+                <span>Bitir</span>
               </button>
             )}
           </div>
@@ -850,7 +1021,7 @@ export const Reader: React.FC<ReaderProps> = ({
       </header>
 
       {/* Main Reading Canvas */}
-      <main className="flex-1 max-w-3xl mx-auto w-full px-5 py-10 sm:py-16">
+      <main className="flex-1 max-w-3xl mx-auto w-full px-5 pt-16 sm:pt-20 pb-10 sm:pb-16">
         <div className="text-center mb-10 pb-6 border-b border-amber-900/15 dark:border-amber-400/15">
           <span className="text-xs uppercase tracking-widest opacity-65 font-serif">
             {book.title}
@@ -872,13 +1043,43 @@ export const Reader: React.FC<ReaderProps> = ({
               <section
                 key={psg.id}
                 id={psg.id}
-                onMouseUp={() => updateSelectionFromPassage(psg)}
-                onTouchEnd={() => updateSelectionFromPassage(psg)}
+                onMouseUp={() => {
+                  handlePointerUp();
+                  updateSelectionFromPassage(psg);
+                }}
+                onTouchEnd={() => {
+                  handlePointerUp();
+                  updateSelectionFromPassage(psg);
+                }}
                 className="scroll-mt-24"
               >
                 <article
                   className="space-y-6 leading-relaxed font-serif text-justify select-text"
                   style={{ fontSize: `${fontSize}px`, lineHeight: 1.85 }}
+                  onTouchStart={(e) => {
+                    if (e.touches.length === 1) {
+                      handlePointerDown(e.touches[0].clientX, e.touches[0].clientY);
+                    }
+                  }}
+                  onTouchMove={(e) => {
+                    if (e.touches.length === 1) {
+                      handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+                    }
+                  }}
+                  onMouseDown={(e) => {
+                    if (e.button === 0) {
+                      handlePointerDown(e.clientX, e.clientY);
+                    }
+                  }}
+                  onMouseMove={(e) => {
+                    handlePointerMove(e.clientX, e.clientY);
+                  }}
+                  onDoubleClick={(e) => {
+                    const word = getWordAtPoint(e.clientX, e.clientY) || window.getSelection()?.toString().trim();
+                    if (word) {
+                      openLugat(word);
+                    }
+                  }}
                 >
                   {paragraphs.map((para, i) => {
                     if (para === '***') {
@@ -1032,18 +1233,6 @@ export const Reader: React.FC<ReaderProps> = ({
         </div>
       </main>
 
-      {/* Sayfa Ortasındayken / Aşağıdayken Sayfa Başına Hızlı Dönüş Düğmesi */}
-      {showScrollTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-5 z-40 p-3 rounded-full shadow-2xl bg-amber-600 hover:bg-amber-700 active:scale-90 text-white transition-all duration-200 border border-amber-400/40 flex items-center justify-center opacity-90 hover:opacity-100"
-          title="Sayfa Başına Dön (Menü ve Geri)"
-          aria-label="Başa Dön"
-        >
-          <ChevronUp className="w-5 h-5" />
-        </button>
-      )}
-
       {/* Hâşiye (Dipnot) Tıklama Açılır Kartı */}
       {activeFootnote && (
         <div
@@ -1078,7 +1267,53 @@ export const Reader: React.FC<ReaderProps> = ({
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto pr-1 font-serif text-sm sm:text-base leading-relaxed text-justify space-y-3">
+            <div
+              className="flex-1 overflow-y-auto pr-1 font-serif text-sm sm:text-base leading-relaxed text-justify space-y-3 select-text"
+              onMouseUp={() => {
+                handlePointerUp();
+                const fnPassage: Passage = {
+                  id: `footnote-${activeFootnote.num}`,
+                  title: `${book.title} • ${chapter.title} (Hâşiye [${activeFootnote.num}])`,
+                  shortTitle: `Hâşiye [${activeFootnote.num}]`,
+                  text: activeFootnote.text,
+                };
+                updateSelectionFromPassage(fnPassage);
+              }}
+              onTouchEnd={() => {
+                handlePointerUp();
+                const fnPassage: Passage = {
+                  id: `footnote-${activeFootnote.num}`,
+                  title: `${book.title} • ${chapter.title} (Hâşiye [${activeFootnote.num}])`,
+                  shortTitle: `Hâşiye [${activeFootnote.num}]`,
+                  text: activeFootnote.text,
+                };
+                updateSelectionFromPassage(fnPassage);
+              }}
+              onTouchStart={(e) => {
+                if (e.touches.length === 1) {
+                  handlePointerDown(e.touches[0].clientX, e.touches[0].clientY);
+                }
+              }}
+              onTouchMove={(e) => {
+                if (e.touches.length === 1) {
+                  handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+                }
+              }}
+              onMouseDown={(e) => {
+                if (e.button === 0) {
+                  handlePointerDown(e.clientX, e.clientY);
+                }
+              }}
+              onMouseMove={(e) => {
+                handlePointerMove(e.clientX, e.clientY);
+              }}
+              onDoubleClick={(e) => {
+                const word = getWordAtPoint(e.clientX, e.clientY) || window.getSelection()?.toString().trim();
+                if (word) {
+                  openLugat(word);
+                }
+              }}
+            >
               {renderRichText(activeFootnote.text, { highlightQuery })}
             </div>
 
@@ -1093,6 +1328,15 @@ export const Reader: React.FC<ReaderProps> = ({
           </div>
         </div>
       )}
+
+      {/* Kelime Üzerine Basılı Tutulduğunda Açılan Lügat Kartı */}
+      <LugatModal
+        isOpen={lugatModalState.isOpen}
+        onClose={() => setLugatModalState((prev) => ({ ...prev, isOpen: false }))}
+        result={lugatModalState.result}
+        searchedWord={lugatModalState.searchedWord}
+        theme={theme}
+      />
     </div>
   );
 };
