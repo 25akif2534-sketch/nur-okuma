@@ -387,8 +387,6 @@ export const Reader: React.FC<ReaderProps> = ({
 
   const longPressTimerRef = useRef<any>(null);
   const touchStartPosRef = useRef<{ x: number; y: number } | null>(null);
-  const pointerMovedRef = useRef<boolean>(false);
-  const longPressTriggeredRef = useRef<boolean>(false);
 
   const openLugat = async (word: string) => {
     // Seçim menüsünü kapat ve tarayıcı seçimini temizle
@@ -408,33 +406,31 @@ export const Reader: React.FC<ReaderProps> = ({
     });
   };
 
-  const handlePointerDown = (clientX: number, clientY: number) => {
+  const handlePointerDown = (clientX: number, clientY: number, psg: Passage) => {
     if (lugatModalState.isOpen) return;
     touchStartPosRef.current = { x: clientX, y: clientY };
-    pointerMovedRef.current = false;
-    longPressTriggeredRef.current = false;
 
     if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
 
-    longPressTimerRef.current = setTimeout(async () => {
+    longPressTimerRef.current = setTimeout(() => {
       const word = getWordAtPoint(clientX, clientY) || window.getSelection()?.toString().trim();
       if (word && word.length >= 2) {
-        longPressTriggeredRef.current = true;
-        try {
-          window.getSelection()?.removeAllRanges();
-        } catch {
-          // ignore
-        }
         if (typeof navigator !== 'undefined' && (navigator as any).vibrate) {
           try {
-            (navigator as any).vibrate(35);
+            (navigator as any).vibrate(30);
           } catch {
             // ignore
           }
         }
-        openLugat(word);
+        setSelectionMenu({
+          visible: true,
+          x: 0,
+          y: 0,
+          selectedText: word,
+          passage: psg,
+        });
       }
-    }, 500);
+    }, 450);
   };
 
   const handlePointerMove = (clientX: number, clientY: number) => {
@@ -443,8 +439,7 @@ export const Reader: React.FC<ReaderProps> = ({
       clientX - touchStartPosRef.current.x,
       clientY - touchStartPosRef.current.y
     );
-    if (dist > 8) {
-      pointerMovedRef.current = true;
+    if (dist > 10) {
       if (longPressTimerRef.current) {
         clearTimeout(longPressTimerRef.current);
         longPressTimerRef.current = null;
@@ -457,17 +452,6 @@ export const Reader: React.FC<ReaderProps> = ({
       clearTimeout(longPressTimerRef.current);
       longPressTimerRef.current = null;
     }
-    if (longPressTriggeredRef.current) {
-      try {
-        window.getSelection()?.removeAllRanges();
-      } catch {
-        // ignore
-      }
-    }
-    // 300ms boyunca longPressTriggeredRef'i koru ki peşinden tetiklenen touchEnd/mouseUp seçim menüsü açmasın
-    setTimeout(() => {
-      longPressTriggeredRef.current = false;
-    }, 300);
   };
 
   const getThemeClass = () => {
@@ -615,17 +599,11 @@ export const Reader: React.FC<ReaderProps> = ({
 
   // Mouse veya dokunmatik ekranda metin seçildiğinde tetiklenir
   const updateSelectionFromPassage = (psg: Passage) => {
-    if (longPressTriggeredRef.current || lugatModalState.isOpen) {
-      return;
-    }
+    if (lugatModalState.isOpen) return;
     setTimeout(() => {
-      if (longPressTriggeredRef.current || lugatModalState.isOpen) {
-        return;
-      }
+      if (lugatModalState.isOpen) return;
       const sel = window.getSelection();
-      if (!sel || sel.isCollapsed) {
-        return;
-      }
+      if (!sel || sel.isCollapsed) return;
       const text = sel.toString().trim();
       if (text.length >= 2) {
         setSelectionMenu({
@@ -636,7 +614,7 @@ export const Reader: React.FC<ReaderProps> = ({
           passage: psg,
         });
       }
-    }, 60);
+    }, 70);
   };
 
   // Ekranda seçim kaldırıldığında veya dışarı tıklandığında pop-up ve menüleri kapat
@@ -1074,18 +1052,10 @@ export const Reader: React.FC<ReaderProps> = ({
                 key={psg.id}
                 id={psg.id}
                 onMouseUp={() => {
-                  if (longPressTriggeredRef.current || lugatModalState.isOpen) {
-                    handlePointerUp();
-                    return;
-                  }
                   handlePointerUp();
                   updateSelectionFromPassage(psg);
                 }}
                 onTouchEnd={() => {
-                  if (longPressTriggeredRef.current || lugatModalState.isOpen) {
-                    handlePointerUp();
-                    return;
-                  }
                   handlePointerUp();
                   updateSelectionFromPassage(psg);
                 }}
@@ -1096,7 +1066,7 @@ export const Reader: React.FC<ReaderProps> = ({
                   style={{ fontSize: `${fontSize}px`, lineHeight: 1.85 }}
                   onTouchStart={(e) => {
                     if (e.touches.length === 1) {
-                      handlePointerDown(e.touches[0].clientX, e.touches[0].clientY);
+                      handlePointerDown(e.touches[0].clientX, e.touches[0].clientY, psg);
                     }
                   }}
                   onTouchMove={(e) => {
@@ -1106,7 +1076,7 @@ export const Reader: React.FC<ReaderProps> = ({
                   }}
                   onMouseDown={(e) => {
                     if (e.button === 0) {
-                      handlePointerDown(e.clientX, e.clientY);
+                      handlePointerDown(e.clientX, e.clientY, psg);
                     }
                   }}
                   onMouseMove={(e) => {
@@ -1114,8 +1084,14 @@ export const Reader: React.FC<ReaderProps> = ({
                   }}
                   onDoubleClick={(e) => {
                     const word = getWordAtPoint(e.clientX, e.clientY) || window.getSelection()?.toString().trim();
-                    if (word) {
-                      openLugat(word);
+                    if (word && word.length >= 2) {
+                      setSelectionMenu({
+                        visible: true,
+                        x: 0,
+                        y: 0,
+                        selectedText: word,
+                        passage: psg,
+                      });
                     }
                   }}
                 >
@@ -1308,10 +1284,6 @@ export const Reader: React.FC<ReaderProps> = ({
             <div
               className="flex-1 overflow-y-auto pr-1 font-serif text-sm sm:text-base leading-relaxed text-justify space-y-3 select-text"
               onMouseUp={() => {
-                if (longPressTriggeredRef.current || lugatModalState.isOpen) {
-                  handlePointerUp();
-                  return;
-                }
                 handlePointerUp();
                 const fnPassage: Passage = {
                   id: `footnote-${activeFootnote.num}`,
@@ -1322,10 +1294,6 @@ export const Reader: React.FC<ReaderProps> = ({
                 updateSelectionFromPassage(fnPassage);
               }}
               onTouchEnd={() => {
-                if (longPressTriggeredRef.current || lugatModalState.isOpen) {
-                  handlePointerUp();
-                  return;
-                }
                 handlePointerUp();
                 const fnPassage: Passage = {
                   id: `footnote-${activeFootnote.num}`,
@@ -1337,7 +1305,13 @@ export const Reader: React.FC<ReaderProps> = ({
               }}
               onTouchStart={(e) => {
                 if (e.touches.length === 1) {
-                  handlePointerDown(e.touches[0].clientX, e.touches[0].clientY);
+                  const fnPassage: Passage = {
+                    id: `footnote-${activeFootnote.num}`,
+                    title: `${book.title} • ${chapter.title} (Hâşiye [${activeFootnote.num}])`,
+                    shortTitle: `Hâşiye [${activeFootnote.num}]`,
+                    text: activeFootnote.text,
+                  };
+                  handlePointerDown(e.touches[0].clientX, e.touches[0].clientY, fnPassage);
                 }
               }}
               onTouchMove={(e) => {
@@ -1347,7 +1321,13 @@ export const Reader: React.FC<ReaderProps> = ({
               }}
               onMouseDown={(e) => {
                 if (e.button === 0) {
-                  handlePointerDown(e.clientX, e.clientY);
+                  const fnPassage: Passage = {
+                    id: `footnote-${activeFootnote.num}`,
+                    title: `${book.title} • ${chapter.title} (Hâşiye [${activeFootnote.num}])`,
+                    shortTitle: `Hâşiye [${activeFootnote.num}]`,
+                    text: activeFootnote.text,
+                  };
+                  handlePointerDown(e.clientX, e.clientY, fnPassage);
                 }
               }}
               onMouseMove={(e) => {
@@ -1355,8 +1335,20 @@ export const Reader: React.FC<ReaderProps> = ({
               }}
               onDoubleClick={(e) => {
                 const word = getWordAtPoint(e.clientX, e.clientY) || window.getSelection()?.toString().trim();
-                if (word) {
-                  openLugat(word);
+                if (word && word.length >= 2) {
+                  const fnPassage: Passage = {
+                    id: `footnote-${activeFootnote.num}`,
+                    title: `${book.title} • ${chapter.title} (Hâşiye [${activeFootnote.num}])`,
+                    shortTitle: `Hâşiye [${activeFootnote.num}]`,
+                    text: activeFootnote.text,
+                  };
+                  setSelectionMenu({
+                    visible: true,
+                    x: 0,
+                    y: 0,
+                    selectedText: word,
+                    passage: fnPassage,
+                  });
                 }
               }}
             >
