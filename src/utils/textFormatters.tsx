@@ -80,6 +80,7 @@ export function renderRichText(
               <span
                 key={`ar-${arIdx}`}
                 dir="rtl"
+                data-arabic-verse={isVerse ? subPart : undefined}
                 onClick={
                   isVerse && onClickArabic
                     ? (e) => {
@@ -91,7 +92,7 @@ export function renderRichText(
                 title={verseTooltip}
                 className={`font-arabic text-[1.28em] font-normal leading-relaxed px-1 text-amber-950 dark:text-amber-100 inline-block align-baseline tracking-wide select-text ${
                   isVerse
-                    ? 'cursor-pointer rounded-md hover:bg-amber-500/15 border-b border-dashed border-amber-600/45 dark:border-amber-400/45 transition-colors'
+                    ? 'cursor-pointer rounded-md hover:bg-amber-500/15 active:bg-amber-500/25 border-b border-dashed border-amber-600/45 dark:border-amber-400/45 transition-colors'
                     : ''
                 }`}
               >

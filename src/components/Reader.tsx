@@ -456,6 +456,24 @@ export const Reader: React.FC<ReaderProps> = ({
     if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
 
     longPressTimerRef.current = setTimeout(() => {
+      const targetEl =
+        typeof document !== 'undefined'
+          ? (document.elementFromPoint(clientX, clientY) as HTMLElement | null)
+          : null;
+      const verseEl = targetEl?.closest?.('[data-arabic-verse]') as HTMLElement | null;
+      const verseText = verseEl?.getAttribute('data-arabic-verse');
+      if (verseText) {
+        if (typeof navigator !== 'undefined' && (navigator as any).vibrate) {
+          try {
+            (navigator as any).vibrate(30);
+          } catch {
+            // ignore
+          }
+        }
+        openMeal(verseText);
+        return;
+      }
+
       const word = getWordAtPoint(clientX, clientY) || window.getSelection()?.toString().trim();
       if (word && word.length >= 2) {
         if (ARABIC_CHAR_REGEX.test(word)) return;
@@ -1219,6 +1237,7 @@ export const Reader: React.FC<ReaderProps> = ({
                       return (
                         <div
                           key={i}
+                          data-arabic-verse={isVerseBlock ? para : undefined}
                           onClick={
                             isVerseBlock
                               ? (e) => {
