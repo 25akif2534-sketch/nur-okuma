@@ -11,8 +11,16 @@ import {
   Share2,
   Clock,
   X,
-  ListTree
+  ListTree,
+  HelpCircle,
+  ImageDown
 } from 'lucide-react';
+import {
+  GuideModal,
+  APP_DUA_TEXT,
+  APP_PROMO_SHARE_TEXT,
+  generateAndSharePromoPoster,
+} from './GuideModal';
 
 export interface LastReadInfo {
   bookId: string;
@@ -95,7 +103,7 @@ export const BookList: React.FC<BookListProps> = ({
   // Çevrimdışı (İnternetsiz) Tüm Külliyatı Otomatik İndirme Durumu
   const [offlineReady, setOfflineReady] = useState<boolean>(() => {
     try {
-      return localStorage.getItem('nur_offline_ready_v5') === 'true';
+      return localStorage.getItem('nur_offline_ready_v6') === 'true';
     } catch {
       return false;
     }
@@ -103,6 +111,24 @@ export const BookList: React.FC<BookListProps> = ({
   const [downloadingOffline, setDownloadingOffline] = useState(false);
   const [offlineProgress, setOfflineProgress] = useState(0);
   const autoCacheStartedRef = useRef(false);
+
+  // İlk açılışta otomatik görünen 4 adımlı Kullanım Kılavuzu & Tanıtım Penceresi
+  const [showGuideModal, setShowGuideModal] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('nur_guide_seen_v1') !== 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const handleCloseGuideModal = () => {
+    setShowGuideModal(false);
+    try {
+      localStorage.setItem('nur_guide_seen_v1', 'true');
+    } catch {
+      // ignore
+    }
+  };
 
   // Uygulama telefona kuruldu mu veya kullanıcı kurulum kutusunu gizledi mi?
   const [isAppInstalled, setIsAppInstalled] = useState<boolean>(() => {
@@ -196,7 +222,7 @@ export const BookList: React.FC<BookListProps> = ({
       }
 
       try {
-        const cache = await caches.open('nur-okuma-v4');
+        const cache = await caches.open('nur-okuma-v14');
         const assetUrls: string[] = [];
         document
           .querySelectorAll<HTMLScriptElement | HTMLLinkElement>(
@@ -218,6 +244,8 @@ export const BookList: React.FC<BookListProps> = ({
           './icon-512.png',
           './apple-touch-icon.png',
           './kulliyat/books-index.json',
+          './lugat.json',
+          './elmalili_meal.json?v=2',
           ...assetUrls,
         ];
 
@@ -235,7 +263,7 @@ export const BookList: React.FC<BookListProps> = ({
 
         const fetchWithTimeout = async (url: string) => {
           const controller = new AbortController();
-          const timer = setTimeout(() => controller.abort(), 10000);
+          const timer = setTimeout(() => controller.abort(), 15000);
           try {
             const res = await fetch(url, { signal: controller.signal });
             if (res.ok) {
@@ -260,7 +288,7 @@ export const BookList: React.FC<BookListProps> = ({
         }
 
         try {
-          localStorage.setItem('nur_offline_ready_v5', 'true');
+          localStorage.setItem('nur_offline_ready_v6', 'true');
         } catch {
           // ignore
         }
@@ -281,12 +309,12 @@ export const BookList: React.FC<BookListProps> = ({
   }, [books, offlineReady]);
 
   const [shareCopied, setShareCopied] = useState(false);
+  const [posterToast, setPosterToast] = useState<string | null>(null);
+
   const handleShareApp = async () => {
-    const shareUrl = 'https://25akif2534-sketch.github.io/nur-okuma/';
     const shareData = {
-      title: 'Risale-i Nur Külliyatı — Okuma & Çapraz İzah',
-      text: 'Diyanet nüshası esas alınarak hazırlanmış, Hızlı Okuma ve Çapraz İzah destekli reklamsız Risale-i Nur okuma programı:',
-      url: shareUrl,
+      title: 'Risale-i Nur Külliyatı — Okuma, Lügat, Meal & Çapraz İzah',
+      text: APP_PROMO_SHARE_TEXT,
     };
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
@@ -297,12 +325,18 @@ export const BookList: React.FC<BookListProps> = ({
       }
     }
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(APP_PROMO_SHARE_TEXT);
       setShareCopied(true);
-      setTimeout(() => setShareCopied(false), 2500);
+      setTimeout(() => setShareCopied(false), 2800);
     } catch {
       // ignore
     }
+  };
+
+  const handleDownloadPoster = async () => {
+    const msg = await generateAndSharePromoPoster();
+    setPosterToast(msg);
+    setTimeout(() => setPosterToast(null), 3000);
   };
   // Esas Okuma / Hatim Takibi (Kullanıcının belirlediği veya son okuduğu kitap)
   const activeTracked: TrackedBookInfo | null = useMemo(() => {
@@ -345,6 +379,14 @@ export const BookList: React.FC<BookListProps> = ({
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8 flex flex-col min-h-screen">
+      {/* 4 Adımlı Kullanım Kılavuzu, Tanıtım & Dua Penceresi */}
+      <GuideModal
+        isOpen={showGuideModal}
+        onClose={handleCloseGuideModal}
+        onInstallAppClick={handleInstallAppClick}
+        isAppInstalled={isAppInstalled}
+      />
+
       {/* Telefona Uygulama Olarak Kurma Rehberi Modalı */}
       {showInstallGuide && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
@@ -432,26 +474,36 @@ export const BookList: React.FC<BookListProps> = ({
             </kbd>
           </button>
 
-          {/* Tek Düğme: Uygulama henüz telefona kurulmadıysa görünür, kurulduktan sonra tamamen kaybolur */}
-          {!isAppInstalled && (
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={handleInstallAppClick}
-                className="flex-1 flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-2xl border border-amber-600/40 bg-amber-50/80 dark:bg-stone-900 hover:bg-amber-100/80 text-amber-950 dark:text-amber-300 text-xs font-serif font-semibold transition-colors"
-              >
-                <Smartphone className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
-                <span>Telefona Uygulama Olarak Ekle</span>
-              </button>
-              <button
-                onClick={markAppInstalledAndHideButton}
-                className="p-2.5 rounded-2xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 dark:text-stone-400 transition-colors"
-                title="Bu düğmeyi bir daha gösterme"
-                aria-label="Kapat"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          )}
+          {/* Kullanım Kılavuzu & Telefona Kurulum Düğmeleri */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <button
+              onClick={() => setShowGuideModal(true)}
+              className="flex-1 min-w-[200px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-2xl border border-amber-600/40 bg-amber-50/80 dark:bg-stone-900 hover:bg-amber-100/80 text-amber-950 dark:text-amber-300 text-xs font-serif font-semibold transition-colors"
+            >
+              <HelpCircle className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" />
+              <span>Nasıl Kullanılır? (Özellikler & Kurulum)</span>
+            </button>
+
+            {!isAppInstalled && (
+              <>
+                <button
+                  onClick={handleInstallAppClick}
+                  className="flex-1 min-w-[200px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-2xl border border-amber-600/40 bg-amber-700 hover:bg-amber-800 text-white text-xs font-serif font-semibold transition-colors"
+                >
+                  <Smartphone className="w-4 h-4 shrink-0" />
+                  <span>Telefona Uygulama Olarak Ekle</span>
+                </button>
+                <button
+                  onClick={markAppInstalledAndHideButton}
+                  className="p-2.5 rounded-2xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-500 dark:text-stone-400 transition-colors"
+                  title="Kurulum düğmesini bir daha gösterme"
+                  aria-label="Kapat"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </>
+            )}
+          </div>
 
           {/* Külliyat ilk kez arka planda cihaza kaydedilirken görünür; %100 tamamlandığında tamamen kaybolur */}
           {downloadingOffline && !offlineReady && (
@@ -684,18 +736,35 @@ export const BookList: React.FC<BookListProps> = ({
         <div className="text-amber-700/50 dark:text-amber-400/40 text-xs select-none font-serif tracking-widest">
           — • —
         </div>
-        <p className="font-serif italic text-xs sm:text-sm text-stone-500 dark:text-stone-400 max-w-lg mx-auto leading-relaxed">
-          İman ve Kur'ân hizmetine küçük bir vesile olması niyetiyle hazırlanmıştır. Emeği geçenleri hayır duanızda unutmayınız.
+        <p className="font-serif italic text-xs sm:text-sm text-stone-600 dark:text-stone-400 max-w-2xl mx-auto leading-relaxed px-2">
+          “{APP_DUA_TEXT}”
         </p>
         <div className="pt-1 flex flex-wrap items-center justify-center gap-2">
+          <button
+            onClick={() => setShowGuideModal(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-300/80 dark:border-stone-700 text-xs font-serif text-stone-600 dark:text-stone-300 hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300 transition-colors"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+            <span>Kullanım Kılavuzu</span>
+          </button>
+
           <button
             onClick={handleShareApp}
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-300/80 dark:border-stone-700 text-xs font-serif text-stone-600 dark:text-stone-300 hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300 transition-colors"
           >
             <Share2 className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
             <span>
-              {shareCopied ? 'Uygulama Bağlantısı Kopyalandı ✓' : 'Uygulamayı Paylaş'}
+              {shareCopied ? 'Tanıtım Metni & Link Kopyalandı ✓' : 'Tanıtım Metniyle Paylaş'}
             </span>
+          </button>
+
+          <button
+            onClick={handleDownloadPoster}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-stone-300/80 dark:border-stone-700 text-xs font-serif text-stone-600 dark:text-stone-300 hover:border-amber-600 hover:text-amber-800 dark:hover:text-amber-300 transition-colors"
+            title="Özellikleri, kurulum adımlarını ve duayı içeren afiş görselini indir veya paylaş"
+          >
+            <ImageDown className="w-3.5 h-3.5 text-amber-700 dark:text-amber-400" />
+            <span>{posterToast || 'Tanıtım Afişi İndir'}</span>
           </button>
 
           <button
