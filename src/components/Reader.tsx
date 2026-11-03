@@ -457,10 +457,17 @@ export const Reader: React.FC<ReaderProps> = ({
       clearTimeout(longPressTimerRef.current);
       longPressTimerRef.current = null;
     }
-    // 250ms boyunca longPressTriggeredRef'i koru ki peşinden tetiklenen touchEnd/mouseUp seçim menüsü açmasın
+    if (longPressTriggeredRef.current) {
+      try {
+        window.getSelection()?.removeAllRanges();
+      } catch {
+        // ignore
+      }
+    }
+    // 300ms boyunca longPressTriggeredRef'i koru ki peşinden tetiklenen touchEnd/mouseUp seçim menüsü açmasın
     setTimeout(() => {
       longPressTriggeredRef.current = false;
-    }, 250);
+    }, 300);
   };
 
   const getThemeClass = () => {

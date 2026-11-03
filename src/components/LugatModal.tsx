@@ -22,6 +22,15 @@ export const LugatModal: React.FC<LugatModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
 
+    try {
+      window.getSelection()?.removeAllRanges();
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    } catch {
+      // ignore
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -90,7 +99,8 @@ export const LugatModal: React.FC<LugatModalProps> = ({
       onMouseUp={(e) => e.stopPropagation()}
     >
       <div
-        className={`w-full sm:max-w-xl max-h-[85vh] flex flex-col rounded-t-3xl sm:rounded-2xl shadow-2xl border ${getContainerBg()} overflow-hidden animate-in slide-in-from-bottom duration-200`}
+        className={`w-full sm:max-w-xl max-h-[85vh] flex flex-col rounded-t-3xl sm:rounded-2xl shadow-2xl border ${getContainerBg()} overflow-hidden animate-in slide-in-from-bottom duration-200 select-none`}
+        style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none', userSelect: 'none' }}
         onClick={(e) => e.stopPropagation()}
         onTouchStart={(e) => e.stopPropagation()}
         onTouchEnd={(e) => e.stopPropagation()}
