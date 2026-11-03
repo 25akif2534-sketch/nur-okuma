@@ -84,10 +84,18 @@ export const LugatModal: React.FC<LugatModalProps> = ({
     <div
       className="fixed inset-0 z-70 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-150"
       onClick={onClose}
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchEnd={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      onMouseUp={(e) => e.stopPropagation()}
     >
       <div
         className={`w-full sm:max-w-xl max-h-[85vh] flex flex-col rounded-t-3xl sm:rounded-2xl shadow-2xl border ${getContainerBg()} overflow-hidden animate-in slide-in-from-bottom duration-200`}
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onMouseUp={(e) => e.stopPropagation()}
       >
         {/* Üst Başlık Çubuğu */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-black/10 dark:border-white/10">
