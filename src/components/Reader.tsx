@@ -25,11 +25,19 @@ import {
   X
 } from 'lucide-react';
 import { LugatModal } from './LugatModal';
+import { MealModal } from './MealModal';
 import {
   searchLugat,
   cleanPunctuation,
   type LugatSearchResult,
 } from '../services/lugatService';
+import {
+  loadMealDatabase,
+  searchMealByArabicText,
+  findVersesInArabicTextSync,
+  isMealLoaded,
+  type MatchedVerseItem,
+} from '../services/mealService';
 
 interface ReaderProps {
   book: BookMeta;
@@ -385,6 +393,41 @@ export const Reader: React.FC<ReaderProps> = ({
     result: null,
   });
 
+  // Elmalılı Meal Pop-up Kartı Durumu
+  const [mealReady, setMealReady] = useState<boolean>(() => isMealLoaded());
+  const [mealModalState, setMealModalState] = useState<{
+    isOpen: boolean;
+    clickedArabicText: string;
+    items: MatchedVerseItem[];
+  }>({
+    isOpen: false,
+    clickedArabicText: '',
+    items: [],
+  });
+
+  useEffect(() => {
+    if (!mealReady) {
+      loadMealDatabase().then((list) => {
+        if (list.length > 0) setMealReady(true);
+      });
+    }
+  }, [mealReady]);
+
+  const openMeal = async (arabicText: string) => {
+    setSelectionMenu((prev) => ({ ...prev, visible: false }));
+    try {
+      window.getSelection()?.removeAllRanges();
+    } catch {
+      // ignore
+    }
+    const items = await searchMealByArabicText(arabicText);
+    setMealModalState({
+      isOpen: true,
+      clickedArabicText: arabicText,
+      items,
+    });
+  };
+
   const longPressTimerRef = useRef<any>(null);
   const touchStartPosRef = useRef<{ x: number; y: number } | null>(null);
 
@@ -407,7 +450,7 @@ export const Reader: React.FC<ReaderProps> = ({
   };
 
   const handlePointerDown = (clientX: number, clientY: number, psg: Passage) => {
-    if (lugatModalState.isOpen) return;
+    if (lugatModalState.isOpen || mealModalState.isOpen) return;
     touchStartPosRef.current = { x: clientX, y: clientY };
 
     if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
@@ -415,6 +458,7 @@ export const Reader: React.FC<ReaderProps> = ({
     longPressTimerRef.current = setTimeout(() => {
       const word = getWordAtPoint(clientX, clientY) || window.getSelection()?.toString().trim();
       if (word && word.length >= 2) {
+        if (ARABIC_CHAR_REGEX.test(word)) return;
         if (typeof navigator !== 'undefined' && (navigator as any).vibrate) {
           try {
             (navigator as any).vibrate(30);
@@ -599,9 +643,9 @@ export const Reader: React.FC<ReaderProps> = ({
 
   // Mouse veya dokunmatik ekranda metin seçildiğinde tetiklenir
   const updateSelectionFromPassage = (psg: Passage) => {
-    if (lugatModalState.isOpen) return;
+    if (lugatModalState.isOpen || mealModalState.isOpen) return;
     setTimeout(() => {
-      if (lugatModalState.isOpen) return;
+      if (lugatModalState.isOpen || mealModalState.isOpen) return;
       const sel = window.getSelection();
       if (!sel || sel.isCollapsed) return;
       const text = sel.toString().trim();
@@ -686,6 +730,21 @@ export const Reader: React.FC<ReaderProps> = ({
           id="selection-popup"
           className="fixed bottom-6 left-1/2 -translate-x-1/2 z-60 flex flex-wrap items-center justify-center gap-1.5 p-1.5 bg-stone-900 text-white rounded-2xl shadow-2xl border border-amber-500/50 text-xs sm:text-sm max-w-[95vw]"
         >
+          {ARABIC_CHAR_REGEX.test(selectionMenu.selectedText) && (
+            <button
+              onClick={() => {
+                const textToSearch = selectionMenu.selectedText;
+                setSelectionMenu((prev) => ({ ...prev, visible: false }));
+                openMeal(textToSearch);
+              }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 border border-amber-400/40 transition-colors font-semibold text-white shrink-0 shadow-xs"
+              title="Seçilen Arapça ibarenin Elmalılı Mealine bak"
+            >
+              <BookMarked className="w-4 h-4 text-amber-200 shrink-0" />
+              <span>Meal</span>
+            </button>
+          )}
+
           <button
             onClick={() => {
               const textToSearch = selectionMenu.selectedText;
@@ -1140,6 +1199,7 @@ export const Reader: React.FC<ReaderProps> = ({
                                 const noteText = footnotesMap[num] || fnDefMatch[2];
                                 setActiveFootnote({ num, text: noteText });
                               },
+                              onClickArabic: openMeal,
                             })}
                           </p>
                         </aside>
@@ -1147,21 +1207,61 @@ export const Reader: React.FC<ReaderProps> = ({
                     }
 
                     if (isArabicOnlyLine(para)) {
+                      const matchedVerses = mealReady ? findVersesInArabicTextSync(para) : [];
+                      const isVerseBlock = matchedVerses.length > 0;
+                      const badgeLabel =
+                        matchedVerses.length === 1
+                          ? `${matchedVerses[0].surahName} • ${matchedVerses[0].verseNo}. Ayet`
+                          : matchedVerses.length > 1
+                          ? `${matchedVerses[0].surahName} • ${matchedVerses[0].verseNo}. Ayet (+${matchedVerses.length - 1} Ayet)`
+                          : '';
+
                       return (
-                        <p
+                        <div
                           key={i}
-                          dir="rtl"
-                          className="font-arabic text-center indent-0 my-5 py-3 px-4 rounded-2xl bg-black/[0.025] dark:bg-white/[0.025] text-amber-950 dark:text-amber-100 tracking-wide select-text border border-amber-900/10 dark:border-amber-400/10 shadow-xs"
-                          style={{
-                            fontSize: `${Math.max(22, Math.round(fontSize * 1.38))}px`,
-                            lineHeight: 2.35,
-                          }}
+                          onClick={
+                            isVerseBlock
+                              ? (e) => {
+                                  const sel = window.getSelection();
+                                  if (sel && !sel.isCollapsed) return;
+                                  e.stopPropagation();
+                                  openMeal(para);
+                                }
+                              : undefined
+                          }
+                          title={
+                            isVerseBlock
+                              ? `${badgeLabel} — Elmalılı Hamdi Yazır Mealini okumak için dokunun`
+                              : undefined
+                          }
+                          className={`my-5 py-3 px-4 rounded-2xl bg-black/[0.025] dark:bg-white/[0.025] border border-amber-900/10 dark:border-amber-400/10 shadow-xs transition-colors ${
+                            isVerseBlock
+                              ? 'cursor-pointer hover:bg-amber-500/10 hover:border-amber-600/35'
+                              : ''
+                          }`}
                         >
-                          {renderRichText(para, {
-                            highlightQuery,
-                            withScrollTarget: !targetPassageId || psg.id === targetPassageId,
-                          })}
-                        </p>
+                          <p
+                            dir="rtl"
+                            className="font-arabic text-center indent-0 text-amber-950 dark:text-amber-100 tracking-wide select-text"
+                            style={{
+                              fontSize: `${Math.max(22, Math.round(fontSize * 1.38))}px`,
+                              lineHeight: 2.35,
+                            }}
+                          >
+                            {renderRichText(para, {
+                              highlightQuery,
+                              withScrollTarget: !targetPassageId || psg.id === targetPassageId,
+                            })}
+                          </p>
+                          {isVerseBlock && (
+                            <div className="mt-2 pt-2 border-t border-amber-900/10 dark:border-amber-400/10 flex items-center justify-center">
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-amber-600/15 text-amber-900 dark:text-amber-300 font-sans text-[11px] font-semibold">
+                                <BookMarked className="w-3 h-3 text-amber-700 dark:text-amber-400" />
+                                <span>{badgeLabel} • Elmalılı Meali</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       );
                     }
 
@@ -1174,6 +1274,7 @@ export const Reader: React.FC<ReaderProps> = ({
                             const noteText = footnotesMap[num] || 'Bu hâşiyenin metni sayfa sonunda bulunmaktadır.';
                             setActiveFootnote({ num, text: noteText });
                           },
+                          onClickArabic: openMeal,
                         })}
                       </p>
                     );
@@ -1352,7 +1453,10 @@ export const Reader: React.FC<ReaderProps> = ({
                 }
               }}
             >
-              {renderRichText(activeFootnote.text, { highlightQuery })}
+              {renderRichText(activeFootnote.text, {
+                highlightQuery,
+                onClickArabic: openMeal,
+              })}
             </div>
 
             <div className="pt-2 flex justify-end border-t border-black/5 dark:border-white/5">
@@ -1366,6 +1470,22 @@ export const Reader: React.FC<ReaderProps> = ({
           </div>
         </div>
       )}
+
+      {/* Ayet Tıklandığında Açılan Elmalılı Hamdi Yazır Meali Kartı */}
+      <MealModal
+        isOpen={mealModalState.isOpen}
+        onClose={() => {
+          setMealModalState((prev) => ({ ...prev, isOpen: false }));
+          try {
+            window.getSelection()?.removeAllRanges();
+          } catch {
+            // ignore
+          }
+        }}
+        items={mealModalState.items}
+        clickedArabicText={mealModalState.clickedArabicText}
+        theme={theme}
+      />
 
       {/* Kelime Üzerine Basılı Tutulduğunda Açılan Lügat Kartı */}
       <LugatModal

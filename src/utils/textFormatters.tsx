@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bookmark } from 'lucide-react';
 import { buildFlexibleRegex } from './searchUtils';
+import { isMealLoaded, findVersesInArabicTextSync } from '../services/mealService';
 
 const ARABIC_CHUNK_REGEX = /([\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+(?:[\s\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]*[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF])?)/g;
 const FOOTNOTE_TOKEN_REGEX = /(\(H[aâ]şiye(?:\[\d+\])?\))/gi;
@@ -9,6 +10,7 @@ interface RenderRichTextOptions {
   highlightQuery?: string;
   withScrollTarget?: boolean;
   onOpenFootnote?: (num: string) => void;
+  onClickArabic?: (arabicText: string) => void;
 }
 
 /**
@@ -20,7 +22,7 @@ export function renderRichText(
 ): React.ReactNode {
   if (!text) return null;
 
-  const { highlightQuery, withScrollTarget, onOpenFootnote } = options;
+  const { highlightQuery, withScrollTarget, onOpenFootnote, onClickArabic } = options;
   const highlightRegex = highlightQuery && highlightQuery.trim().length >= 2
     ? buildFlexibleRegex(highlightQuery)
     : null;
@@ -63,11 +65,35 @@ export function renderRichText(
           const isArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(subPart);
 
           if (isArabic) {
+            const matchedVerses =
+              onClickArabic && isMealLoaded()
+                ? findVersesInArabicTextSync(subPart)
+                : [];
+            const isVerse = matchedVerses.length > 0;
+            const verseTooltip = isVerse
+              ? matchedVerses.length === 1
+                ? `${matchedVerses[0].surahName} • ${matchedVerses[0].verseNo}. Ayet (Elmalılı Mealini görmek için dokunun)`
+                : `${matchedVerses.length} Ayet-i Kerime (Elmalılı Mealini görmek için dokunun)`
+              : undefined;
+
             return (
               <span
                 key={`ar-${arIdx}`}
                 dir="rtl"
-                className="font-arabic text-[1.28em] font-normal leading-relaxed px-1 text-amber-950 dark:text-amber-100 inline-block align-baseline tracking-wide select-text"
+                onClick={
+                  isVerse && onClickArabic
+                    ? (e) => {
+                        e.stopPropagation();
+                        onClickArabic(subPart);
+                      }
+                    : undefined
+                }
+                title={verseTooltip}
+                className={`font-arabic text-[1.28em] font-normal leading-relaxed px-1 text-amber-950 dark:text-amber-100 inline-block align-baseline tracking-wide select-text ${
+                  isVerse
+                    ? 'cursor-pointer rounded-md hover:bg-amber-500/15 border-b border-dashed border-amber-600/45 dark:border-amber-400/45 transition-colors'
+                    : ''
+                }`}
               >
                 {subPart}
               </span>
