@@ -136,7 +136,7 @@ export async function loadMealDatabase(): Promise<IndexedVerse[]> {
     try {
       const baseUrl = import.meta.env.BASE_URL || '/';
       const cleanBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
-      const res = await fetch(`${cleanBase}elmalili_meal.json`);
+      const res = await fetch(`${cleanBase}elmalili_meal.json?v=2`);
       if (!res.ok) {
         throw new Error(`Meal veritabanı yüklenemedi: HTTP ${res.status}`);
       }
